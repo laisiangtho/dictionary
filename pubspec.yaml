@@ -1,0 +1,57 @@
+name: dictionary
+description: A comprehensive Myanmar online dictionary
+
+# Remove this line to publish to pub.dev
+publish_to: 'none'
+
+# Previous version: 1.0.0+1
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+
+  # Local lidea package, development only
+  lidea:
+    path: ../lidea
+  # Github lidea package
+  # lidea:
+  #   git:
+  #     url: git://github.com/laisiangtho/lidea.git
+  #     ref: main
+
+  # Custom
+  # hive_flutter: ^1.0.0
+  share: ^2.0.1
+  flutter_reorderable_list: ^1.0.0
+  # flutter_tts: ^1.2.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/mock.json
+
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Thin.ttf
+        - asset: assets/fonts/Lato-Regular.ttf
+        - asset: assets/fonts/Lato-Light.ttf
+        - asset: assets/fonts/Lato-Italic.ttf
+        - asset: assets/fonts/Lato-Bold.ttf
+    - family: MyOrdbok
+      fonts:
+        - asset: assets/fonts/MyOrdbok.ttf
+    - family: Mm3Web
+      fonts:
+        - asset: assets/fonts/Mm3Web.ttf
