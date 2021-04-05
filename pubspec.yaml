@@ -26,7 +26,7 @@ dependencies:
   #     ref: main
 
   # Custom
-  # hive_flutter: ^1.0.0
+  hive_flutter: ^1.0.0
   share: ^2.0.1
   flutter_reorderable_list: ^1.0.0
   # flutter_tts: ^1.2.7
@@ -39,7 +39,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/mock.json
+    - assets/en-mock.v1.json
+    - assets/sense-mock.v1.json
+    - assets/usage-mock.v1.json
+    - assets/synmap-mock.v1.json
+    - assets/synset-mock.v1.json
 
   fonts:
     - family: Lato
