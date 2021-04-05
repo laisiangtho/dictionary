@@ -4,6 +4,8 @@ class ScreenLauncher extends StatelessWidget {
   final String message;
   ScreenLauncher({this.message});
 
+  // A comprehensive Myanmar online dictionary
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,37 +31,37 @@ class ScreenLauncher extends StatelessWidget {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text:'the',
+                    text:'A',
                     style: TextStyle(
+                      fontSize: 19,
+                    )
+                  ),
+                  TextSpan(
+                    text: ' comprehensive\n',
+                    style: TextStyle(
+                      color: Colors.brown,
+                      fontSize: 20,
+                    )
+                  ),
+                  TextSpan(
+                    text: 'Myanmar\n',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
                       fontSize: 36,
                     )
                   ),
                   TextSpan(
-                    text: ' holy\n',
+                    text: 'online ',
                     style: TextStyle(
-                      color: Colors.brown,
-                      fontSize: 37,
+                      // color: Colors.brown,
+                      fontSize: 19,
                     )
                   ),
                   TextSpan(
-                    text: 'Bible\n',
+                    text: 'dictionary',
                     style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 62,
-                    )
-                  ),
-                  TextSpan(
-                    text: 'in ',
-                    style: TextStyle(
-                      color: Colors.brown,
-                      fontSize: 21,
-                    )
-                  ),
-                  TextSpan(
-                    text: 'languages',
-                    style: TextStyle(
-                      fontSize: 23,
+                      fontSize: 22,
                     )
                   ),
                   TextSpan(
@@ -87,14 +89,15 @@ class ScreenLauncher extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical:40),
               padding: EdgeInsets.symmetric(vertical:7, horizontal: 27),
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Text(
                 message,
                 semanticsLabel: message,
                 style: TextStyle(
-                  color: Colors.white,
+                  // color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                   fontSize: 18,
                 ),
               ),
@@ -135,10 +138,10 @@ class ScreenLauncher extends StatelessWidget {
             //   ),
             // ),
             Text(
-              Core.instance.appName.toUpperCase(),
+              Core.instance.appName,
               semanticsLabel: Core.instance.appName,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 // color: Colors.grey
               )
             ),
