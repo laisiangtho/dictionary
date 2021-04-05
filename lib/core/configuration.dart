@@ -16,7 +16,7 @@ mixin _Configuration  {
 
   // final keyBookmarkList = GlobalKey<SliverAnimatedListState>();
 
-  Collection collection;
+  // Collection collection;
 
   // Scripture scripturePrimary, scriptureParallel;
 
@@ -52,4 +52,5 @@ mixin _Configuration  {
   // // );
   // String digit(dynamic e) => scripturePrimary.digit(e);
   // // int get uniqueIdentify => new DateTime.now().millisecondsSinceEpoch;
+
 }
