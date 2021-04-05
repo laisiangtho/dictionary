@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:lidea/idea/root.dart';
 
 import 'package:lidea/scroll.dart';
 import 'package:dictionary/core.dart';
@@ -18,13 +19,13 @@ part 'app.launcher.dart';
 final String appName = Core.instance.appName;
 // final Core appInstance = Core.instance;
 
-class MainView extends StatefulWidget {
-  MainView({Key key}) : super(key: key);
+class AppView extends StatefulWidget {
+  AppView({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _MainState();
 }
 
-class _MainState extends State<MainView> with TickerProviderStateMixin {
+class _MainState extends State<AppView> with TickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   // final _navigator = GlobalKey<NavigatorState>();
   final pageController = PageController(keepPage: true);
@@ -54,10 +55,10 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     initiator = core.init();
     if (pageView.length == 0){
       pageButton = [
-        ModelPage(icon:CustomIcon.search, name:"Home", description: "List of Holy Bible in many languages", key: home),
-        ModelPage(icon:CustomIcon.bookmark, name:"Read", description: "Read bible by chapter", key: read),
-        ModelPage(icon:CustomIcon.wave_square, name:"Bookmark", description: "Bookmark list", key: note),
-        ModelPage(icon:CustomIcon.cog, name:"Search", description: "Search bible", key: search),
+        ModelPage(icon:CustomIcon.search, name:"Home", description: "Search dictionary", key: home),
+        ModelPage(icon:CustomIcon.note, name:"Note", description: "Notes list", key: read),
+        ModelPage(icon:CustomIcon.layers, name:"About", description: "??", key: note),
+        ModelPage(icon:CustomIcon.dot_horiz, name:"More", description: "??", key: search),
         // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information/Working", key: more)
       ];
       pageView = [
@@ -150,7 +151,7 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
         // onUnknownRoute: routeUnknown,
         child: _page()
       ),
-      extendBody: true,
+      // extendBody: true,
       bottomNavigationBar: _bottom()
     );
   }
