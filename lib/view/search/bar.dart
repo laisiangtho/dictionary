@@ -109,7 +109,7 @@ mixin _Bar on _State {
         ),
         // prefixIcon: Icon(CustomIcon.find,color:Colors.grey[focusNode.hasFocus?100:400],size: 20),
         prefixIcon: Icon(CustomIcon.find,color:Theme.of(context).backgroundColor,size: 20),
-        hintText: " ...search Verse",
+        hintText: "... a word or two",
         hintStyle: TextStyle(color: Colors.grey),
         contentPadding: EdgeInsets.symmetric(horizontal: 2,vertical: (3*shrink)),
         fillColor: Theme.of(context).primaryColor.withOpacity(shrink),

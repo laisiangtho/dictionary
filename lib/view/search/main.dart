@@ -5,8 +5,8 @@ import 'package:lidea/scroll.dart';
 
 import 'package:dictionary/core.dart';
 // import 'package:dictionary/inherited.dart';
-// import 'package:dictionary/model.dart';
-// import 'package:dictionary/widget.dart';
+import 'package:dictionary/model.dart';
+import 'package:dictionary/widget.dart';
 import 'package:dictionary/icon.dart';
 
 part 'view.dart';
