@@ -12,7 +12,11 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 
-// import 'package:lidea/engine.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:lidea/engine.dart';
 import 'package:lidea/analytics.dart';
 
 import 'package:dictionary/model.dart';
@@ -43,27 +47,19 @@ class Core extends _Collection with _Mock {
   static Core get instance => _instance;
 
   Future<void> init() async {
-    // await readCollection();
-    // switchIdentifyPrimary();
-    // await getBiblePrimary.catchError((e){
-    //   debugPrint('error Primary $e');
-    // });
+    // final appDocumentary = await UtilDocument.directory;
+    // Hive.init(appDocumentary.path);
+    await Hive.initFlutter();
+    await _settingPrimary();
+    await _wordPrimary();
+    await _sensePrimary();
+    await _usagePrimary();
+    await _synsetPrimary();
+    await _synmapPrimary();
 
-    // switchIdentifyParallel();
-    // await getBibleParallel.catchError((e){
-    //   debugPrint('error Parallel $e');
-    // });
-
-    // await initSpeech().catchError((e){
-    //   print('error speech $e');
-    // });
-
-    // await loadDefinitionBible(identify).catchError((e){
-    //   // print('init loadDefinitionBible $e');
-    // });
-    // await Future.delayed(Duration(milliseconds: 300), (){});
+    // await definition();
+    // await partOfSpeech();
   }
-
 
   Future<void> analyticsReading() async{
     this.analyticsSearch('keyword goes here');
