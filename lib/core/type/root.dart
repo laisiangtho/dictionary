@@ -8,6 +8,7 @@ part 'synmap.adapter.dart';
 part 'synset.adapter.dart';
 part 'definition.dart';
 part 'grammar.dart';
+part 'collection.dart';
 
 @HiveType(typeId: 0)
 class SettingType {
@@ -86,13 +87,14 @@ class WordType {
     };
   }
 
-  bool charStartsWith(word) {
+  bool charStartsWith(String word) {
     return v.startsWith(word);
   }
 
-  bool charMatchExact(word) {
+  bool charMatchExact(String word) {
     return (v.toLowerCase() == word.toLowerCase());
   }
+
 }
 
 @HiveType(typeId: 2)

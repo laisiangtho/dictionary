@@ -55,6 +55,18 @@ class Grammar {
       'form': form.map((e)=>e.toJSON()).toList()
     };
   }
+
+  String posName(int id) {
+    return this.pos.firstWhere((i) => i.id == id).name;
+  }
+
+  String formName(SynmapType e) {
+    Gamap grammarForm = this.form.firstWhere((i) => i.id == e.d && i.type == e.t);
+    return '${e.v} (${grammarForm.name})';
+  }
+
+  // Gaset  grammarPos = definitionGrammar.pos.firstWhere((i) => i.id == gId);
+  // SenseModel newSense = SenseModel(pos: grammarPos.name, clue:[]);
 }
 
 class Gaset {
