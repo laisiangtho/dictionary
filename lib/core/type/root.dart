@@ -85,6 +85,14 @@ class WordType {
       'v':v
     };
   }
+
+  bool charStartsWith(word) {
+    return v.startsWith(word);
+  }
+
+  bool charMatchExact(word) {
+    return (v.toLowerCase() == word.toLowerCase());
+  }
 }
 
 @HiveType(typeId: 2)
