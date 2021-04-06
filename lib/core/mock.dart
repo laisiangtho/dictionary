@@ -75,19 +75,6 @@ mixin _Mock {
     // await box.clear();
   }
 
-  Iterable<WordType> get wordList => Hive.box<WordType>(_wordName).values;
-  // Iterable<WordType> suggestion(String word) => wordList.where((e) => e.v.toLowerCase() == word.toLowerCase());
-  // Iterable<WordType> suggestion(String word) => wordList.where((e) => new RegExp(word,caseSensitive: false).hasMatch(e.v));
-  // Iterable<WordType> wordStartWith(String word) => wordList.where((e) => e.v.startsWith(word));
-  Iterable<WordType> wordStartWith(String word) => wordList.where((e) => e.v.startsWith(word));
-  Iterable<WordType> wordExactMatch(String word) => wordList.where((e) => e.v.toLowerCase() == word.toLowerCase());
-
-  Future<Iterable<WordType>> suggestion(String word) async {
-    await Hive.openBox<WordType>(_wordName);
-    return this.wordStartWith(word);
-  }
-
-
   final String _senseName = 'sensePrimary';
   Future<void> _sensePrimary() async {
     Hive.registerAdapter(SenseAdapter());
@@ -172,36 +159,59 @@ mixin _Mock {
     // await box.clear();
   }
 
+  Iterable<WordType> get wordValues => Hive.box<WordType>(_wordName).values;
+  Iterable<SenseType> get senseValues => Hive.box<SenseType>(_senseName).values;
+  Iterable<UsageType> get usageValues => Hive.box<UsageType>(_usageName).values;
+  Iterable<SynsetType> get synsetValues => Hive.box<SynsetType>(_synsetName).values;
+  Iterable<SynmapType> get synmapValues => Hive.box<SynmapType>(_synmapName).values;
+
+  // Iterable<WordType> suggestion(String word) => wordValues.where((e) => e.v.toLowerCase() == word.toLowerCase());
+  // Iterable<WordType> suggestion(String word) => wordValues.where((e) => new RegExp(word,caseSensitive: false).hasMatch(e.v));
+  Iterable<WordType> wordStartWith(String word) => wordValues.where((e) => e.charStartsWith(word));
+  Iterable<WordType> wordExactMatch(String word) => wordValues.where((e) => e.charMatchExact(word));
+
+
+
+  Future<Iterable<WordType>> suggestion(String keyword) async {
+    await Hive.openBox<WordType>(_wordName);
+    return this.wordStartWith(keyword);
+  }
+
+  List<ResultModel> definitionResult =[];
+  String definitionKeyword='';
+
   Future<List<ResultModel>> definition({String keyword}) async {
-    List<ResultModel> resultNew=[];
 
-    if (keyword == null || keyword.isEmpty) return resultNew;
-
-    SynistType pos = await partOfSpeech(keyword: keyword);
+    if (definitionKeyword == keyword){
+      debugPrint('definition cache');
+      return definitionResult;
+    } else {
+      definitionKeyword = keyword;
+      definitionResult = [];
+      debugPrint('definition');
+    }
+    if (keyword == null || keyword.isEmpty) {
+      return definitionResult;
+    }
+    SynistType pos = partOfSpeech(keyword: keyword);
 
     final Grammar grammar = Grammar.fromJSON();
 
     Iterable<WordType> words;
     words = wordExactMatch(keyword);
 
-    // Box<SenseType> def = await Hive.openBox<SenseType>(_senseName);
-    // Box<UsageType> usg = await Hive.openBox<UsageType>(_usageName);
-    // SenseType def = Hive.box<SenseType>(_senseName);
-    // UsageType usg = Hive.open<UsageType>(_usageName);
-
-    var def = Hive.box<SenseType>(_senseName);
-    var usg = Hive.box<UsageType>(_usageName);
+    // await Hive.openBox<SenseType>(_senseName);
+    // await Hive.openBox<UsageType>(_usageName);
 
     if (words.length == 0 && pos.root.length > 0 && chatCompare(pos.root.first.v, keyword) == false){
       words = wordExactMatch(pos.root.first.v);
     }
 
-
     for (var w1 in words) {
       ResultModel newWord = ResultModel(word: w1.v, sense:[]);
-      resultNew.add(newWord);
+      definitionResult.add(newWord);
 
-      var d1 = def.values.where((e) => e.w == w1.w);
+      var d1 = senseValues.where((e) => e.w == w1.w);
       var g1 = d1.map((e) => e.t).toSet();
       for (var gId in g1) {
         Gaset  grammarPos = grammar.pos.firstWhere((i) => i.id == gId);
@@ -210,8 +220,8 @@ mixin _Mock {
 
         var d2 = d1.where((e) => e.t == gId);
         for (var d3 in d2) {
-          var u1 = usg.values.where((e) => e.i == d3.i);
           ClueModel newClue = ClueModel(mean: d3.v, exam:[]);
+          var u1 = usageValues.where((e) => e.i == d3.i);
           newSense.clue.add(newClue);
           for (var u2 in u1) {
             newClue.exam.addAll(u2.v.split('\r\n'));
@@ -227,20 +237,19 @@ mixin _Mock {
       }
       // debugPrint(newWord.sense.length);
     }
-    // debugPrint(resultNew.map((e)=>e.toJSON()).toList());
-    return resultNew;
+    // debugPrint(definitionResult.map((e)=>e.toJSON()).toList());
+
+    return definitionResult;
   }
 
   bool chatCompare(String a, String b) => a.toLowerCase() == b.toLowerCase();
 
-  Future<SynistType> partOfSpeech({String keyword: 'superiors'}) async {
-    // Box<SynsetType> grammarBox = await Hive.openBox<SynsetType>(_synsetName);
-    // Box<SynmapType> formBox = await Hive.openBox<SynmapType>(_synmapName);
-    // Iterable<SynsetType> grammar = grammarBox.values;
-    // Iterable<SynmapType> form = formBox.values;
-    var grammar = Hive.box<SynsetType>(_synsetName).values;
-    var form = Hive.box<SynmapType>(_synmapName).values;
+  SynistType partOfSpeech({String keyword}) {
+    // await Hive.openBox<SynsetType>(_synsetName);
+    // await Hive.openBox<SynmapType>(_synmapName);
 
+    var grammar = synsetValues;
+    var form = synmapValues;
 
     SynistType result = SynistType(root:[],form: []);
     List<SynsetType> type = form.where(
@@ -249,22 +258,14 @@ mixin _Mock {
       (o) => grammar.firstWhere((s) => s.w == o.w)
     ).toSet().toList();
 
-    result.root = type;
-
-    // print('root');
-    // print(type.map((e)=>e.toJSON()).toList());
-
     if (type.length > 0) {
       // NOTE: loves, loved, loving
       // debugPrint('backward');
+      result.root = type;
       var formAssociate = form.where(
         (m) => m.d > 0 && type.where((e)=>e.w == m.w).length > 0
       ).toList();
       if (formAssociate.length > 0) result.form = formAssociate;
-
-
-      // print(type.map((e)=>e.toJSON()).toList());
-      // print(formAssociate.map((e)=>e.toJSON()).toList());
     }
 
     List<SynsetType> pos = grammar.where(
@@ -277,9 +278,9 @@ mixin _Mock {
       var posAssociate = form.where(
         (m) => m.d > 0 && pos.where((e)=>e.w == m.w).length > 0
       ).toList();
-       if (result.form.length == 0){
+      if (result.form.length == 0){
         result.form = posAssociate;
-       }
+      }
       if (result.root.length == 0){
         result.root = pos;
       }
