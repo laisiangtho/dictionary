@@ -8,6 +8,8 @@ mixin _Configuration  {
   String buildNumber = '';
   final String appDescription = 'A comprehensive Myanmar online dictionary';
 
+  final Collection collection = Collection(grammar: Grammar.fromJSON());
+
   // final String appAnalytics = 'UA-18644721-1';
   // final String assetsFolder = 'assets';
   // final String assetsCollection = 'book.json';
