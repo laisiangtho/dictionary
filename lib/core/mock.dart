@@ -1,6 +1,6 @@
 part of 'core.dart';
 
-mixin _Mock {
+mixin _Mock on _Collection {
   // Future<String> getCollection = Future<String>.delayed(
   //   Duration(seconds: 2),
   //   () => 'Data Loaded',
@@ -31,8 +31,8 @@ mixin _Mock {
   //   );
   // }
 
-  final String _settingName = 'settingPrimary';
   Future<void> _settingPrimary() async {
+    final String _settingName = 'settingPrimary';
     final String boxKey = 'setting';
 
     Hive.registerAdapter(SettingAdapter());
@@ -50,13 +50,14 @@ mixin _Mock {
     } else {
       debugPrint('Ok $_settingName');
     }
+    // collection.setting = active;
     // debugPrint('active ${active.version} ${box.length} ${box.isOpen}');
     // box.clear();
   }
 
-  final String _wordName = 'wordPrimary';
   Future<void> _wordPrimary() async {
-    Hive.registerAdapter(WordAdapter());
+    final String _wordName = 'wordPrimary';
+    // Hive.registerAdapter(WordAdapter());
     Box<WordType> box = await Hive.openBox<WordType>(_wordName);
     if (box.isEmpty){
       debugPrint('Import $_wordName');
@@ -67,6 +68,7 @@ mixin _Mock {
     } else {
       debugPrint('Ok $_wordName');
     }
+    collection.word = box.values;
 
     // WordType selected = box.get(2);
     // WordType selected = box.values.firstWhere((e)=>e.v != null && e.v.toLowerCase() == 'hate');
@@ -75,9 +77,9 @@ mixin _Mock {
     // await box.clear();
   }
 
-  final String _senseName = 'sensePrimary';
   Future<void> _sensePrimary() async {
-    Hive.registerAdapter(SenseAdapter());
+    final String _senseName = 'sensePrimary';
+    // Hive.registerAdapter(SenseAdapter());
     Box<SenseType> box = await Hive.openBox<SenseType>(_senseName);
     if (box.isEmpty){
       debugPrint('Import $_senseName');
@@ -88,6 +90,7 @@ mixin _Mock {
     } else {
       debugPrint('Ok $_senseName');
     }
+    collection.sense = box.values;
 
     // SenseType selected = box.get(2);
     // SenseType selected = box.values.firstWhere((e)=>e.v != null && e.v.toLowerCase() == 'hate');
@@ -96,9 +99,9 @@ mixin _Mock {
     // await box.clear();
   }
 
-  final String _usageName = 'usagePrimary';
   Future<void> _usagePrimary() async {
-    Hive.registerAdapter(UsageAdapter());
+    final String _usageName = 'usagePrimary';
+    // Hive.registerAdapter(UsageAdapter());
     Box<UsageType> box = await Hive.openBox<UsageType>(_usageName);
     if (box.isEmpty){
       debugPrint('Import $_usageName');
@@ -109,6 +112,7 @@ mixin _Mock {
     } else {
       debugPrint('Ok $_usageName');
     }
+    collection.usage = box.values;
 
     // UsageType selected = box.get(2);
     // UsageType selected = box.values.firstWhere((e)=>e.v != null && e.v.toLowerCase() == 'hate');
@@ -117,9 +121,9 @@ mixin _Mock {
     // await box.clear();
   }
 
-  final String _synsetName = 'synsetPrimary';
   Future<void> _synsetPrimary() async {
-    Hive.registerAdapter(SynsetAdapter());
+    final String _synsetName = 'synsetPrimary';
+    // Hive.registerAdapter(SynsetAdapter());
     Box<SynsetType> box = await Hive.openBox<SynsetType>(_synsetName);
     if (box.isEmpty){
       debugPrint('Import $_synsetName');
@@ -130,6 +134,7 @@ mixin _Mock {
     } else {
       debugPrint('Ok $_synsetName');
     }
+    collection.synset = box.values;
 
     // SynsetType selected = box.get(2);
     // SynsetType selected = box.values.firstWhere((e)=>e.v != null && e.v.toLowerCase() == 'hate');
@@ -138,9 +143,9 @@ mixin _Mock {
     // await box.clear();
   }
 
-  final String _synmapName = 'synmapPrimary';
   Future<void> _synmapPrimary() async {
-    Hive.registerAdapter(SynmapAdapter());
+    final String _synmapName = 'synmapPrimary';
+    // Hive.registerAdapter(SynmapAdapter());
     Box<SynmapType> box = await Hive.openBox<SynmapType>(_synmapName);
     if (box.isEmpty){
       debugPrint('Import $_synmapName');
@@ -151,6 +156,7 @@ mixin _Mock {
     } else {
       debugPrint('Ok $_synmapName');
     }
+    collection.synmap = box.values;
 
     // SynmapType selected = box.get(2);
     // SynmapType selected = box.values.firstWhere((e)=>e.v != null && e.v.toLowerCase() == 'hate');
@@ -159,26 +165,13 @@ mixin _Mock {
     // await box.clear();
   }
 
-  Iterable<WordType> get wordValues => Hive.box<WordType>(_wordName).values;
-  Iterable<SenseType> get senseValues => Hive.box<SenseType>(_senseName).values;
-  Iterable<UsageType> get usageValues => Hive.box<UsageType>(_usageName).values;
-  Iterable<SynsetType> get synsetValues => Hive.box<SynsetType>(_synsetName).values;
-  Iterable<SynmapType> get synmapValues => Hive.box<SynmapType>(_synmapName).values;
-
-  // Iterable<WordType> suggestion(String word) => wordValues.where((e) => e.v.toLowerCase() == word.toLowerCase());
-  // Iterable<WordType> suggestion(String word) => wordValues.where((e) => new RegExp(word,caseSensitive: false).hasMatch(e.v));
-  Iterable<WordType> wordStartWith(String word) => wordValues.where((e) => e.charStartsWith(word));
-  Iterable<WordType> wordExactMatch(String word) => wordValues.where((e) => e.charMatchExact(word));
-
-
-
   Future<Iterable<WordType>> suggestion(String keyword) async {
-    await Hive.openBox<WordType>(_wordName);
-    return this.wordStartWith(keyword);
+    return collection.wordStartWith(keyword);
   }
 
-  List<ResultModel> definitionResult =[];
+  List<ResultModel> definitionResult = [];
   String definitionKeyword='';
+  final Grammar definitionGrammar = Grammar.fromJSON();
 
   Future<List<ResultModel>> definition({String keyword}) async {
 
@@ -195,43 +188,46 @@ mixin _Mock {
     }
     SynistType pos = partOfSpeech(keyword: keyword);
 
-    final Grammar grammar = Grammar.fromJSON();
-
     Iterable<WordType> words;
-    words = wordExactMatch(keyword);
+    words = collection.wordExactMatch(keyword);
 
     // await Hive.openBox<SenseType>(_senseName);
     // await Hive.openBox<UsageType>(_usageName);
 
-    if (words.length == 0 && pos.root.length > 0 && chatCompare(pos.root.first.v, keyword) == false){
-      words = wordExactMatch(pos.root.first.v);
+    if (words.length == 0 && pos.root.length > 0 && collection.stringCompare(pos.root.first.v, keyword) == false){
+      words = collection.wordExactMatch(pos.root.first.v);
     }
 
     for (var w1 in words) {
       ResultModel newWord = ResultModel(word: w1.v, sense:[]);
       definitionResult.add(newWord);
 
-      var d1 = senseValues.where((e) => e.w == w1.w);
+      var d1 = collection.sense.where((e) => e.w == w1.w);
       var g1 = d1.map((e) => e.t).toSet();
       for (var gId in g1) {
-        Gaset  grammarPos = grammar.pos.firstWhere((i) => i.id == gId);
-        SenseModel newSense = SenseModel(pos: grammarPos.name, clue:[]);
+        // Gaset  grammarPos = definitionGrammar.pos.firstWhere((i) => i.id == gId);
+        // SenseModel newSense = SenseModel(pos: grammarPos.name, clue:[]);
+        SenseModel newSense = SenseModel(pos: definitionGrammar.posName(gId), clue:[]);
         newWord.sense.add(newSense);
 
         var d2 = d1.where((e) => e.t == gId);
         for (var d3 in d2) {
           ClueModel newClue = ClueModel(mean: d3.v, exam:[]);
-          var u1 = usageValues.where((e) => e.i == d3.i);
+          var u1 = collection.usage.where((e) => e.i == d3.i);
           newSense.clue.add(newClue);
           for (var u2 in u1) {
             newClue.exam.addAll(u2.v.split('\r\n'));
           }
         }
+        // var abcd = pos.form.where((e) => e.t == gId).map(
+        //   (e) {
+        //     // Gamap grammarForm = definitionGrammar.form.firstWhere((i) => i.id == e.d && i.type == gId);
+        //     Gamap grammarForm = definitionGrammar.form.firstWhere((i) => i.id == e.d && i.type == e.t);
+        //     return '${e.v} (${grammarForm.name})';
+        //   }
+        // ).join('; ');
         var abcd = pos.form.where((e) => e.t == gId).map(
-          (e) {
-            Gamap grammarForm = grammar.form.firstWhere((i) => i.id == e.d && i.type == gId);
-            return '${e.v} (${grammarForm.name})';
-          }
+          (e) => definitionGrammar.formName(e)
         ).join('; ');
         newSense.clue.add(ClueModel(mean: abcd, exam:[]));
       }
@@ -242,18 +238,15 @@ mixin _Mock {
     return definitionResult;
   }
 
-  bool chatCompare(String a, String b) => a.toLowerCase() == b.toLowerCase();
 
   SynistType partOfSpeech({String keyword}) {
-    // await Hive.openBox<SynsetType>(_synsetName);
-    // await Hive.openBox<SynmapType>(_synmapName);
 
-    var grammar = synsetValues;
-    var form = synmapValues;
+    var grammar = collection.synset;
+    var form = collection.synmap;
 
     SynistType result = SynistType(root:[],form: []);
     List<SynsetType> type = form.where(
-      (s) => chatCompare(s.v, keyword) && s.t < 10 && grammar.where((e) => e.w == s.w).length > 0
+      (s) => collection.stringCompare(s.v, keyword) && s.t < 10 && grammar.where((e) => e.w == s.w).length > 0
     ).map(
       (o) => grammar.firstWhere((s) => s.w == o.w)
     ).toSet().toList();
@@ -269,7 +262,7 @@ mixin _Mock {
     }
 
     List<SynsetType> pos = grammar.where(
-      (s) => chatCompare(s.v,keyword)
+      (s) => collection.stringCompare(s.v,keyword)
     ).toList();
 
     if (pos.length > 0) {
