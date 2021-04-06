@@ -3,6 +3,7 @@ part of 'main.dart';
 mixin _Data on _State {
   // Future<bool> _dataResult;
   // Future<bool> get getResult => _dataResult=hasNotResult?_newResult():_dataResult;
+  // List<ResultModel> get snapshotData => core.definition(keyword: searchQuery);
   // Future<bool> _newResult() async{
   //   await core.versePrimarySearch();
   //   return hasNotResult == false;

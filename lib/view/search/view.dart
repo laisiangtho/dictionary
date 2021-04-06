@@ -31,6 +31,7 @@ class View extends _State with _Bar, _Data, _Suggest, _Result {
     //   lang: core.langShortName,
     //   child: focusNode.hasFocus?suggest():result()
     // );
+    // return result();
     return focusNode.hasFocus?suggest():result();
   }
 }

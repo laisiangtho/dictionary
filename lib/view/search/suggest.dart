@@ -11,17 +11,21 @@ mixin _Suggest on _State, _Data {
       // return _suggestionKeyword();
       return WidgetMessage(message: 'suggestion $searchQuery');
     }
+
     return FutureBuilder(
       future: core.suggestion(searchQuery),
-      builder: (BuildContext context, AsyncSnapshot<Iterable<WordType>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<Iterable<WordType>> snapshot)  {
         if (snapshot.hasError) {
           return WidgetMessage(message: snapshot.error.toString());
         }
+
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
             return _suggestionKeyword(snapshot.data.toList());
           }
         }
+
+
         return WidgetContent(atLeast: 'found no contain\nof ',enable:this.searchQuery,task: '\nin ',message:'bibleInfo?.name');
       }
     );

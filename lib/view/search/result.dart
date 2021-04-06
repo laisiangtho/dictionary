@@ -3,28 +3,32 @@ part of 'main.dart';
 mixin _Result on _State, _Data {
 
   Widget result() {
-
+    if (this.searchQuery.isEmpty) {
+      return new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nto get ',message:'definition');
+    }
     return FutureBuilder(
       future: core.definition(keyword: searchQuery),
-      builder: (BuildContext context, AsyncSnapshot<Iterable<ResultModel>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<ResultModel>> snapshot) {
         if (snapshot.hasError) {
           return WidgetMessage(message: snapshot.error.toString());
         }
-        if (snapshot.hasData) {
-          if (snapshot.data.length > 0) {
-            return _resultWord(snapshot.data);
-            // return WidgetMessage(message:snapshot.data.map((e) => e.toJSON()).toString());
-          }
-        }
-        if (this.searchQuery.isEmpty) {
-          return new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nto get ',message:'definition');
-        }
-        return WidgetContent(atLeast: 'found no contain\nof ',enable:searchQuery,task: '\nin ',message:'bibleInfo?.name');
+        // if (snapshot.hasData) {
+        //   if (snapshot.data.length > 0) {
+        //     return _resultWord(snapshot.data);
+        //     // return WidgetMessage(message: 'working');
+        //     // return WidgetMessage(message: snapshot.data.map((e) => e.toJSON()).toList().toString());
+        //   }
+        // }
+        return _resultWord(core.definitionResult);
+
+        // return WidgetContent(atLeast: '...found no contain\nof ',enable:searchQuery,task: '\nin ',message:'??');
       }
     );
+
   }
 
   Widget _resultWord(List<ResultModel> data) {
+    if (data.length == 0) return WidgetContent(atLeast: '...found no contain\nof ',enable:searchQuery,task: '\nin ',message:'??');
     return new SliverList(
       key: UniqueKey(),
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
