@@ -1,36 +1,32 @@
 part of 'main.dart';
 
-mixin _Result on _State, _Data {
+class ViewResult extends StatelessWidget {
+  ViewResult({Key key,this.searchQuery}) : super(key: key);
 
-  Widget result() {
+  final String searchQuery;
+  final core = Core();
+
+  @override
+  Widget build(BuildContext context) {
     if (this.searchQuery.isEmpty) {
-      return new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nto get ',message:'definition');
+      return new WidgetContent(key: key,atLeast: 'search\na',enable:' Word ',task: 'or two\nto get ',message:'definition');
     }
     return FutureBuilder(
-      future: core.definition(keyword: searchQuery),
+      key: key,
+      future: core.definition(searchQuery),
       builder: (BuildContext context, AsyncSnapshot<List<ResultModel>> snapshot) {
         if (snapshot.hasError) {
           return WidgetMessage(message: snapshot.error.toString());
         }
-        // if (snapshot.hasData) {
-        //   if (snapshot.data.length > 0) {
-        //     return _resultWord(snapshot.data);
-        //     // return WidgetMessage(message: 'working');
-        //     // return WidgetMessage(message: snapshot.data.map((e) => e.toJSON()).toList().toString());
-        //   }
-        // }
-        return _resultWord(core.definitionResult);
-
-        // return WidgetContent(atLeast: '...found no contain\nof ',enable:searchQuery,task: '\nin ',message:'??');
+        return _resultWord(core.collection.definition);
       }
     );
-
   }
 
   Widget _resultWord(List<ResultModel> data) {
     if (data.length == 0) return WidgetContent(atLeast: '...found no contain\nof ',enable:searchQuery,task: '\nin ',message:'??');
     return new SliverList(
-      key: UniqueKey(),
+      // key: UniqueKey(),
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
           // BOOK book = bible.book[bookIndex];
           ResultModel book = data[index];
@@ -92,7 +88,6 @@ mixin _Result on _State, _Data {
 
 
   Widget _clueContainer(List<ClueModel> clue) {
-
     return ListView.builder(
       key: UniqueKey(),
       shrinkWrap: true,
@@ -100,12 +95,12 @@ mixin _Result on _State, _Data {
       itemCount: clue.length,
       itemBuilder: (context, index){
         return new Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(clue[index].mean),
-              _examContainer(clue[index].exam)
-            ]
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(clue[index].mean),
+            _examContainer(clue[index].exam)
+          ]
         );
       }
     );
@@ -124,166 +119,115 @@ mixin _Result on _State, _Data {
       }
     );
   }
-
-  // Widget _resultChapter(List<CHAPTER> chapters, int bookId) {
-  //   final bool shrinkChapter = (chapters.length > 1 && shrinkResult);
-  //   final int shrinkChapterTotal = shrinkChapter?1:chapters.length;
-  //   return ListView.builder(
-  //     key: UniqueKey(),
-  //     shrinkWrap: true,
-  //     primary: false,
-  //     // itemCount: chapters.length,
-  //     itemCount: shrinkChapterTotal,
-  //     itemBuilder: (context, chapterIndex){
-  //       CHAPTER chapter = chapters[chapterIndex];
-  //       return new Column(
-  //         mainAxisSize: MainAxisSize.max,
-  //         crossAxisAlignment: CrossAxisAlignment.center,
-  //         children: <Widget>[
-  //           // Container(
-  //           //   margin: EdgeInsets.only(top:10,bottom:5),
-  //           //   child: Text(chapter.name),
-  //           // ),
-
-  //           // if(shrinkChapter) GridView(
-  //           //   // children: <Widget>[],
-  //           //   // crossAxisCount: 7,
-  //           //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 10),
-  //           //   // childAspectRatio: 2.0,
-  //           //   padding: EdgeInsets.all(15.0),
-  //           //   shrinkWrap: true,
-  //           //   primary: false,
-  //           //   children: chapters.where((e) => e.id  != chapter.id).map(
-  //           //     (e) => Container(
-  //           //       alignment: Alignment.center,
-  //           //       child: RawMaterialButton(
-  //           //         onPressed: null,
-  //           //         elevation: 2.0,
-  //           //         fillColor: Colors.white,
-  //           //         child: Text(core.digit(e.id)),
-  //           //         // padding: EdgeInsets.all(15.0),
-  //           //         shape: CircleBorder(),
-  //           //       ),
-  //           //     )
-  //           //   ).toList(),
-  //           // ),
-  //           // if(shrinkChapter) SingleChildScrollView(
-  //           //   scrollDirection: Axis.horizontal,
-  //           //   padding: EdgeInsets.all(15.0),
-  //           //   child: Row(
-  //           //     children: chapters.where((e) => e.id  != chapter.id).map(
-  //           //       (e) => RawMaterialButton(
-  //           //         onPressed: (){},
-  //           //         elevation: 2.0,
-  //           //         fillColor: Colors.white,
-  //           //         child: Text(core.digit(e.id)),
-  //           //         padding: EdgeInsets.all(15.0),
-  //           //         shape: CircleBorder(),
-  //           //       )
-  //           //     ).toList(),
-  //           //   )
-  //           // ),
-  //           if(shrinkChapter) SingleChildScrollView(
-  //             scrollDirection: Axis.horizontal,
-  //             child: Row(
-  //               mainAxisSize: MainAxisSize.min,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //               children: chapters.where((e) => e.id  != chapter.id).map(
-  //                 (e) => SizedBox(
-  //                   width: 50,
-  //                   child: RawMaterialButton(
-  //                     child: Text(
-  //                       e.name,
-  //                       semanticsLabel: 'chapter: '+e.name,
-  //                       style: TextStyle(
-  //                         fontSize: 15
-  //                       ),
-  //                     ),
-  //                     elevation: 0.0,
-  //                     padding: EdgeInsets.all(10),
-  //                     fillColor: Colors.grey[300],
-  //                     shape: CircleBorder(),
-  //                     onPressed: ()=> toBible(bookId,e.id)
-  //                   ),
-  //                   // child: FlatButton(
-  //                   //   child: Text(
-  //                   //     // core.digit(e.id),
-  //                   //     // e.name,
-  //                   //     'a?',
-  //                   //     semanticsLabel: 'chapter: '+e.name,
-  //                   //     style: TextStyle(
-  //                   //       fontSize: 15
-  //                   //     ),
-  //                   //   ),
-  //                   //   color: Colors.grey[300],
-  //                   //   // textColor: Colors.white,
-  //                   //   textColor: Colors.black45,
-  //                   //   padding: EdgeInsets.all(7),
-  //                   //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-  //                   //   shape: new CircleBorder(),
-  //                   //   // shape: RoundedRectangleBorder(
-  //                   //   //   borderRadius: BorderRadius.all(
-  //                   //   //     Radius.elliptical(3, 20)
-  //                   //   //   )
-  //                   //   // ),
-  //                   //   onPressed: () => toBible(bookId,e.id)
-  //                   // ),
-  //                 )
-  //               ).toList(),
-  //             )
-  //           ),
-
-  //           Padding(
-  //             padding: const EdgeInsets.all(8.0),
-  //             child: RawMaterialButton(
-  //               child: Text(
-  //                 chapter.name,
-  //                 semanticsLabel: chapter.name,
-  //                 style: TextStyle(
-  //                   fontSize: 18
-  //                 ),
-  //               ),
-  //               padding: EdgeInsets.all(10),
-  //               fillColor: Colors.white,
-  //               shape: CircleBorder(),
-  //               // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-  //               // shape: RoundedRectangleBorder(
-  //               //   borderRadius: BorderRadius.all(
-  //               //     Radius.elliptical(3, 20)
-  //               //   )
-  //               // ),
-  //               onPressed: ()=>toBible(bookId,chapter.id)
-  //             ),
-  //           ),
-
-  //           _resultVerse(chapter.verse)
-
-  //         ]
-  //       );
-  //     }
-  //   );
-  // }
-
-  // Widget _resultVerse(List<VERSE> verses) {
-  //   final bool shrinkVerse = (verses.length > 1 && shrinkResult);
-  //   final int shrinkVerseTotal = shrinkVerse?1:verses.length;
-  //   return ListView.builder(
-  //     key: UniqueKey(),
-  //     shrinkWrap: true,
-  //     primary: false,
-  //     // itemCount: verses.length,
-  //     itemCount: shrinkVerseTotal,
-  //     // itemCount: 1,
-  //     itemBuilder: (context, index){
-  //       VERSE verse = verses[index];
-  //       return new WidgetVerse(
-  //         verse:verse,
-  //         keyword: this.searchQuery,
-  //         // alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''
-  //         alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => e.name).join(', '):''
-  //       );
-  //     }
-  //   );
-  // }
 }
+
+/*
+class ViewDefinition extends StatelessWidget {
+  ViewDefinition({Key key,this.searchQuery}) : super(key: key);
+
+  final String searchQuery;
+  final core = Core();
+  final ValueNotifier<int> myValueListenable = ValueNotifier<int>(0);
+
+  @override
+  Widget build(BuildContext context) {
+    return new SliverList(
+      key: key,
+      delegate: new SliverChildListDelegate(
+        <Widget>[
+          Text('definition'),
+          ValueListenableBuilder<int>(
+            valueListenable: myValueListenable,
+            builder: (context, value, _) {
+              // return Provider<int>.value(
+              //   value: value,
+              //   child: Text('ValueListenableBuilder $value'),
+              // );
+              return Text('ValueListenableBuilder $value');
+            }
+          ),
+          new CupertinoButton (
+            onPressed: (){
+              myValueListenable.value++;
+            },
+            padding: EdgeInsets.zero,
+            minSize: 35.0,
+
+            child:Text('ValueListenableBuilder update ${myValueListenable.value}', maxLines: 1, style: TextStyle(fontSize: 14))
+          ),
+          WordTesting()
+        ],
+      ),
+    );
+  }
+}
+
+
+
+class WordTesting extends StatelessWidget {
+
+  final core = Core();
+
+  @override
+  Widget build(BuildContext context) {
+    // final word = context.read<FormNotifier>();
+    final keyword = context.watch<FormNotifier>().keyword;
+    // final searchQuery = context.watch<FormNotifier>().searchQuery;
+    // return Container(
+    //   child: getContextfromChildWidget(),
+    // );
+    return Column(
+      children: <Widget>[
+        Text('keyword $keyword'),
+        getContextfromChildWidget(),
+        new CupertinoButton (
+          onPressed: (){
+            var abc = Provider.of<FormNotifier>(context,listen: false);
+            abc.searchQuery = 'apple';
+
+          },
+          padding: EdgeInsets.zero,
+          minSize: 35.0,
+          child:Text('Provider.of', maxLines: 1, style: TextStyle(fontSize: 14))
+        )
+      ]
+    );
+
+  }
+  Widget getContextfromChildWidget() {
+    return Consumer<FormNotifier>(
+      builder: (BuildContext context, FormNotifier form, Widget child) {
+        return Text(form.searchQuery);
+      }
+    );
+    // return Provider<WordNotifier>(
+    //   create: (_) => WordNotifier(),
+    //   // we use `builder` to obtain a new `BuildContext` that has access to the provider
+    //   builder: (context,a) {
+    //     return Text(context.watch<WordNotifier>().word);
+    //   }
+    // );
+
+  }
+
+  Widget cancelInputButton(){
+
+    return Consumer<NodeNotifier>(
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (BuildContext context, NodeNotifier node, Widget child) {
+        // return Text(context.watch<NodeNotifier>().focus);
+        // return Text(context.read<NodeNotifier>().focus);
+        // print(context.read<NodeNotifier>().focus);
+        // print(node.focus);
+        return new CupertinoButton (
+          onPressed: null,
+          padding: EdgeInsets.zero,
+          minSize: 35.0,
+          color: node.focus?Colors.red:Colors.blue,
+          child:Text('Cancel', maxLines: 1, style: TextStyle(fontSize: 14))
+        );
+      }
+    );
+  }
+}
+*/

@@ -88,12 +88,17 @@ class View extends _State with _Bar {
                   }
                 );
               }),
-              ElevatedButton(
-                child: Text("??"),
-                onPressed: () {
-                  print('Light');
-                }
-              ),
+              Builder( builder: (context) {
+                return ElevatedButton(
+                  child: Text("Change provider"),
+                  onPressed: (){
+                    var abc = Provider.of<FormNotifier>(context,listen: false);
+                    abc.searchQuery = 'from more';
+                    abc.keyword = 'from more';
+                  },
+                );
+              }),
+
 
             ]
           )

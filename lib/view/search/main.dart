@@ -2,18 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:lidea/scroll.dart';
-
-import 'package:dictionary/core.dart';
-// import 'package:dictionary/inherited.dart';
-import 'package:dictionary/model.dart';
+import 'package:lidea/provider.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:dictionary/widget.dart';
+import 'package:dictionary/core.dart';
+import 'package:dictionary/model.dart';
 import 'package:dictionary/icon.dart';
-
+import 'package:dictionary/notifier.dart';
 part 'view.dart';
-part 'data.dart';
-part 'bar.dart';
 part 'suggest.dart';
 part 'result.dart';
+part 'bar.dart';
 
 class Main extends StatefulWidget {
   Main({Key key}) : super(key: key);
@@ -24,35 +23,36 @@ class Main extends StatefulWidget {
 abstract class _State extends State<Main> with TickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-  final core = Core();
+
   final controller = ScrollController();
   final textController = new TextEditingController();
   final focusNode = new FocusNode();
 
-  String get searchQuery => this.textController.text;
+  final suggestionKey = new UniqueKey();
+  final resultKey = new UniqueKey();
 
-  // void inputKeyboardShow() => FocusScope.of(context).requestFocus(focusNode);
-  // void inputKeyboardShow() => focusNode.requestFocus();
+
+
+  // bool inputEnable = true;
+  final core = Core();
+
+  // String get searchQuery => this.textController.text;
+
+  // NOTE: show keyboard
+  // FocusScope.of(context).requestFocus(focusNode);
+  // focusNode.requestFocus();
+  // NOTE: hide keyboard
   // FocusScope.of(context).unfocus()
-  void inputKeyboardHide() => focusNode.unfocus();
-  void inputClear() => textController.clear();
-  void inputCancel() => inputKeyboardHide();
-  void inputSubmit(String word) {
-    inputKeyboardHide();
-    this.textController.text = word;
-    // core.searchQuery = word;
-    core.analyticsSearch(this.searchQuery);
-  }
+  // focusNode?.unfocus();
+  // NOTE: clear textfield
+  // textController?.clear()
+
 
   @override
   void initState() {
     super.initState();
-    textController.text = core.searchQuery;
-    textController.addListener(() {
-      setState(() {
-        core.searchQuery = searchQuery;
-      });
-    });
+    this.textController.text = context.read<FormNotifier>().keyword;
+    // textController.addListener(() {});
     focusNode.addListener(() {
       if(focusNode.hasFocus) {
         textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);

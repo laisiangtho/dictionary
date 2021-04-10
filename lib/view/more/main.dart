@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:lidea/provider.dart';
 import 'package:lidea/scroll.dart';
 import 'package:lidea/idea.dart';
+
+import 'package:dictionary/notifier.dart';
 import 'package:dictionary/core.dart';
 // import 'package:dictionary/widget.dart';
 

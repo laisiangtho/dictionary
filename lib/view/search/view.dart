@@ -1,7 +1,6 @@
 part of 'main.dart';
 
-class View extends _State with _Bar, _Data, _Suggest, _Result {
-
+class View extends _State {
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
@@ -16,22 +15,33 @@ class View extends _State with _Bar, _Data, _Suggest, _Result {
       controller: controller.master,
       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       slivers: <Widget>[
-        sliverPersistentHeader(),
+        Bar(focusNode: focusNode, textController: textController),
         new SliverPadding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-          sliver: _body
+          sliver: context.watch<NodeNotifier>().focus?suggestion:definition
         )
       ]
     );
   }
 
-  Widget get _body {
-    // return VerseInheritedWidget(
-    //   size: core.fontSize,
-    //   lang: core.langShortName,
-    //   child: focusNode.hasFocus?suggest():result()
-    // );
-    // return result();
-    return focusNode.hasFocus?suggest():result();
+  Widget get suggestion {
+    return ViewSuggestion(
+      key: suggestionKey,
+      searchQuery: context.watch<FormNotifier>().keyword
+    );
   }
+
+  Widget get definition {
+    return ViewResult(
+      key: resultKey,
+      searchQuery: context.watch<FormNotifier>().searchQuery
+    );
+    // return Consumer<FormNotifier>(
+    //   builder: (BuildContext context, FormNotifier form, Widget child) => ViewResult(
+    //     key: UniqueKey(),
+    //     searchQuery: form.searchQuery
+    //   )
+    // );
+  }
+
 }
