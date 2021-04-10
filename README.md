@@ -1,5 +1,14 @@
 # dictionary
 
+```shell
+1. flutter channel stable
+2. flutter upgrade
+3. flutter config --enable-web
+4. cd into project directory
+5. flutter create .
+6. flutter run -d chrome
+```
+
 A new Flutter project.
 
 ## Getting Started
