@@ -8,7 +8,11 @@ mixin _Configuration  {
   String buildNumber = '';
   final String appDescription = 'A comprehensive Myanmar online dictionary';
 
-  final Collection collection = Collection(grammar: Grammar.fromJSON());
+  final String _settingName = 'settingPrimary';
+  final String _settingKey = 'setting';
+
+  // final Collection collection = Collection(setting: SettingType(),grammar: Grammar.init());
+  final Collection collection = Collection.init();
 
   // final String appAnalytics = 'UA-18644721-1';
   // final String assetsFolder = 'assets';
@@ -36,15 +40,15 @@ mixin _Configuration  {
   // int get chapterId => collection.setting.chapterId;
   // set chapterId(int id) => collection.setting.chapterId = id;
 
-  double fontSize = 24.0;
+  // double fontSize = 24.0;
   // double get fontSize => collection.setting.fontSize;
   // set fontSize(double id) => collection.setting.fontSize = id;
 
-  String langShortName = 'my';
+  // String langShortName = 'my';
   // String get langShortName => collection.setting.fontSize;
   // set langShortName(double id) => collection.setting.fontSize = id;
 
-  String searchQuery = '';
+  // String searchQuery = '';
   // String get searchQuery => collection.setting.searchQuery??'';
   // set searchQuery(String searchQuery) => collection.setting.searchQuery = searchQuery;
 

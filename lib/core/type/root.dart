@@ -52,10 +52,24 @@ class SettingType {
 
   SettingType merge(SettingType o) {
     return SettingType(
-      version: o.version??version,
-      mode: o.mode??mode,
-      fontSize: o.fontSize??fontSize,
-      searchQuery: o.searchQuery??searchQuery
+      version: o.version??this.version,
+      mode: o.mode??this.mode,
+      fontSize: o.fontSize??this.fontSize,
+      searchQuery: o.searchQuery??this.searchQuery
+    );
+  }
+
+  SettingType copyWith({
+    int version,
+    int mode,
+    double fontSize,
+    String searchQuery,
+  }) {
+    return SettingType(
+      version: version??this.version,
+      mode: mode??this.mode,
+      fontSize: fontSize??this.fontSize,
+      searchQuery: searchQuery??this.searchQuery
     );
   }
 }
@@ -165,12 +179,6 @@ class UsageType {
   }
 }
 
-/*
-word -> { w: wordId, v: string }
-sense -> { i: uId, w: wordId, t: 0, v: string }
-usage -> { i: uId, v: string }
-*/
-
 @HiveType(typeId: 4)
 class SynsetType {
   @HiveField(0)
@@ -239,26 +247,26 @@ class SynmapType {
   }
 }
 
-class SynistType{
-  List<SynsetType> root;
-  List<SynmapType> form;
+// class SynistTypes{
+//   List<SynsetType> root;
+//   List<SynmapType> form;
 
-  SynistType({
-    this.root,
-    this.form
-  });
+//   SynistTypes({
+//     this.root,
+//     this.form
+//   });
 
-  factory SynistType.fromJSON(Map<String, dynamic> o) {
-    return SynistType(
-      root: [],
-      form: []
-    );
-  }
+//   factory SynistTypes.fromJSON(Map<String, dynamic> o) {
+//     return SynistTypes(
+//       root: [],
+//       form: []
+//     );
+//   }
 
-  Map<String, dynamic> toJSON() {
-    return {
-      'root':root.map((e)=>e.toJSON()).toList(),
-      'form':form.map((e)=>e.toJSON()).toList()
-    };
-  }
-}
+//   Map<String, dynamic> toJSON() {
+//     return {
+//       'root':root.map((e)=>e.toJSON()).toList(),
+//       'form':form.map((e)=>e.toJSON()).toList()
+//     };
+//   }
+// }

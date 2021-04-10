@@ -31,31 +31,36 @@ mixin _Mock on _Collection {
   //   );
   // }
 
-  Future<void> _settingPrimary() async {
-    final String _settingName = 'settingPrimary';
-    final String boxKey = 'setting';
-
-    Hive.registerAdapter(SettingAdapter());
-    Box<SettingType> box = await Hive.openBox<SettingType>(_settingName);
+  Future<void> _settingInit() async {
+  // final String _settingName = 'settingPrimary';
+  // final String _settingKey = 'setting';
+    Box<SettingType> box = await Hive.openBox<SettingType>(this._settingName);
 
     SettingType settingDefault = SettingType(version:1);
-    SettingType active = box.get(boxKey,defaultValue: settingDefault);
+    SettingType active = box.get(this._settingKey,defaultValue: settingDefault);
 
     if (box.isEmpty){
       debugPrint('Import $_settingName');
-      box.put(boxKey,settingDefault);
+      box.put(this._settingKey,settingDefault);
     } else if (active.version != settingDefault.version){
-      debugPrint('Upgrade $_settingName');
-      box.put(boxKey,active.merge(settingDefault));
+      debugPrint('Upgrade $_settingName ${settingDefault.toJSON()}');
+      box.put(this._settingKey,active?.merge(settingDefault));
     } else {
       debugPrint('Ok $_settingName');
     }
-    // collection.setting = active;
-    // debugPrint('active ${active.version} ${box.length} ${box.isOpen}');
+    collection.setting = active;
+    // print(collection.setting);
+    // debugPrint('active ${active.searchQuery} ${collection.settingBox.length} ${collection.settingBox.isOpen}');
     // box.clear();
   }
 
-  Future<void> _wordPrimary() async {
+  void _settingUpdate(SettingType data){
+    if (data != null) {
+      Hive.box<SettingType>(this._settingName).put(this._settingKey,data);
+    }
+  }
+
+  Future<void> _wordInit() async {
     final String _wordName = 'wordPrimary';
     // Hive.registerAdapter(WordAdapter());
     Box<WordType> box = await Hive.openBox<WordType>(_wordName);
@@ -77,7 +82,7 @@ mixin _Mock on _Collection {
     // await box.clear();
   }
 
-  Future<void> _sensePrimary() async {
+  Future<void> _senseInit() async {
     final String _senseName = 'sensePrimary';
     // Hive.registerAdapter(SenseAdapter());
     Box<SenseType> box = await Hive.openBox<SenseType>(_senseName);
@@ -99,7 +104,7 @@ mixin _Mock on _Collection {
     // await box.clear();
   }
 
-  Future<void> _usagePrimary() async {
+  Future<void> _usageInit() async {
     final String _usageName = 'usagePrimary';
     // Hive.registerAdapter(UsageAdapter());
     Box<UsageType> box = await Hive.openBox<UsageType>(_usageName);
@@ -121,7 +126,7 @@ mixin _Mock on _Collection {
     // await box.clear();
   }
 
-  Future<void> _synsetPrimary() async {
+  Future<void> _synsetInit() async {
     final String _synsetName = 'synsetPrimary';
     // Hive.registerAdapter(SynsetAdapter());
     Box<SynsetType> box = await Hive.openBox<SynsetType>(_synsetName);
@@ -143,7 +148,7 @@ mixin _Mock on _Collection {
     // await box.clear();
   }
 
-  Future<void> _synmapPrimary() async {
+  Future<void> _synmapInit() async {
     final String _synmapName = 'synmapPrimary';
     // Hive.registerAdapter(SynmapAdapter());
     Box<SynmapType> box = await Hive.openBox<SynmapType>(_synmapName);
@@ -165,132 +170,17 @@ mixin _Mock on _Collection {
     // await box.clear();
   }
 
-  Future<Iterable<WordType>> suggestion(String keyword) async {
-    return collection.wordStartWith(keyword);
+  Future<List<WordType>> suggestion(String word) async {
+    return collection.suggest(word);
   }
 
-  List<ResultModel> definitionResult = [];
-  String definitionKeyword='';
-  final Grammar definitionGrammar = Grammar.fromJSON();
-
-  Future<List<ResultModel>> definition({String keyword}) async {
-
-    if (definitionKeyword == keyword){
-      debugPrint('definition cache');
-      return definitionResult;
-    } else {
-      definitionKeyword = keyword;
-      definitionResult = [];
-      debugPrint('definition');
+  Future<List<ResultModel>> definition(String word) async {
+    if (word.isNotEmpty && collection.setting.searchQuery != word){
+      this._settingUpdate(collection.setting.copyWith(searchQuery: word));
     }
-    if (keyword == null || keyword.isEmpty) {
-      return definitionResult;
-    }
-    SynistType pos = partOfSpeech(keyword: keyword);
-
-    Iterable<WordType> words;
-    words = collection.wordExactMatch(keyword);
-
-    // await Hive.openBox<SenseType>(_senseName);
-    // await Hive.openBox<UsageType>(_usageName);
-
-    if (words.length == 0 && pos.root.length > 0 && collection.stringCompare(pos.root.first.v, keyword) == false){
-      words = collection.wordExactMatch(pos.root.first.v);
-    }
-
-    for (var w1 in words) {
-      ResultModel newWord = ResultModel(word: w1.v, sense:[]);
-      definitionResult.add(newWord);
-
-      var d1 = collection.sense.where((e) => e.w == w1.w);
-      var g1 = d1.map((e) => e.t).toSet();
-      for (var gId in g1) {
-        // Gaset  grammarPos = definitionGrammar.pos.firstWhere((i) => i.id == gId);
-        // SenseModel newSense = SenseModel(pos: grammarPos.name, clue:[]);
-        SenseModel newSense = SenseModel(pos: definitionGrammar.posName(gId), clue:[]);
-        newWord.sense.add(newSense);
-
-        var d2 = d1.where((e) => e.t == gId);
-        for (var d3 in d2) {
-          ClueModel newClue = ClueModel(mean: d3.v, exam:[]);
-          var u1 = collection.usage.where((e) => e.i == d3.i);
-          newSense.clue.add(newClue);
-          for (var u2 in u1) {
-            newClue.exam.addAll(u2.v.split('\r\n'));
-          }
-        }
-        // var abcd = pos.form.where((e) => e.t == gId).map(
-        //   (e) {
-        //     // Gamap grammarForm = definitionGrammar.form.firstWhere((i) => i.id == e.d && i.type == gId);
-        //     Gamap grammarForm = definitionGrammar.form.firstWhere((i) => i.id == e.d && i.type == e.t);
-        //     return '${e.v} (${grammarForm.name})';
-        //   }
-        // ).join('; ');
-        var abcd = pos.form.where((e) => e.t == gId).map(
-          (e) => definitionGrammar.formName(e)
-        ).join('; ');
-        newSense.clue.add(ClueModel(mean: abcd, exam:[]));
-      }
-      // debugPrint(newWord.sense.length);
-    }
-    // debugPrint(definitionResult.map((e)=>e.toJSON()).toList());
-
-    return definitionResult;
+    return collection.search(word);
   }
 
-
-  SynistType partOfSpeech({String keyword}) {
-
-    var grammar = collection.synset;
-    var form = collection.synmap;
-
-    SynistType result = SynistType(root:[],form: []);
-    List<SynsetType> type = form.where(
-      (s) => collection.stringCompare(s.v, keyword) && s.t < 10 && grammar.where((e) => e.w == s.w).length > 0
-    ).map(
-      (o) => grammar.firstWhere((s) => s.w == o.w)
-    ).toSet().toList();
-
-    if (type.length > 0) {
-      // NOTE: loves, loved, loving
-      // debugPrint('backward');
-      result.root = type;
-      var formAssociate = form.where(
-        (m) => m.d > 0 && type.where((e)=>e.w == m.w).length > 0
-      ).toList();
-      if (formAssociate.length > 0) result.form = formAssociate;
-    }
-
-    List<SynsetType> pos = grammar.where(
-      (s) => collection.stringCompare(s.v,keyword)
-    ).toList();
-
-    if (pos.length > 0) {
-      // NOTE: love, hate
-      // debugPrint('forward');
-      var posAssociate = form.where(
-        (m) => m.d > 0 && pos.where((e)=>e.w == m.w).length > 0
-      ).toList();
-      if (result.form.length == 0){
-        result.form = posAssociate;
-      }
-      if (result.root.length == 0){
-        result.root = pos;
-      }
-
-      // print(pos.map((e)=>e.toJSON()).toList());
-      // print(posAssociate.map((e)=>e.toJSON()).toList());
-    }
-
-    // List<SynsetType> ae = (result['root'] as List).map((e) => SynsetType.fromJSON(e)).toList();
-    // List<SynmapType> ab = (result['form'] as List).map((e) => SynmapType.fromJSON(e)).toList();
-    // debugPrint('$ae $ab');
-    // var temp = (result['root'] as List<SynsetType>).map((e) => e.toJSON(e)).toList();
-    // debugPrint(result['root'].map((e)=>e.toJSON()).toList());
-    // debugPrint(result['form'].map((e)=>e.toJSON()).toList());
-    // debugPrint('${result.toJSON()}');
-    return result;
-  }
 
   // Future<Map<String, dynamic>> parseJSON(String res) async => await compute(parseJSONCompute,res);
 }

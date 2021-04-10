@@ -1,22 +1,4 @@
 part of 'root.dart';
-/*
-result = [
-  {
-    word:'',
-    sense:[
-      {
-        pos:'',
-        clue:[
-          {
-            mean:''
-            exam:['','']
-          }
-        ]
-      }
-    ]
-  }
-]
-*/
 
 class ResultModel{
   String word;
@@ -31,7 +13,6 @@ class ResultModel{
     return ResultModel(
       word: o['w'] as String,
       sense: []
-      // bookmark: o['bookmark'].map<CollectionBookmark>((json) => CollectionBookmark.fromJSON(json)).toList(),
     );
   }
 
@@ -42,9 +23,6 @@ class ResultModel{
     };
   }
 }
-
-      // 'setting':this.setting.toJSON(),
-      // 'keyword':this.keyword.map((e)=>e.toJSON()).toList(),
 
 class SenseModel{
   String pos;
@@ -73,8 +51,7 @@ class SenseModel{
 class ClueModel{
   String mean;
   List<String> exam;
-  // final List<CollectionBookmark> sense;
-  //
+
   ClueModel({
     this.mean,
     this.exam
@@ -89,8 +66,8 @@ class ClueModel{
 
   Map<String, dynamic> toJSON() {
     return {
-      'mean':mean,
-      'exam':exam.toList()
+      'mean': mean,
+      'exam': exam.toList()
     };
   }
 }

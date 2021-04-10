@@ -47,32 +47,25 @@ class Core extends _Collection with _Mock {
   static Core get instance => _instance;
 
   Future<void> init() async {
-    // this.collection.grammar.posName(9);
-    // print('init');
-    // this.collection.grammar = Grammar.fromJSON();
-    // print(this.collection.grammar.posName(2));
-    // final appDocumentary = await UtilDocument.directory;
-    // Hive.init(appDocumentary.path);
-    //
-    print(this.collection.test?.firstWhere((element) => element == 'abc'));
 
     await Hive.initFlutter();
-    await _settingPrimary();
+    Hive.registerAdapter(SettingAdapter());
+    await _settingInit();
 
     Hive.registerAdapter(WordAdapter());
-    await _wordPrimary();
+    await _wordInit();
 
     Hive.registerAdapter(SenseAdapter());
-    await _sensePrimary();
+    await _senseInit();
 
     Hive.registerAdapter(UsageAdapter());
-    await _usagePrimary();
+    await _usageInit();
 
     Hive.registerAdapter(SynsetAdapter());
-    await _synsetPrimary();
+    await _synsetInit();
 
     Hive.registerAdapter(SynmapAdapter());
-    await _synmapPrimary();
+    await _synmapInit();
 
     // await definition();
     // await partOfSpeech();
