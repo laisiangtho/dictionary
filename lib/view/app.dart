@@ -1,23 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:lidea/idea/root.dart';
+import 'package:lidea/provider.dart';
 
 import 'package:lidea/scroll.dart';
+
+import 'package:dictionary/notifier.dart';
 import 'package:dictionary/core.dart';
 import 'package:dictionary/widget.dart';
 import 'package:dictionary/icon.dart';
+
 
 import 'package:dictionary/view/search/main.dart' as Home;
 import 'package:dictionary/view/tmp/main.dart' as Read;
 import 'package:dictionary/view/tmp/main.dart' as Note;
 import 'package:dictionary/view/more/main.dart' as Search;
 // import 'package:dictionary/view/more/main.dart' as More;
-// import 'package:lidea/view/demo/myordbok/home/main.dart' as More;
 
 part 'app.launcher.dart';
 
 final String appName = Core.instance.appName;
-// final Core appInstance = Core.instance;
 
 class AppView extends StatefulWidget {
   AppView({Key key}) : super(key: key);
@@ -27,10 +28,8 @@ class AppView extends StatefulWidget {
 
 class _MainState extends State<AppView> with TickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  // final _navigator = GlobalKey<NavigatorState>();
   final pageController = PageController(keepPage: true);
   final _controller = ScrollController();
-  // final focusNode = FocusNode();
   final core = Core();
 
   final GlobalKey<Home.View> home = GlobalKey<Home.View>();
@@ -53,6 +52,7 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     initiator = core.init();
+    // initiator = new Future.delayed(new Duration(seconds: 1));
     if (pageView.length == 0){
       pageButton = [
         ModelPage(icon:CustomIcon.search, name:"Home", description: "Search dictionary", key: home),
@@ -75,9 +75,9 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
 
       ModelPage page = pageButton[index];
       // NOTE: check State isMounted
-      if(page.key.currentState != null){
-        page.key.currentState.setState(() {});
-      }
+      // if(page.key.currentState != null){
+      //   page.key.currentState.setState(() {});
+      // }
       pageController.jumpToPage(index);
 
       core.analyticsScreen(page.name,'${page.name}State');
@@ -187,17 +187,33 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
     //     }
     //   )
     // );
-
-    return new PageView.builder(
-      controller: pageController,
-      // onPageChanged: _pageChanged,
-      allowImplicitScrolling:false,
-      physics:new NeverScrollableScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) => pageView[index],
-      itemCount: pageView.length,
+    return MultiProvider(
+      providers: [
+        Provider(create: (context) => FormData()),
+        ChangeNotifierProxyProvider<FormData, FormNotifier>(
+          create: (context) => FormNotifier(),
+          update: (context, data, form) {
+            if (form == null) throw ArgumentError.notNull('form');
+            form.keyword = data.keyword;
+            // this.textController.text = form.keyword;
+            form.searchQuery = data.searchQuery;
+            return form;
+          },
+        ),
+        ChangeNotifierProvider<NodeNotifier>(
+          create: (context) => NodeNotifier(),
+        ),
+      ],
+      child: new PageView.builder(
+        controller: pageController,
+        // onPageChanged: _pageChanged,
+        allowImplicitScrolling:false,
+        physics:new NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) => pageView[index],
+        itemCount: pageView.length,
+      )
     );
   }
-
 
   // Route<dynamic> _routeGenerate(RouteSettings settings) {
   //   switch (settings.name) {
@@ -235,5 +251,4 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
   // Route<dynamic> _routeUnknown(RouteSettings settings){
   //   return MaterialPageRoute(builder: (context) => Container(color: Colors.white,child: Center(child: Text("Unknown"))));
   // }
-
 }
