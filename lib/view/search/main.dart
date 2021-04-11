@@ -31,8 +31,6 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   final suggestionKey = new UniqueKey();
   final resultKey = new UniqueKey();
 
-
-
   // bool inputEnable = true;
   final core = Core();
 
@@ -58,6 +56,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
         textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);
       }
     });
+
   }
 
   @override

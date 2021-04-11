@@ -1,36 +1,38 @@
 part of 'main.dart';
 
-class ViewResult extends StatelessWidget {
+class ViewResult extends StatefulWidget {
   ViewResult({Key key,this.searchQuery}) : super(key: key);
 
   final String searchQuery;
+
+  @override
+  _ViewResultState createState() => _ViewResultState();
+}
+
+class _ViewResultState extends State<ViewResult> {
   final core = Core();
 
   @override
   Widget build(BuildContext context) {
-    if (this.searchQuery.isEmpty) {
-      return new WidgetContent(key: key,atLeast: 'search\na',enable:' Word ',task: 'or two\nto get ',message:'definition');
+    if (widget.searchQuery.isEmpty) {
+      return new WidgetContent(key: widget.key, atLeast: 'search\na',enable:' Word ',task: 'or two\nto get ',message:'definition');
     }
-    return FutureBuilder(
-      key: key,
-      future: core.definition(searchQuery),
-      builder: (BuildContext context, AsyncSnapshot<List<ResultModel>> snapshot) {
-        if (snapshot.hasError) {
-          return WidgetMessage(message: snapshot.error.toString());
-        }
+    try {
+      if (core.definition(widget.searchQuery).length > 0) {
         return _resultWord(core.collection.definition);
+      } else {
+        return WidgetContent(key: widget.key, atLeast: 'found no contain\nof ',enable:this.widget.searchQuery,task: '\nin ',message:'bibleInfo?.name');
       }
-    );
+    } catch (e) {
+      return WidgetMessage(key: widget.key, message: '???');
+    }
   }
 
-  Widget _resultWord(List<ResultModel> data) {
-    if (data.length == 0) return WidgetContent(atLeast: '...found no contain\nof ',enable:searchQuery,task: '\nin ',message:'??');
+  Widget _resultWord(List<ResultModel> _list) {
     return new SliverList(
-      // key: UniqueKey(),
+      key: widget.key,
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-          // BOOK book = bible.book[bookIndex];
-          ResultModel book = data[index];
-          // book.sense
+          ResultModel data = _list.elementAt(index);
           return new Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,8 +40,8 @@ class ViewResult extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  book.word,
-                  semanticsLabel: book.word,
+                  data.word,
+                  semanticsLabel: data.word,
                   style:TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w400,
@@ -54,9 +56,9 @@ class ViewResult extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 // itemCount: chapters.length,
-                itemCount: book.sense.length,
+                itemCount: data.sense.length,
                 itemBuilder: (context, index){
-                  SenseModel sense = book.sense[index];
+                  SenseModel sense = data.sense[index];
                   return new Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,11 +83,10 @@ class ViewResult extends StatelessWidget {
             ]
           );
         },
-        childCount: data.length
+        childCount: _list.length
       )
     );
   }
-
 
   Widget _clueContainer(List<ClueModel> clue) {
     return ListView.builder(
