@@ -1,3 +1,5 @@
+// import 'package:flutter/material.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
 part 'setting.adapter.dart';
@@ -102,11 +104,11 @@ class WordType {
   }
 
   bool charStartsWith(String word) {
-    return v.startsWith(word);
+    return this.v.startsWith(word);
   }
 
   bool charMatchExact(String word) {
-    return (v.toLowerCase() == word.toLowerCase());
+    return (this.v.toLowerCase() == word.toLowerCase());
   }
 
 }
@@ -246,27 +248,3 @@ class SynmapType {
     };
   }
 }
-
-// class SynistTypes{
-//   List<SynsetType> root;
-//   List<SynmapType> form;
-
-//   SynistTypes({
-//     this.root,
-//     this.form
-//   });
-
-//   factory SynistTypes.fromJSON(Map<String, dynamic> o) {
-//     return SynistTypes(
-//       root: [],
-//       form: []
-//     );
-//   }
-
-//   Map<String, dynamic> toJSON() {
-//     return {
-//       'root':root.map((e)=>e.toJSON()).toList(),
-//       'form':form.map((e)=>e.toJSON()).toList()
-//     };
-//   }
-// }
