@@ -1,14 +1,17 @@
 part of 'root.dart';
 
 class Collection{
+  // NOTE: setting
   SettingType setting;
-  // Box<SettingType> settingBox;
+
+  // NOTE: dictionary
   Grammar grammar;
   Iterable<WordType> word;
   Iterable<SenseType> sense;
   Iterable<UsageType> usage;
   Iterable<SynsetType> synset;
   Iterable<SynmapType> synmap;
+  Iterable<ThesaurusType> thesaurus;
 
   // NOTE: result
   String keyword;
@@ -16,18 +19,19 @@ class Collection{
   List<WordType> suggestion;
   List<ResultModel> definition;
 
+  // NOTE: result helper
   List<SynsetType> wordBase;
   List<SynmapType> wordMap;
 
   Collection({
     this.setting,
-    // this.settingBox,
     this.grammar,
     this.word,
     this.sense,
     this.usage,
     this.synset,
     this.synmap,
+    this.thesaurus,
     this.keyword,
     this.searchQuery,
     this.wordBase,
@@ -39,13 +43,13 @@ class Collection{
   factory Collection.init() {
     return Collection(
       setting: SettingType(),
-      // settingBox: null,
       grammar: Grammar.init(),
       word: [],
       sense: [],
       synset: [],
       usage: [],
       synmap: [],
+      thesaurus: [],
       keyword:'',
       searchQuery:'',
       wordBase: [],
@@ -183,14 +187,3 @@ class Collection{
   void toTest() {
   }
 }
-
-// Iterable<WordType> get wordValues => Hive.box<WordType>(_wordName).values;
-// Iterable<SenseType> get senseValues => Hive.box<SenseType>(_senseName).values;
-// Iterable<UsageType> get usageValues => Hive.box<UsageType>(_usageName).values;
-// Iterable<SynsetType> get synsetValues => Hive.box<SynsetType>(_synsetName).values;
-// Iterable<SynmapType> get synmapValues => Hive.box<SynmapType>(_synmapName).values;
-
-// Iterable<WordType> suggestion(String word) => wordValues.where((e) => e.v.toLowerCase() == word.toLowerCase());
-// Iterable<WordType> suggestion(String word) => wordValues.where((e) => new RegExp(word,caseSensitive: false).hasMatch(e.v));
-// Iterable<WordType> wordStartWith(String word) => wordValues.where((e) => e.charStartsWith(word));
-// Iterable<WordType> wordExactMatch(String word) => wordValues.where((e) => e.charMatchExact(word));

@@ -3,23 +3,27 @@ part of 'root.dart';
 class ResultModel{
   String word;
   List<SenseModel> sense;
+  List<ThesaurusType> thesaurus;
 
   ResultModel({
     this.word,
-    this.sense
+    this.sense,
+    this.thesaurus,
   });
 
   factory ResultModel.fromJSON(Map<String, dynamic> o) {
     return ResultModel(
       word: o['w'] as String,
-      sense: []
+      sense: [],
+      thesaurus: [],
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
       'word':word,
-      'sense':sense.map((e)=>e.toJSON()).toList()
+      'sense':sense.map((e)=>e.toJSON()).toList(),
+      'thesaurus':sense.map((e)=>e.toJSON()).toList()
     };
   }
 }

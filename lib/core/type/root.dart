@@ -8,6 +8,7 @@ part 'sense.adapter.dart';
 part 'usage.adapter.dart';
 part 'synmap.adapter.dart';
 part 'synset.adapter.dart';
+part 'thesaurus.adapter.dart';
 part 'definition.dart';
 part 'grammar.dart';
 part 'collection.dart';
@@ -245,6 +246,34 @@ class SynmapType {
       'v':v,
       'd':d,
       't':t
+    };
+  }
+}
+
+@HiveType(typeId: 6)
+class ThesaurusType {
+  @HiveField(0)
+  String w;
+
+  @HiveField(1)
+  List<String> v;
+
+  ThesaurusType({
+    this.w,
+    this.v
+  });
+
+  factory ThesaurusType.fromJSON(Map<String, dynamic> o) {
+    return ThesaurusType(
+      w: o['w'] as String,
+      v: List.from(o['v'])
+    );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'w':w,
+      'v':v.toList()
     };
   }
 }
