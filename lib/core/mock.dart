@@ -170,11 +170,11 @@ mixin _Mock on _Collection {
     // await box.clear();
   }
 
-  Future<List<WordType>> suggestion(String word) async {
+  List<WordType> suggestion(String word) {
     return collection.suggest(word);
   }
 
-  Future<List<ResultModel>> definition(String word) async {
+  List<ResultModel> definition(String word) {
     if (word.isNotEmpty && collection.setting.searchQuery != word){
       this._settingUpdate(collection.setting.copyWith(searchQuery: word));
     }
