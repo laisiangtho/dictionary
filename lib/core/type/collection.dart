@@ -56,22 +56,23 @@ class Collection{
   }
 
   Iterable<WordType> wordStartWith(String keyword) {
-    return word.where((e) => e.charStartsWith(keyword));
+    return this.word.where((e) => e.charStartsWith(keyword));
   }
 
   Iterable<WordType> wordExactMatch(String keyword) {
-    return word.where((e) => e.charMatchExact(keyword));
+    return this.word.where((e) => e.charMatchExact(keyword));
   }
 
   bool stringCompare(String a, String b) => a.toLowerCase() == b.toLowerCase();
 
-  void partOfSpeech(String word) {
+  void partOfSpeech(String laimal) {
     var grammar = this.synset;
     var form = this.synmap;
+    this.wordBase.clear();
+    this.wordMap.clear();
 
-    // SynistType result = SynistType(root:[],form: []);
     List<SynsetType> type = form.where(
-      (s) => this.stringCompare(s.v, word) && s.t < 10 && grammar.where((e) => e.w == s.w).length > 0
+      (s) => this.stringCompare(s.v, laimal) && s.t < 10 && grammar.where((e) => e.w == s.w).length > 0
     ).map(
       (o) => grammar.firstWhere((s) => s.w == o.w)
     ).toSet().toList();
@@ -88,7 +89,7 @@ class Collection{
     }
 
     List<SynsetType> pos = grammar.where(
-      (s) => this.stringCompare(s.v,word)
+      (s) => this.stringCompare(s.v,laimal)
     ).toList();
 
     if (pos.length > 0) {
@@ -107,43 +108,42 @@ class Collection{
   }
 
   // NOTE: suggestion
-  List<WordType> suggest(String word)  {
-    if (this.keyword == word){
+  List<WordType> suggest(String laimal)  {
+    if (this.keyword == laimal){
       return this.suggestion;
-    } else {
-      this.keyword = word;
-      this.suggestion = [];
     }
+    this.keyword = laimal;
+    this.suggestion = [];
 
-    if (word != null && word.isNotEmpty) {
+    if (laimal != null && laimal.isNotEmpty) {
       this.suggestion = this.wordStartWith(this.keyword).toList();
     }
 
     return this.suggestion;
   }
 
-  // NOTE: definition
-  List<ResultModel> search(String word)  {
-    if (this.searchQuery == word){
+  // NOTE: definition (jazz)
+  List<ResultModel> search(String laimal)  {
+    if (this.searchQuery == laimal){
       return this.definition;
     } else {
-      this.searchQuery = word;
+      this.searchQuery = laimal;
       this.definition = [];
     }
-    if (word == null || word.isEmpty) {
+    if (laimal == null || laimal.isEmpty) {
       return this.definition;
     }
-    // SynistType pos = this.partOfSpeech(this.searchQuery);
+
     this.partOfSpeech(this.searchQuery);
 
-    Iterable<WordType> words;
-    words = this.wordExactMatch(this.searchQuery);
+    Iterable<WordType> ord;
+    ord = this.wordExactMatch(this.searchQuery);
 
-    if (words.length == 0 && this.wordBase.length > 0 && this.stringCompare(this.wordBase.first.v, this.searchQuery) == false){
-      words = this.wordExactMatch(this.wordBase.first.v);
+    if (ord.length == 0 && this.wordBase.length > 0 && this.stringCompare(this.wordBase.first.v, this.searchQuery) == false){
+      ord = this.wordExactMatch(this.wordBase.first.v);
     }
 
-    for (var w1 in words) {
+    for (var w1 in ord) {
       ResultModel newWord = ResultModel(word: w1.v, sense:[]);
       this.definition.add(newWord);
 
