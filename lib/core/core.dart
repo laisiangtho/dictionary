@@ -67,6 +67,9 @@ class Core extends _Collection with _Mock {
     Hive.registerAdapter(SynmapAdapter());
     await _synmapInit();
 
+    Hive.registerAdapter(ThesaurusAdapter());
+    await _thesaurusInit();
+
     // await definition();
     // await partOfSpeech();
   }
