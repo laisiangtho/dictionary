@@ -17,17 +17,17 @@ class Bar extends StatelessWidget {
       key: key,
       pinned: true,
       floating:true,
-      delegate: new ScrollHeaderDelegate(_barMain,minHeight: 40, maxHeight: 50)
+      delegate: new ScrollHeaderDelegate(bar,minHeight: 40, maxHeight: 50)
     );
   }
 
-  Widget _barDecoration({BuildContext context, double stretch, Widget child}){
+  Widget decoration({BuildContext context, double stretch, Widget child}){
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: new BorderRadius.vertical(
-          bottom: Radius.elliptical(3, 2)
-        ),
+        // borderRadius: new BorderRadius.vertical(
+        //   bottom: Radius.elliptical(3, 2)
+        // ),
         boxShadow: [
           BoxShadow(
             blurRadius: 0.0,
@@ -53,8 +53,8 @@ class Bar extends StatelessWidget {
     );
   }
 
-  Widget _barMain(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
-    return _barDecoration(
+  Widget bar(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
+    return decoration(
       context:context,
       stretch: overlaps?1.0:stretch,
       child: Row(
@@ -140,7 +140,6 @@ class Bar extends StatelessWidget {
                 // onPressed: ()=> this.textController.clear,
                 onPressed: () {
                   this.textController.clear();
-                  // context.read<FormNotifier>().keyword = '';
                 },
                 // color: Colors.orange,
                 padding: EdgeInsets.zero,
