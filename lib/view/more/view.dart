@@ -66,38 +66,46 @@ class View extends _State with _Bar {
                 return ElevatedButton(
                   child: Text("Dark"),
                   onPressed: () {
-                    // final abc = IdeaTheme.of(context).themeMode ==ThemeMode.dark?ThemeMode.light:ThemeMode.dark;
-                    // IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: abc));
                     IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.dark));
                   }
                 );
               }),
-              Builder( builder: (context) {
-                return ElevatedButton(
-                  child: Text("Light"),
-                  onPressed: () {
-                    IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.light));
-                  }
-                );
-              }),
-              Builder( builder: (context) {
-                return ElevatedButton(
-                  child: Text("System"),
-                  onPressed: () {
-                    IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.system));
-                  }
-                );
-              }),
-              Builder( builder: (context) {
-                return ElevatedButton(
-                  child: Text("Change provider"),
-                  onPressed: (){
-                    var abc = Provider.of<FormNotifier>(context,listen: false);
-                    abc.searchQuery = 'from more';
-                    abc.keyword = 'from more';
-                  },
-                );
-              }),
+              ElevatedButton(
+                child: Text("Light"),
+                onPressed: () {
+                  IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.light));
+                }
+              ),
+              ElevatedButton(
+                child: Text("System"),
+                onPressed: () {
+                  IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.system));
+                }
+              ),
+              ElevatedButton(
+                child: Text("Change provider"),
+                onPressed: (){
+                  var abc = Provider.of<FormNotifier>(context,listen: false);
+                  abc.searchQuery = 'from more';
+                  abc.keyword = 'from more';
+                },
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.all<double>(0)
+                ),
+              ),
+              TextButton(onPressed: ()=>null, child: Text('TextButton')),
+              TextButton.icon(
+                onPressed: ()=>null, icon: Icon(CupertinoIcons.info), label: Text('TextButton.icon'),
+              ),
+              IconButton(icon: Icon(CupertinoIcons.info), onPressed: ()=>null),
+              InkWell(
+                child: Text('InkWell'),
+                onTap: ()=>null,
+              ),
+              OutlinedButton(onPressed: ()=>null, child: Text('TextButton')),
+              OutlinedButton.icon(onPressed: ()=>null, icon: Icon(CupertinoIcons.info), label: Text('TextButton.icon')),
+              CupertinoButton(child: Text('CupertinoButton'), onPressed: ()=>null),
+
 
 
             ]
@@ -153,7 +161,7 @@ class View extends _State with _Bar {
               ),
               IconButton(
                 icon: AnimatedIcon(
-                  icon: AnimatedIcons.list_view,
+                  icon: AnimatedIcons.ellipsis_search,
                   progress: animationController,
                   semanticLabel: 'Show menu',
                 ),
