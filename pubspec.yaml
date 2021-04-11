@@ -44,6 +44,7 @@ flutter:
     - assets/usage-mock.v1.json
     - assets/synmap-mock.v1.json
     - assets/synset-mock.v1.json
+    - assets/thesaurus-mock.v1.json
 
   fonts:
     - family: Lato
