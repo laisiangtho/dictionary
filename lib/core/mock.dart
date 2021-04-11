@@ -61,17 +61,17 @@ mixin _Mock on _Collection {
   }
 
   Future<void> _wordInit() async {
-    final String _wordName = 'wordPrimary';
+    final String _boxName = 'word';
     // Hive.registerAdapter(WordAdapter());
-    Box<WordType> box = await Hive.openBox<WordType>(_wordName);
+    Box<WordType> box = await Hive.openBox<WordType>(_boxName);
     if (box.isEmpty){
-      debugPrint('Import $_wordName');
+      debugPrint('Import $_boxName');
       Iterable<WordType> parsed = await UtilDocument.loadBundleAsString('assets/en-mock.v1.json').then(
         (e) => UtilDocument.decodeJSON(e).map<WordType>((o) => WordType.fromJSON(o)).toList()
       );
       await box.addAll(parsed);
     } else {
-      debugPrint('Ok $_wordName');
+      debugPrint('Ok $_boxName');
     }
     collection.word = box.values;
 
@@ -83,17 +83,17 @@ mixin _Mock on _Collection {
   }
 
   Future<void> _senseInit() async {
-    final String _senseName = 'sensePrimary';
+    final String _boxName = 'sense';
     // Hive.registerAdapter(SenseAdapter());
-    Box<SenseType> box = await Hive.openBox<SenseType>(_senseName);
+    Box<SenseType> box = await Hive.openBox<SenseType>(_boxName);
     if (box.isEmpty){
-      debugPrint('Import $_senseName');
+      debugPrint('Import $_boxName');
       Iterable<SenseType> parsed = await UtilDocument.loadBundleAsString('assets/sense-mock.v1.json').then(
         (e) => UtilDocument.decodeJSON(e).map<SenseType>((o) => SenseType.fromJSON(o)).toList()
       );
       await box.addAll(parsed);
     } else {
-      debugPrint('Ok $_senseName');
+      debugPrint('Ok $_boxName');
     }
     collection.sense = box.values;
 
@@ -105,17 +105,17 @@ mixin _Mock on _Collection {
   }
 
   Future<void> _usageInit() async {
-    final String _usageName = 'usagePrimary';
+    final String _boxName = 'usage';
     // Hive.registerAdapter(UsageAdapter());
-    Box<UsageType> box = await Hive.openBox<UsageType>(_usageName);
+    Box<UsageType> box = await Hive.openBox<UsageType>(_boxName);
     if (box.isEmpty){
-      debugPrint('Import $_usageName');
+      debugPrint('Import $_boxName');
       Iterable<UsageType> parsed = await UtilDocument.loadBundleAsString('assets/usage-mock.v1.json').then(
         (e) => UtilDocument.decodeJSON(e).map<UsageType>((o) => UsageType.fromJSON(o)).toList()
       );
       await box.addAll(parsed);
     } else {
-      debugPrint('Ok $_usageName');
+      debugPrint('Ok $_boxName');
     }
     collection.usage = box.values;
 
@@ -127,17 +127,17 @@ mixin _Mock on _Collection {
   }
 
   Future<void> _synsetInit() async {
-    final String _synsetName = 'synsetPrimary';
+    final String _boxName = 'synset';
     // Hive.registerAdapter(SynsetAdapter());
-    Box<SynsetType> box = await Hive.openBox<SynsetType>(_synsetName);
+    Box<SynsetType> box = await Hive.openBox<SynsetType>(_boxName);
     if (box.isEmpty){
-      debugPrint('Import $_synsetName');
+      debugPrint('Import $_boxName');
       Iterable<SynsetType> parsed = await UtilDocument.loadBundleAsString('assets/synset-mock.v1.json').then(
         (e) => UtilDocument.decodeJSON(e).map<SynsetType>((o) => SynsetType.fromJSON(o)).toList()
       );
       await box.addAll(parsed);
     } else {
-      debugPrint('Ok $_synsetName');
+      debugPrint('Ok $_boxName');
     }
     collection.synset = box.values;
 
@@ -149,22 +149,43 @@ mixin _Mock on _Collection {
   }
 
   Future<void> _synmapInit() async {
-    final String _synmapName = 'synmapPrimary';
+    final String _boxName = 'synmap';
     // Hive.registerAdapter(SynmapAdapter());
-    Box<SynmapType> box = await Hive.openBox<SynmapType>(_synmapName);
+    Box<SynmapType> box = await Hive.openBox<SynmapType>(_boxName);
     if (box.isEmpty){
-      debugPrint('Import $_synmapName');
+      debugPrint('Import $_boxName');
       Iterable<SynmapType> parsed = await UtilDocument.loadBundleAsString('assets/synmap-mock.v1.json').then(
         (e) => UtilDocument.decodeJSON(e).map<SynmapType>((o) => SynmapType.fromJSON(o)).toList()
       );
       await box.addAll(parsed);
     } else {
-      debugPrint('Ok $_synmapName');
+      debugPrint('Ok $_boxName');
     }
     collection.synmap = box.values;
 
     // SynmapType selected = box.get(2);
     // SynmapType selected = box.values.firstWhere((e)=>e.v != null && e.v.toLowerCase() == 'hate');
+    // debugPrint('selected: ${selected.v} ${selected.toJSON()}');
+    // debugPrint('total: ${box.length} ${box.keys}');
+    // await box.clear();
+  }
+
+  Future<void> _thesaurusInit() async {
+    final String _boxName = 'thesaurus';
+    // Hive.registerAdapter(ThesaurusAdapter());
+    Box<ThesaurusType> box = await Hive.openBox<ThesaurusType>(_boxName);
+    if (box.isEmpty){
+      debugPrint('Import $_boxName');
+      Iterable<ThesaurusType> parsed = await UtilDocument.loadBundleAsString('assets/thesaurus-mock.v1.json').then(
+        (e) => UtilDocument.decodeJSON(e).map<ThesaurusType>((o) => ThesaurusType.fromJSON(o)).toList()
+      );
+      await box.addAll(parsed);
+    } else {
+      debugPrint('Ok $_boxName');
+    }
+    // collection.thesaurus = box.values;
+
+    // ThesaurusType selected = box.values.firstWhere((e)=>e.w != null && e.w.toLowerCase() == 'hate');
     // debugPrint('selected: ${selected.v} ${selected.toJSON()}');
     // debugPrint('total: ${box.length} ${box.keys}');
     // await box.clear();
@@ -181,11 +202,4 @@ mixin _Mock on _Collection {
     return collection.search(word);
   }
 
-
-  // Future<Map<String, dynamic>> parseJSON(String res) async => await compute(parseJSONCompute,res);
 }
-
-
-Map<String, dynamic> parseJSONCompute(String response) => UtilDocument.decodeJSON(response);
-// Map<String, dynamic> parseJSONCompute(String response) => UtilDocument.decodeJSON(response);
-// Future<Collection> _parseCollection(dynamic res) async => collection = await compute(parseCollectionCompute,res);
