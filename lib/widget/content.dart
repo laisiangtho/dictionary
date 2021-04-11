@@ -28,6 +28,7 @@ class WidgetContent extends StatelessWidget {
   // search\na Word or two in verses
   Widget build(BuildContext context) {
     return SliverFillRemaining(
+      key: key,
       fillOverscroll: false,
       hasScrollBody: false,
       child: Center(

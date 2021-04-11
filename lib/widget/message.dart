@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 class WidgetMsg extends StatelessWidget {
   final String message;
-  WidgetMsg({this.message:'?'});
+  WidgetMsg({Key key, this.message:'?'}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
+      key: key,
       child: Container(
         margin: new EdgeInsets.symmetric(horizontal:60),
         child: Column(
@@ -34,11 +35,13 @@ class WidgetMsg extends StatelessWidget {
 
 class WidgetMessage extends StatelessWidget {
   final String message;
-  WidgetMessage({this.message:'?'});
+  WidgetMessage({Key key, this.message:'?'}): super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
     return new SliverFillRemaining(
+      key: key,
       hasScrollBody: false,
       fillOverscroll: false,
       child: WidgetMsg(message: message,)
