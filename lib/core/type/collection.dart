@@ -1,4 +1,4 @@
-part of 'root.dart';
+part of "root.dart";
 
 class Collection{
   // NOTE: setting
@@ -50,8 +50,8 @@ class Collection{
       usage: [],
       synmap: [],
       thesaurus: [],
-      keyword:'',
-      searchQuery:'',
+      keyword:"",
+      searchQuery:"",
       wordBase: [],
       wordMap: [],
       suggestion: [],
@@ -83,7 +83,7 @@ class Collection{
 
     if (type.length > 0) {
       // NOTE: loves, loved, loving
-      // debugPrint('backward');
+      // debugPrint("backward");
       this.wordBase = type;
       // result.root = type;
       var formAssociate = form.where(
@@ -98,7 +98,7 @@ class Collection{
 
     if (pos.length > 0) {
       // NOTE: love, hate
-      // debugPrint('forward');
+      // debugPrint("forward");
       var posAssociate = form.where(
         (m) => m.d > 0 && pos.where((e)=>e.w == m.w).length > 0
       ).toList();
@@ -126,7 +126,7 @@ class Collection{
     return this.suggestion;
   }
 
-  // NOTE: definition (jazz)
+  // NOTE: definition [jazz, god]
   List<ResultModel> search(String laimal)  {
     if (this.searchQuery == laimal){
       return this.definition;
@@ -148,7 +148,7 @@ class Collection{
     }
 
     for (var w1 in ord) {
-      ResultModel newWord = ResultModel(word: w1.v, sense:[]);
+      ResultModel newWord = ResultModel(word: w1.v, sense:[], thesaurus:[]);
       this.definition.add(newWord);
 
       var d1 = this.sense.where((e) => e.w == w1.w);
@@ -165,21 +165,31 @@ class Collection{
           var u1 = this.usage.where((e) => e.i == d3.i);
           newSense.clue.add(newClue);
           for (var u2 in u1) {
-            newClue.exam.addAll(u2.v.split('\r\n'));
+            newClue.exam.addAll(u2.v.split("\r\n"));
           }
         }
         // var abcd = this.wordMap.where((e) => e.t == gId).map(
         //   (e) {
         //     // Gamap grammarForm = this.grammar.form.firstWhere((i) => i.id == e.d && i.type == gId);
         //     Gamap grammarForm = this.grammar.form.firstWhere((i) => i.id == e.d && i.type == e.t);
-        //     return '${e.v} (${grammarForm.name})';
+        //     return "${e.v} (${grammarForm.name})";
         //   }
-        // ).join('; ');
-        var abcd = this.wordMap.where((e) => e.t == gId).map(
+        // ).join("; ");
+        var gra = this.wordMap.where((e) => e.t == gId).map(
           (e) => this.grammar.formName(e)
-        ).join('; ');
-        newSense.clue.add(ClueModel(mean: abcd, exam:[]));
+        ).join("; ");
+        if (gra.isNotEmpty) {
+          newSense.clue.add(ClueModel(mean: gra, exam:[]));
+        }
       }
+      // Iterable<ThesaurusType> thes = this.thesaurus.firstWhere((e) => this.stringCompare(e.w, this.searchQuery));
+      // ThesaurusType thes = this.thesaurus.firstWhere((e) => this.stringCompare(e.w, this.searchQuery));
+      ThesaurusType thes = this.thesaurus.firstWhere((e) => e.w == w1.v, orElse: () => null);
+      // print(thes.toJSON());
+      if (thes != null){
+        newWord.thesaurus.addAll(thes.v);
+      }
+
     }
     return this.definition;
   }
