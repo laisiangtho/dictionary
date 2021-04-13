@@ -57,6 +57,10 @@ flutter:
     - family: MyOrdbok
       fonts:
         - asset: assets/fonts/MyOrdbok.ttf
-    - family: Mm3Web
+    # - family: Mm3Web
+    #   fonts:
+    #     - asset: assets/fonts/Mm3Web.ttf
+    - family: Padauk
       fonts:
-        - asset: assets/fonts/Mm3Web.ttf
+        - asset: assets/fonts/Padauk-Bold.ttf
+        - asset: assets/fonts/Padauk-Regular.ttf
