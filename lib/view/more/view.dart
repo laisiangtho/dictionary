@@ -103,7 +103,7 @@ class View extends _State with _Bar {
                 onTap: ()=>null,
               ),
               OutlinedButton(onPressed: ()=>null, child: Text('TextButton')),
-              OutlinedButton.icon(onPressed: ()=>null, icon: Icon(CupertinoIcons.info), label: Text('TextButton.icon')),
+              OutlinedButton.icon(onPressed: ()=>null, icon: Icon(Icons.info), label: Text('TextButton.icon')),
               CupertinoButton(child: Text('CupertinoButton'), onPressed: ()=>null),
 
 

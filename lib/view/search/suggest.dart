@@ -26,12 +26,12 @@ class _ViewSuggestionState extends State<ViewSuggestion> {
     }
   }
 
-  Widget _suggestionKeyword(List<WordType> _l) {
+  Widget _suggestionKeyword(List<WordType> _r) {
     return new SliverList(
       key: widget.key,
       delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int i) => SuggestionItem(searchQuery: widget.searchQuery, data: _l.elementAt(i), index: i),
-        childCount: _l.length
+        (BuildContext context, int i) => SuggestionItem(searchQuery: widget.searchQuery, index: i, data: _r.elementAt(i)),
+        childCount: _r.length
       )
     );
   }
@@ -121,7 +121,7 @@ class SuggestionItem extends StatelessWidget {
 
   Widget container({BuildContext context}){
     return CupertinoButton(
-      padding: EdgeInsets.symmetric(horizontal:13,vertical:7),
+      padding: EdgeInsets.symmetric(horizontal:13,vertical:10),
       onPressed: () {
         var abc = Provider.of<FormNotifier>(context,listen: false);
         abc.searchQuery = data.v;
