@@ -1,9 +1,9 @@
-part of 'root.dart';
+part of "root.dart";
 
 class ResultModel{
   String word;
   List<SenseModel> sense;
-  List<ThesaurusType> thesaurus;
+  List<String> thesaurus;
 
   ResultModel({
     this.word,
@@ -13,7 +13,7 @@ class ResultModel{
 
   factory ResultModel.fromJSON(Map<String, dynamic> o) {
     return ResultModel(
-      word: o['w'] as String,
+      word: o["w"] as String,
       sense: [],
       thesaurus: [],
     );
@@ -21,9 +21,9 @@ class ResultModel{
 
   Map<String, dynamic> toJSON() {
     return {
-      'word':word,
-      'sense':sense.map((e)=>e.toJSON()).toList(),
-      'thesaurus':sense.map((e)=>e.toJSON()).toList()
+      "word":word,
+      "sense":sense.map((e)=>e.toJSON()).toList(),
+      "thesaurus":thesaurus.toList()
     };
   }
 }
@@ -39,15 +39,15 @@ class SenseModel{
 
   factory SenseModel.fromJSON(Map<String, dynamic> o) {
     return SenseModel(
-      pos: o['w'] as String,
+      pos: o["w"] as String,
       clue: []
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'pos':pos,
-      'clue':clue.map((e)=>e.toJSON()).toList()
+      "pos":pos,
+      "clue":clue.map((e)=>e.toJSON()).toList()
     };
   }
 }
@@ -63,15 +63,15 @@ class ClueModel{
 
   factory ClueModel.fromJSON(Map<String, dynamic> o) {
     return ClueModel(
-      mean: o['w'] as String,
+      mean: o["w"] as String,
       exam: []
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'mean': mean,
-      'exam': exam.toList()
+      "mean": mean,
+      "exam": exam.toList()
     };
   }
 }
