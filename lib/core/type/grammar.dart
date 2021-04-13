@@ -1,4 +1,4 @@
-part of 'root.dart';
+part of "root.dart";
 
 class Grammar {
   final List<Gaset> pos;
@@ -19,7 +19,7 @@ class Grammar {
         { "id": 8, "name": "Abbreviation", "shortname": "abb" },
         { "id": 9, "name": "Prefix", "shortname": null },
         { "id": 10, "name": "Combining form", "shortname": null },
-        { "id": 11, "name": "Phrase", "shortname": 'phra' },
+        { "id": 11, "name": "Phrase", "shortname": "phra" },
         { "id": 12, "name": "Contraction", "shortname": null },
         { "id": 13, "name": "Punctuation", "shortname": "punc" },
         { "id": 14, "name": "Particle", "shortname": "part" },
@@ -46,8 +46,8 @@ class Grammar {
 
   Map<String, dynamic> toJSON() {
     return {
-      'pos': pos.map((e)=>e.toJSON()).toList(),
-      'form': form.map((e)=>e.toJSON()).toList()
+      "pos": pos.map((e)=>e.toJSON()).toList(),
+      "form": form.map((e)=>e.toJSON()).toList()
     };
   }
 
@@ -57,7 +57,7 @@ class Grammar {
 
   String formName(SynmapType e) {
     Gamap grammarForm = this.form.firstWhere((i) => i.id == e.d && i.type == e.t);
-    return '${e.v} (${grammarForm.name})';
+    return "[list:${e.v}] (${grammarForm.name})";
   }
 
   // Gaset  grammarPos = definitionGrammar.pos.firstWhere((i) => i.id == gId);
@@ -72,17 +72,17 @@ class Gaset {
 
   factory Gaset.fromJSON(Map<String, dynamic> o) {
     return Gaset(
-      id: o['id'],
-      name: o['name'],
-      shortname: o['shortname']
+      id: o["id"],
+      name: o["name"],
+      shortname: o["shortname"]
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'id': id,
-      'name': name,
-      'shortname': shortname
+      "id": id,
+      "name": name,
+      "shortname": shortname
     };
   }
 }
@@ -95,17 +95,17 @@ class Gamap {
 
   factory Gamap.fromJSON(Map<String, dynamic> o) {
     return Gamap(
-      id: o['id'] as int,
-      type: o['type'] as int,
-      name: o['name']
+      id: o["id"] as int,
+      type: o["type"] as int,
+      name: o["name"]
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'id': id,
-      'type': type,
-      'name': name
+      "id": id,
+      "type": type,
+      "name": name
     };
   }
 }
