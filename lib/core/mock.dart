@@ -183,7 +183,7 @@ mixin _Mock on _Collection {
     } else {
       debugPrint('Ok $_boxName');
     }
-    // collection.thesaurus = box.values;
+    collection.thesaurus = box.values;
 
     // ThesaurusType selected = box.values.firstWhere((e)=>e.w != null && e.w.toLowerCase() == 'hate');
     // debugPrint('selected: ${selected.v} ${selected.toJSON()}');
@@ -201,5 +201,4 @@ mixin _Mock on _Collection {
     }
     return collection.search(word);
   }
-
 }
