@@ -1,17 +1,18 @@
-// import 'package:flutter/material.dart';
+// import "package:flutter/material.dart";
+// import "package:flutter/cupertino.dart";
 // import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
+import "package:hive/hive.dart";
 
-part 'setting.adapter.dart';
-part 'word.adapter.dart';
-part 'sense.adapter.dart';
-part 'usage.adapter.dart';
-part 'synmap.adapter.dart';
-part 'synset.adapter.dart';
-part 'thesaurus.adapter.dart';
-part 'definition.dart';
-part 'grammar.dart';
-part 'collection.dart';
+part "setting.adapter.dart";
+part "word.adapter.dart";
+part "sense.adapter.dart";
+part "usage.adapter.dart";
+part "synmap.adapter.dart";
+part "synset.adapter.dart";
+part "thesaurus.adapter.dart";
+part "definition.dart";
+part "grammar.dart";
+part "collection.dart";
 
 @HiveType(typeId: 0)
 class SettingType {
@@ -32,24 +33,24 @@ class SettingType {
     this.version:0,
     this.mode:0,
     this.fontSize:24.0,
-    this.searchQuery:''
+    this.searchQuery:""
   });
 
   factory SettingType.fromJSON(Map<String, dynamic> o) {
     return SettingType(
-      version: o['version'] as int,
-      mode: o['mode'] as int,
-      fontSize: o['fontSize'] as double,
-      searchQuery: o['searchQuery'] as String
+      version: o["version"] as int,
+      mode: o["mode"] as int,
+      fontSize: o["fontSize"] as double,
+      searchQuery: o["searchQuery"] as String
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'version':version,
-      'mode':mode,
-      'fontSize':fontSize,
-      'searchQuery':searchQuery
+      "version":version,
+      "mode":mode,
+      "fontSize":fontSize,
+      "searchQuery":searchQuery
     };
   }
 
@@ -92,15 +93,15 @@ class WordType {
 
   factory WordType.fromJSON(Map<String, dynamic> o) {
     return WordType(
-      w: o['w'] as int,
-      v: o['v'] as String
+      w: o["w"] as int,
+      v: o["v"] as String
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'w':w,
-      'v':v
+      "w":w,
+      "v":v
     };
   }
 
@@ -137,19 +138,19 @@ class SenseType {
 
   factory SenseType.fromJSON(Map<String, dynamic> o) {
     return SenseType(
-      i: o['i'] as int,
-      w: o['w'] as int,
-      t: o['t'] as int,
-      v: o['v'] as String
+      i: o["i"] as int,
+      w: o["w"] as int,
+      t: o["t"] as int,
+      v: o["v"] as String
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'i':i,
-      'w':w,
-      't':t,
-      'v':v
+      "i":i,
+      "w":w,
+      "t":t,
+      "v":v
     };
   }
 }
@@ -169,15 +170,15 @@ class UsageType {
 
   factory UsageType.fromJSON(Map<String, dynamic> o) {
     return UsageType(
-      i: o['i'] as int,
-      v: o['v'] as String
+      i: o["i"] as int,
+      v: o["v"] as String
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'i':i,
-      'v':v
+      "i":i,
+      "v":v
     };
   }
 }
@@ -197,15 +198,15 @@ class SynsetType {
 
   factory SynsetType.fromJSON(Map<String, dynamic> o) {
     return SynsetType(
-      w: o['w'] as int,
-      v: o['v'] as String
+      w: o["w"] as int,
+      v: o["v"] as String
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'w':w,
-      'v':v
+      "w":w,
+      "v":v
     };
   }
 }
@@ -233,19 +234,19 @@ class SynmapType {
 
   factory SynmapType.fromJSON(Map<String, dynamic> o) {
     return SynmapType(
-      w: o['w'] as int,
-      v: o['v'] as String,
-      d: o['d'] as int,
-      t: o['t'] as int
+      w: o["w"] as int,
+      v: o["v"] as String,
+      d: o["d"] as int,
+      t: o["t"] as int
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'w':w,
-      'v':v,
-      'd':d,
-      't':t
+      "w":w,
+      "v":v,
+      "d":d,
+      "t":t
     };
   }
 }
@@ -265,15 +266,15 @@ class ThesaurusType {
 
   factory ThesaurusType.fromJSON(Map<String, dynamic> o) {
     return ThesaurusType(
-      w: o['w'] as String,
-      v: List.from(o['v'])
+      w: o["w"] as String,
+      v: List.from(o["v"])
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'w':w,
-      'v':v.toList()
+      "w":w,
+      "v":v.toList()
     };
   }
 }
