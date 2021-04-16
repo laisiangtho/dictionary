@@ -1,9 +1,10 @@
 part of 'main.dart';
 
 class ViewResult extends StatefulWidget {
-  ViewResult({Key key,this.searchQuery}) : super(key: key);
+  ViewResult({Key key,this.query, this.search}) : super(key: key);
 
-  final String searchQuery;
+  final String query;
+  final void Function(BuildContext context, String word) search;
 
   @override
   _ViewResultState createState() => _ViewResultState();
@@ -14,17 +15,18 @@ class _ViewResultState extends State<ViewResult> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.searchQuery.isEmpty) {
+    if (widget.query.isEmpty) {
       return new WidgetContent(key: widget.key, atLeast: 'search\na',enable:' Word ',task: 'or two\nto get ',message:'definition');
     }
+
     try {
-      if (core.definition(widget.searchQuery).length > 0) {
+      if (core.definition(widget.query).length > 0) {
         return result(core.collection.definition);
       } else {
-        return WidgetContent(key: widget.key, atLeast: 'found no contain\nof ',enable:this.widget.searchQuery,task: '\nin ',message:'bibleInfo?.name');
+        return WidgetContent(key: widget.key, atLeast: 'found no contain\nof ',enable:widget.query,task: '\nin ',message:'bibleInfo?.name');
       }
     } catch (e) {
-      return WidgetMessage(key: widget.key, message: '???');
+      return WidgetMessage(key: widget.key, message: e.toString());
     }
   }
 
@@ -32,7 +34,7 @@ class _ViewResultState extends State<ViewResult> {
     return new SliverList(
       key: widget.key,
       delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int i) => _resultContainer(searchQuery: widget.searchQuery, index: i, data: _r.elementAt(i)),
+        (BuildContext context, int i) => _resultContainer(searchQuery: widget.query, index: i, data: _r.elementAt(i)),
         childCount: _r.length
       )
     );
@@ -62,19 +64,24 @@ class _ViewResultState extends State<ViewResult> {
 
   Widget _wordContainer(String word) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 17),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: Container(
-              child: Icon(
-                CupertinoIcons.hand_thumbsup_fill,
-                color: Theme.of(context).backgroundColor,
-              ),
-            ),
+            child: Padding(
+              padding: EdgeInsets.zero,
+              child: CupertinoButton(
+                padding: EdgeInsets.zero,
+                minSize: 27,
+                child: Icon(
+                  CupertinoIcons.hand_thumbsup_fill,
+                ),
+                onPressed: null
+              )
+            )
           ),
           Expanded(
             flex: 5,
@@ -98,14 +105,9 @@ class _ViewResultState extends State<ViewResult> {
   Widget _senseContainer(SenseModel sense){
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-      // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        // borderRadius: new BorderRadius.vertical(
-        //   top: Radius.elliptical(7, 7),
-        //   bottom: Radius.elliptical(7, 7),
-        // ),
         borderRadius: BorderRadius.all(Radius.circular(7)),
         boxShadow: [
           BoxShadow(
@@ -129,7 +131,6 @@ class _ViewResultState extends State<ViewResult> {
 
   Widget _posContainer(String pOS){
     return Container(
-      // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
       padding: EdgeInsets.only(top:10, bottom:10, left:25, right:35),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -141,7 +142,7 @@ class _ViewResultState extends State<ViewResult> {
             blurRadius: 0.0,
             color: Theme.of(context).backgroundColor,
             spreadRadius: 0.7,
-            offset: Offset(0.5, .1),
+            offset: Offset(0.2, .2),
           )
         ]
       ),
@@ -150,11 +151,8 @@ class _ViewResultState extends State<ViewResult> {
         style:TextStyle(
           fontStyle: FontStyle.italic,
           fontWeight: FontWeight.w300,
-          // fontSize: 10,
-          // color: Theme.of(context).scaffoldBackgroundColor,
-          // fontWeight: FontWeight.w400,
           shadows: <Shadow>[
-            Shadow(offset: Offset(0.2, 0.2),blurRadius: 0.4,color: Colors.black)
+            Shadow(offset: Offset(0.2, 0.2),blurRadius: 0.4,color: Theme.of(context).scaffoldBackgroundColor)
           ]
         )
       ),
@@ -184,22 +182,27 @@ class _ViewResultState extends State<ViewResult> {
   Widget _clueMeaning(String mean) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(
           flex: 1,
-          child: Icon(
-            CupertinoIcons.circle,
-            size: 11,
-            color: Theme.of(context).primaryColorDark,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical:15),
+            child: Icon(
+              CupertinoIcons.circle,
+              size: 11,
+              color: Theme.of(context).primaryColorDark,
+            ),
           ),
         ),
         Expanded(
           flex: 10,
           child: MakeUp(
             str: mean,
+            search: widget.search,
             style: TextStyle(
-              height: 1.8
+              fontSize: 19,
+              height: 1.7
             )
           )
         )
@@ -227,21 +230,25 @@ class _ViewResultState extends State<ViewResult> {
         itemBuilder: (context, index){
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: Icon(
-                  Icons.circle,
-                  size: 7,
-                  color: Theme.of(context).backgroundColor,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical:10),
+                  child: Icon(
+                    Icons.circle,
+                    size: 7,
+                    color: Theme.of(context).backgroundColor,
+                  ),
                 )
               ),
               Expanded(
-                flex: 7,
+                flex: 8,
                 // child: Text(exam[index]),
                 child: MakeUp(
                   str:exam[index],
+                  search: widget.search,
                   style:TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w300,
@@ -271,12 +278,7 @@ class _ViewResultState extends State<ViewResult> {
               borderRadius: BorderRadius.all(Radius.circular(100.0)),
               padding: EdgeInsets.symmetric(vertical:7, horizontal:15),
               minSize:30,
-              color: Theme.of(context).primaryColor,
-              onPressed: (){
-                var abc = Provider.of<FormNotifier>(context,listen: false);
-                abc.searchQuery = thes[index];
-                abc.keyword = thes[index];
-              }
+              onPressed: () => widget.search(context,thes[index])
             ),
           )
         )
@@ -286,9 +288,10 @@ class _ViewResultState extends State<ViewResult> {
 }
 
 class MakeUp extends StatelessWidget {
-  MakeUp({Key key, this.str, this.style}): super(key: key);
+  MakeUp({Key key, this.str, this.style, this.search}): super(key: key);
   final String str;
   final TextStyle style;
+  final void Function(BuildContext context, String word) search;
 
   @override
   Widget build(BuildContext context) {
@@ -319,7 +322,7 @@ class MakeUp extends StatelessWidget {
             span.add(
               TextSpan(
                 text: '',
-                children: link(href)
+                children: link(context, href)
               )
             );
           } else {
@@ -329,7 +332,7 @@ class MakeUp extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey
                 ),
-                children: link(href)
+                children: link(context, href)
               )
             );
           }
@@ -357,14 +360,15 @@ class MakeUp extends StatelessWidget {
 
     return SelectableText.rich(
       TextSpan(
-        // style:style.copyWith(color:Theme.of(context).primaryColorDark, height: 1.7),
-        style:style.copyWith(color:Colors.black, height: 1.7),
+        style:style,
+        // style:style.copyWith(height: 1.7),
+        // style:style.copyWith(color:Colors.black, height: 1.7),
         children: span
       )
     );
   }
 
-  List<TextSpan> link(List<String> href){
+  List<TextSpan> link(BuildContext context, List<String> href){
     return mapIndexed(href,
       (int index, String item, String comma) => TextSpan(
         text: "$item$comma",
@@ -372,9 +376,7 @@ class MakeUp extends StatelessWidget {
           inherit: false,
           color: Colors.blue
         ),
-        recognizer: TapGestureRecognizer()..onTap = () {
-          print(item);
-        }
+        recognizer: TapGestureRecognizer()..onTap = () => this.search(context, item)
       )
     ).toList();
   }

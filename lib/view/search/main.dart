@@ -29,35 +29,18 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   final textController = new TextEditingController();
   final focusNode = new FocusNode();
 
-  final suggestionKey = new UniqueKey();
-  final resultKey = new UniqueKey();
-
-  // bool inputEnable = true;
   final core = Core();
-
-  // String get searchQuery => this.textController.text;
-
-  // NOTE: show keyboard
-  // FocusScope.of(context).requestFocus(focusNode);
-  // focusNode.requestFocus();
-  // NOTE: hide keyboard
-  // FocusScope.of(context).unfocus()
-  // focusNode?.unfocus();
-  // NOTE: clear textfield
-  // textController?.clear()
-
 
   @override
   void initState() {
     super.initState();
     this.textController.text = context.read<FormNotifier>().keyword;
     // textController.addListener(() {});
-    focusNode.addListener(() {
-      if(focusNode.hasFocus) {
-        textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);
-      }
-    });
-
+    // focusNode.addListener(() {
+    //   if(focusNode.hasFocus) {
+    //     textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);
+    //   }
+    // });
   }
 
   @override
@@ -71,5 +54,36 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   @override
   void setState(fn) {
     if(mounted) super.setState(fn);
+  }
+
+  // NOTE: used in bar, suggest & result
+  void search(BuildContext context, String word) {
+    if (core.collection.hasNotHistory(word)){
+      final index = core.collection.history.length;
+      core.collection.history.add(word);
+      if (core.listKeyHistory.currentState != null){
+        core.listKeyHistory.currentState.insertItem(index);
+      }
+    }
+    this.focusNode?.unfocus();
+    // FocusScope.of(context).unfocus();
+    // FormNotifier form = context.read<FormNotifier>();
+    // context.read<FormNotifier>().searchQuery = word;
+    // context.read<FormNotifier>().searchQuery = word;
+    // Provider.of<FormNotifier>(context,listen: false).searchQuery = word;
+    FormNotifier form = Provider.of<FormNotifier>(context,listen: false);
+    if (form.keyword != word) {
+      form.keyword = word;
+    }
+
+    if (form.searchQuery != word) {
+      form.searchQuery = word;
+      core.analyticsSearch(word);
+    }
+    controller.animateTo(
+      controller.position.minScrollExtent,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 700)
+    );
   }
 }

@@ -5,17 +5,17 @@ class View extends _State {
   Widget build(BuildContext context) {
     return ScrollPage(
       key: scaffoldKey,
-      controller: controller.master,
+      controller: controller,
       child: _scroll()
     );
   }
 
   CustomScrollView _scroll() {
     return CustomScrollView(
-      controller: controller.master,
+      controller: controller,
       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       slivers: <Widget>[
-        Bar(focusNode: focusNode, textController: textController),
+        Bar(focusNode: focusNode, textController: textController, search: this.search),
         new SliverPadding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
           sliver: context.watch<NodeNotifier>().focus?suggestion:definition
@@ -26,22 +26,16 @@ class View extends _State {
 
   Widget get suggestion {
     return ViewSuggestion(
-      key: suggestionKey,
-      searchQuery: context.watch<FormNotifier>().keyword
+      query: context.watch<FormNotifier>().keyword,
+      search: this.search
     );
   }
 
   Widget get definition {
     return ViewResult(
-      key: resultKey,
-      searchQuery: context.watch<FormNotifier>().searchQuery
+      query: context.watch<FormNotifier>().searchQuery,
+      search: this.search
     );
-    // return Consumer<FormNotifier>(
-    //   builder: (BuildContext context, FormNotifier form, Widget child) => ViewResult(
-    //     key: UniqueKey(),
-    //     searchQuery: form.searchQuery
-    //   )
-    // );
   }
 
 }
