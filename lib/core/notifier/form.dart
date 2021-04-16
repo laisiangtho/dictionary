@@ -7,13 +7,30 @@ class FormNotifier extends ChangeNotifier {
   String _searchWord;
   String get keyword => _suggestionWord;
   set keyword(String word) {
-    _suggestionWord = word;
-    notifyListeners();
+    if (_suggestionWord != word){
+      _suggestionWord = word;
+      notifyListeners();
+    }
   }
 
   String get searchQuery => _searchWord;
   set searchQuery(String word) {
     _searchWord = word;
+    notifyListeners();
+  }
+}
+
+class HistoryNotifier extends ChangeNotifier {
+  int _current;
+  int _next;
+  int _previous;
+
+  int get next => _next;
+  int get previous => _previous;
+
+  int get current => _current;
+  set current(int index) {
+    _current = index;
     notifyListeners();
   }
 }

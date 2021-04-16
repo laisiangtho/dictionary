@@ -115,9 +115,9 @@ class View extends _State with _Bar {
           delegate: new SliverChildListDelegate(
             <Widget>[
               ElevatedButton(
-                child: Text("more to bible"),
+                child: Text("Navigate to home"),
                 onPressed: () {
-                  controller.master.bottom.pageChange(1);
+                  controller.master.bottom.pageChange(0);
                 },
               ),
               ElevatedButton(

@@ -12,12 +12,14 @@ class Collection{
   Iterable<SynsetType> synset;
   Iterable<SynmapType> synmap;
   Iterable<ThesaurusType> thesaurus;
+  Box<String> history;
 
   // NOTE: result
   String keyword;
   String searchQuery;
   List<WordType> suggestion;
   List<ResultModel> definition;
+  // List<HistoryType> wordList;
 
   // NOTE: result helper
   List<SynsetType> wordBase;
@@ -32,6 +34,7 @@ class Collection{
     this.synset,
     this.synmap,
     this.thesaurus,
+    this.history,
     this.keyword,
     this.searchQuery,
     this.wordBase,
@@ -50,6 +53,7 @@ class Collection{
       usage: [],
       synmap: [],
       thesaurus: [],
+      history: null,
       keyword:"",
       searchQuery:"",
       wordBase: [],
@@ -192,6 +196,29 @@ class Collection{
 
     }
     return this.definition;
+  }
+
+  bool hasNotHistory(String laimal) {
+    return this.history.values.firstWhere((e) => stringCompare(e,laimal),orElse: ()=>null) == null;
+  }
+
+  void addHistory(String laimal) {
+    if (this.history.values.firstWhere((e) => stringCompare(e,laimal),orElse: ()=>null) == null ){
+      this.history.add(laimal);
+    }
+
+    // if (collection.history.values.firstWhere((e) => collection.stringCompare(e, word), orElse: ()=> null) == null){
+    //   collection.history.add(word);
+    // }
+  }
+  void removeHistory(String laimal) {
+    // this.history.values.toList()
+
+    var test = this.history.values.firstWhere((e) => stringCompare(e,laimal),orElse: ()=>null);
+    if (test == null || test.isNotEmpty){
+      this.history.add(laimal);
+    }
+
   }
 
   void toTest() {

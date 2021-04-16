@@ -44,6 +44,15 @@ class Grammar {
     );
   }
 
+  // void testing() {
+  //   items.asMap().map(
+  //       (index, item) => MapEntry(
+  //         index,
+  //         (value) => null
+  //       )
+  //     ).values.toList();
+  // }
+
   Map<String, dynamic> toJSON() {
     return {
       "pos": pos.map((e)=>e.toJSON()).toList(),

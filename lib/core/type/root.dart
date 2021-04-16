@@ -3,13 +3,13 @@
 // import 'package:flutter/cupertino.dart';
 import "package:hive/hive.dart";
 
-part "setting.adapter.dart";
-part "word.adapter.dart";
-part "sense.adapter.dart";
-part "usage.adapter.dart";
-part "synmap.adapter.dart";
-part "synset.adapter.dart";
-part "thesaurus.adapter.dart";
+part 'adapter/setting.dart';
+part 'adapter/word.dart';
+part 'adapter/sense..dart';
+part 'adapter/usage.dart';
+part 'adapter/synmap.dart';
+part 'adapter/synset.dart';
+part 'adapter/thesaurus.dart';
 part "definition.dart";
 part "grammar.dart";
 part "collection.dart";
@@ -275,6 +275,112 @@ class ThesaurusType {
     return {
       "w":w,
       "v":v.toList()
+    };
+  }
+}
+
+// NOTE: only type
+class EnvironmentType {
+  String name;
+  String description;
+  String package;
+  String version;
+  String buildNumber;
+
+  String settingName;
+  String settingKey;
+  SettingType setting;
+
+  List<APIType> api;
+
+  EnvironmentType({
+    this.name,
+    this.description,
+    this.package,
+    this.version,
+    this.buildNumber,
+    this.settingName,
+    this.settingKey,
+    this.setting,
+    this.api
+  });
+
+  factory EnvironmentType.fromJSON(Map<String, dynamic> o) {
+
+    return EnvironmentType(
+      name: o["name"]??"",
+      description: o["description"]??"",
+      package: o["package"]??"",
+      version: o["version"]??"0.0.1",
+      buildNumber: o["buildNumber"]??"0",
+      settingName: o["settingName"]??"0",
+      settingKey: o["settingKey"]??"0",
+      setting: SettingType.fromJSON(o["setting"]),
+      api: o['api'].map<APIType>((e) => APIType.fromJSON(e)).toList()
+    );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "name":name,
+      "description":description,
+      "package":package,
+      "version":version,
+      "buildNumber":buildNumber,
+      "settingName":settingName,
+      "settingKey":settingKey,
+      "setting":setting.toString(),
+      "api":api.map((e)=>e.toJSON()).toList()
+    };
+  }
+}
+
+// NOTE: only type
+class APIType {
+  String uid;
+  List<String> src;
+
+  APIType({
+    this.uid,
+    this.src
+  });
+
+  factory APIType.fromJSON(Map<String, dynamic> o) {
+    return APIType(
+      uid: o["uid"] as String,
+      src: List.from(o["src"])
+    );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "uid":uid,
+      "src":src.toList()
+    };
+  }
+}
+
+// NOTE: only type
+class HistoryType {
+  int id;
+  String word;
+
+  HistoryType({
+    this.id,
+    this.word
+  });
+
+  factory HistoryType.fromJSON(Map<String, dynamic> o) {
+    return HistoryType(
+      id: o["id"] as int,
+      word: o["word"] as String
+    );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "id":id,
+      "word":word
     };
   }
 }

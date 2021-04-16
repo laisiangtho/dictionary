@@ -1,17 +1,4 @@
-// import 'dart:async';
-// import 'dart:convert' show json;
-// import 'dart:io';
-// // import 'dart:math';
-// import 'package:path/path.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:http/http.dart' as http;
-
-// import 'package:flutter_tts/flutter_tts.dart';
-
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -47,10 +34,11 @@ class Core extends _Collection with _Mock {
   static Core get instance => _instance;
 
   Future<void> init() async {
-
     await Hive.initFlutter();
     Hive.registerAdapter(SettingAdapter());
     await _settingInit();
+
+    await _historyInit();
 
     Hive.registerAdapter(WordAdapter());
     await _wordInit();
@@ -69,9 +57,6 @@ class Core extends _Collection with _Mock {
 
     Hive.registerAdapter(ThesaurusAdapter());
     await _thesaurusInit();
-
-    // await definition();
-    // await partOfSpeech();
   }
 
   Future<void> analyticsReading() async{

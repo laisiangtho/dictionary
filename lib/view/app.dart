@@ -9,16 +9,11 @@ import 'package:dictionary/core.dart';
 import 'package:dictionary/widget.dart';
 import 'package:dictionary/icon.dart';
 
-
 import 'package:dictionary/view/search/main.dart' as Home;
-import 'package:dictionary/view/tmp/main.dart' as Read;
-import 'package:dictionary/view/tmp/main.dart' as Note;
-import 'package:dictionary/view/more/main.dart' as Search;
-// import 'package:dictionary/view/more/main.dart' as More;
+import 'package:dictionary/view/note/main.dart' as Note;
+import 'package:dictionary/view/more/main.dart' as More;
 
 part 'app.launcher.dart';
-
-final String appName = Core.instance.appName;
 
 class AppView extends StatefulWidget {
   AppView({Key key}) : super(key: key);
@@ -33,53 +28,50 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
   final core = Core();
 
   final GlobalKey<Home.View> home = GlobalKey<Home.View>();
-  final GlobalKey<Read.View> read = GlobalKey<Read.View>();
   final GlobalKey<Note.View> note = GlobalKey<Note.View>();
-  final GlobalKey<Search.View> search = GlobalKey<Search.View>();
-  // final GlobalKey<More.View> more = GlobalKey<More.View>();
-  final homeKey = UniqueKey();
-  final readKey = UniqueKey();
-  final noteKey = UniqueKey();
-  final searchKey = UniqueKey();
-  // final moreKey = UniqueKey();
+  final GlobalKey<More.View> more = GlobalKey<More.View>();
 
-  List<Widget> pageView = [];
-  List<ModelPage> pageButton = [];
+  final homeKey = UniqueKey();
+  final noteKey = UniqueKey();
+  final moreKey = UniqueKey();
+
+  final List<Widget> pageView = [];
+  final List<ModelPage> pageButton = [];
 
   Future<void> initiator;
+  // HistoryNotifier history;
 
   @override
   void initState() {
     super.initState();
     initiator = core.init();
     // initiator = new Future.delayed(new Duration(seconds: 1));
+    // history = context.watch<HistoryNotifier>();
     if (pageView.length == 0){
-      pageButton = [
-        ModelPage(icon:CustomIcon.search, name:"Home", description: "Search dictionary", key: home),
-        ModelPage(icon:CustomIcon.note, name:"Note", description: "Notes list", key: read),
-        ModelPage(icon:CustomIcon.layers, name:"About", description: "??", key: note),
-        ModelPage(icon:CustomIcon.dot_horiz, name:"More", description: "??", key: search),
-        // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information/Working", key: more)
-      ];
-      pageView = [
+      pageButton.addAll([
+        ModelPage(icon:CustomIcon.chapter_previous, name:"Previous", description: "Previous", action: historyPrevious ),
+        ModelPage(icon:CustomIcon.search, name:"Home", description: "Search dictionary", key: 0),
+        ModelPage(icon:CustomIcon.chapter_next, name:"Next", description: "Next", action: historyNext),
+
+        ModelPage(icon:CustomIcon.layers, name:"About", description: "??", key: 1),
+        ModelPage(icon:CustomIcon.dot_horiz, name:"More", description: "??", key: 2),
+      ]);
+      pageView.addAll([
         WidgetKeepAlive(key:homeKey, child: new Home.Main(key: home)),
-        WidgetKeepAlive(key:readKey, child: new Read.Main(key: read)),
         WidgetKeepAlive(key:noteKey, child: new Note.Main(key: note)),
-        WidgetKeepAlive(key:searchKey, child: new Search.Main(key: search)),
-        // WidgetKeepAlive(key:moreKey, child: new More.Main(key: more)),
-      ];
+        WidgetKeepAlive(key:moreKey, child: new More.Main(key: more))
+      ]);
     }
 
     _controller.master.bottom.pageListener((int index){
       // navigator.currentState.pushReplacementNamed(index.toString());
 
-      ModelPage page = pageButton[index];
+      ModelPage page = pageButton.firstWhere((e) => e?.key == index, orElse: () => pageButton.first);
       // NOTE: check State isMounted
       // if(page.key.currentState != null){
       //   page.key.currentState.setState(() {});
       // }
       pageController.jumpToPage(index);
-
       core.analyticsScreen(page.name,'${page.name}State');
 
       // pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
@@ -104,8 +96,20 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
     if(mounted) super.setState(fn);
   }
 
-  void _pageClick(int index){
+  void _navView(int index){
     _controller.master.bottom.pageChange(index);
+  }
+
+  void historyPrevious(BuildContext context){
+    // _controller.master.bottom.pageChange(index);
+    core.counter--;
+    print('historyPrevious');
+  }
+
+  void historyNext(BuildContext context){
+    // _controller.master.bottom.pageChange(index);
+    core.counter++;
+    print('historyNext');
   }
 
   // void _pageChanged(int index){
@@ -114,28 +118,44 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: initiator,
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return ScreenLauncher(message:'A moment');
-            break;
-          case ConnectionState.active:
-            return ScreenLauncher(message:'...wait');
-            break;
-          case ConnectionState.none:
-            return ScreenLauncher(message:'getting ready...');
-            break;
-          // case ConnectionState.done:
-          //   return _start();
-          //   break;
-          default:
-            return _start();
+    return MultiProvider(
+      providers: [
+        Provider(create: (context) => FormData()),
+        ChangeNotifierProxyProvider<FormData, FormNotifier>(
+          create: (context) => FormNotifier(),
+          update: (context, data, form) {
+            if (form == null) throw ArgumentError.notNull('form');
+            form.searchQuery = data.searchQuery;
+            form.keyword = data.keyword;
+            return form;
+          },
+        ),
+        ChangeNotifierProvider<NodeNotifier>(
+          create: (context) => NodeNotifier(),
+        ),
+      ],
+      child: FutureBuilder(
+        future: initiator,
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return ScreenLauncher(message:'A moment');
+              break;
+            case ConnectionState.active:
+              return ScreenLauncher(message:'...wait');
+              break;
+            case ConnectionState.none:
+              return ScreenLauncher(message:'getting ready...');
+              break;
+            // case ConnectionState.done:
+            //   return _start();
+            //   break;
+            default:
+              return _start();
+          }
         }
-      }
+      )
     );
-    // return ScreenLauncher(message:'A moment');
   }
 
   Widget _start() {
@@ -145,110 +165,112 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
       resizeToAvoidBottomInset: true,
       // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown ),
       body: SafeArea(
-        top: true,
-        bottom: true,
         maintainBottomViewPadding: true,
         // onUnknownRoute: routeUnknown,
-        child: _page()
+        child: new PageView.builder(
+          controller: pageController,
+          // onPageChanged: _pageChanged,
+          allowImplicitScrolling:false,
+          physics:new NeverScrollableScrollPhysics(),
+          itemBuilder: (BuildContext context, int index) => pageView[index],
+          itemCount: pageView.length,
+        )
       ),
       // extendBody: true,
-      bottomNavigationBar: _bottom()
+      bottomNavigationBar: bottom()
     );
   }
 
-  Widget _bottom() {
+  Widget bottom() {
     return ScrollPageBottom(
       controller: _controller,
       items: pageButton,
-      pageClick:_pageClick,
-      // child: Text('??1'),
+      builderDecoration: bottomDecoration,
+      builderButton: buttonItem
     );
   }
 
-  Widget _page() {
-    // return PageView(
-    //   controller: pageController,
-    //   onPageChanged: _pageChanged,
-    //   physics:new NeverScrollableScrollPhysics(),
-    //   children: pageView
-    // );
-
-    // return PageView.custom(
-    //   controller: pageController,
-    //   onPageChanged: _pageChanged,
-    //   physics:new NeverScrollableScrollPhysics(),
-    //   childrenDelegate: SliverChildBuilderDelegate(
-    //     (BuildContext context, int index) => KeepAlive(key: UniqueKey(), child: pageView[index]),,
-    //     childCount: pageView.length,
-    //     findChildIndexCallback: (Key key) {
-    //       final ValueKey valueKey = key;
-    //       final Widget child = valueKey.value;
-    //       return pageView.indexOf(child);
-    //     }
-    //   )
-    // );
-    return MultiProvider(
-      providers: [
-        Provider(create: (context) => FormData()),
-        ChangeNotifierProxyProvider<FormData, FormNotifier>(
-          create: (context) => FormNotifier(),
-          update: (context, data, form) {
-            if (form == null) throw ArgumentError.notNull('form');
-            form.keyword = data.keyword;
-            // this.textController.text = form.keyword;
-            form.searchQuery = data.searchQuery;
-            return form;
-          },
+  Widget bottomDecoration({Widget child}) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        // color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).primaryColor,
+        // color: Theme.of(context).backgroundColor,
+        borderRadius: new BorderRadius.vertical(
+          top: Radius.elliptical(3, 2),
+          // bottom: Radius.elliptical(3, 2)
         ),
-        ChangeNotifierProvider<NodeNotifier>(
-          create: (context) => NodeNotifier(),
-        ),
-      ],
-      child: new PageView.builder(
-        controller: pageController,
-        // onPageChanged: _pageChanged,
-        allowImplicitScrolling:false,
-        physics:new NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) => pageView[index],
-        itemCount: pageView.length,
-      )
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 0.0,
+            color: Theme.of(context).backgroundColor,
+            // color: Colors.black38,
+            spreadRadius: 0.7,
+            offset: Offset(-0.1, -0.5),
+          )
+        ]
+      ),
+      child: child
     );
   }
 
-  // Route<dynamic> _routeGenerate(RouteSettings settings) {
-  //   switch (settings.name) {
-  //     case "1":
-  //       return _routeAnimation(Bible());
-  //     case "2":
-  //       return _routeAnimation(Note());
-  //     case "3":
-  //       return _routeAnimation(Search());
-  //     case "4":
-  //       return _routeAnimation(More());
-  //     default:
-  //       return _routeAnimation(Home());
-  //   }
-  // }
+  Widget buttonItem({int index, ModelPage item, bool current, bool route}) {
+    return Tooltip(
+      message: item.description,
+      child: CupertinoButton(
+        minSize: 50,
+        padding: EdgeInsets.symmetric(horizontal:22),
+        child: AnimatedContainer(
+          curve: Curves.easeIn,
+          duration: Duration(milliseconds: 300),
+          padding: EdgeInsets.symmetric(horizontal:0,vertical:10),
+          child: Icon(
+            item.icon,
+            size: route?26:18,
+            // color: route?null:Colors.blueGrey,
+            // color: route?null:Theme.of(context).hintColor,
+            // color: route?null:Theme.of(context).hintColor,
+            // size:current?25:27
+          )
+        ),
+        disabledColor: route?CupertinoColors.quaternarySystemFill:Theme.of(context).hintColor,
+        // onPressed: current?null:()=>route?_navView(index):item.action(context)
+        onPressed: buttonPressed(context, item,index,current)
+      ),
+    );
+  }
 
-  // Route<dynamic> _routeAnimation(Widget page){
-  //   // MaterialPageRoute(builder: (context) => Home(),maintainState: false);
-  //   return PageRouteBuilder(
-  //     maintainState: true,
-  //     pageBuilder: (context, a, b) => page,
-  //     transitionsBuilder: (context, a, b, child) => FadeTransition(opacity: a, child: child),
-  //     transitionDuration: Duration(milliseconds: 200),
-  //   );
-  //   // Navigator.push(
-  //   //   context,
-  //   //   PageRouteBuilder(
-  //   //     pageBuilder: (c, a, b) => Bible(),
-  //   //     transitionsBuilder: (c, a, b, child) => FadeTransition(opacity: a, child: child),
-  //   //     transitionDuration: Duration(milliseconds: 200),
-  //   //   ),
-  //   // );
-  // }
+  int get asdfasdfasd => core.collection.history.length;
 
-  // Route<dynamic> _routeUnknown(RouteSettings settings){
-  //   return MaterialPageRoute(builder: (context) => Container(color: Colors.white,child: Center(child: Text("Unknown"))));
-  // }
+  Function buttonPressed(BuildContext context, ModelPage item, int index, bool disable) {
+    if (disable) {
+      return null;
+    } else if (item.action == null) {
+      return ()=>_navView(index);
+    } else {
+      // _controller.master.bottom.pageChange(0);
+      // return ()=>item.action(context);
+      // core.collection.history.length;
+      // print(core.collection.history.length);
+      // print(asdfasdfasd.toString());
+      // print(core.counter.toString());
+      // int total = asdfasdfasd;
+      // // int currentPosition=0;
+      // // int nextButton = 1;
+      // // int previousButton = -1;
+      // if (total > 0){
+      //   return () {
+      //     if (_controller.master.bottom.pageNotify.value != 0){
+      //       _navView(0);
+      //     }
+      //     item.action(context);
+      //   };
+
+      // }
+    }
+    // int abc = context.watch<HistoryNotifier>().current;
+    // int abc = context.watch<HistoryNotifier>().next;
+    return null;
+  }
+
 }

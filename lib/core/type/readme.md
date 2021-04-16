@@ -141,3 +141,83 @@ class ObjectListType {
   }
 }
 ```
+
+Makeup
+
+```dart
+final str = 'hello world [none] [~:zoo] [list:year] [also:yuppy] [list:good/better/best]';
+final mks = 'none (-~-) {-zoo-} {-year-} (-also-) {-yuppy-} {-good-}, {-better-}, {-best-}';
+String makeupChildrenTesting(String str) {
+  // RegExp(r'\b\w+\b')
+  return str.replaceAllMapped(RegExp(r'\[(.*?)\]'), (Match reg) {
+    if (reg.groupCount > 1) return reg.group(0).toString();
+
+    List<String> t = reg.group(1).toString().split(':');
+    String name = t.first;
+    String e = t.last;
+    if (e.isNotEmpty) {
+      List<String> href = e.split('/').map((i) => '{-$i-}').toList();
+      if (name == 'list'){
+        return href.join(', ');
+      } else {
+        return '(-0-) 1'.replaceAll('0',name).replaceAll('1',href.join(', '));
+      }
+    }
+    return reg.group(0).toString();
+  });
+}
+
+List<String> makeupChildrenTesting(String str) {
+
+  return RegExp(r'\[(.*?)\]').allMatches(str).map(
+    (Match reg)  {
+      if (reg.groupCount > 1) return reg.group(0).toString();
+      List<String> t = reg.group(1).toString().split(':');
+      String name = t.first;
+      String e = t.last;
+      if (e.isNotEmpty) {
+        List<String> href = e.split('/').map((i) => '{-$i-}').toList();
+        if (name == 'list'){
+          return href.join(', ');
+        } else {
+          return '(-0-) 1'.replaceAll('0',name).replaceAll('1',href.join(', '));
+        }
+      }
+      return reg.group(0).toString();
+    }
+  );
+
+  Iterable<Match> abc = RegExp(r'\[(.*?)\]').allMatches(str);
+  return abc.map(
+    (Match reg) {
+      if (reg.groupCount > 1) return reg.group(0).toString();
+      List<String> t = reg.group(1).toString().split(':');
+      String name = t.first;
+      String e = t.last;
+      if (e.isNotEmpty) {
+        List<String> href = e.split('/').map((i) => '{-$i-}').toList();
+        if (name == 'list'){
+          return href.join(', ');
+        } else {
+          return '(-0-) 1'.replaceAll('0',name).replaceAll('1',href.join(', '));
+        }
+      }
+      return reg.group(0).toString();
+    }
+  ).toList();
+}
+```
+
+```dart
+data = Hive.box<BoxModel>(boxName);
+ValueListenableBuilder(
+  valueListenable: data.listenable(),
+  builder: (context, Box<BoxModel> items, _) => 'return widget'
+);
+```
+
+
+    var stss = 'Eats shoots leaves'.splitMapJoin((RegExp(r'shoots')),
+      onMatch:    (m) => '${m[0]}',  // or no onMatch at all
+      onNonMatch: (n) => '* ($n)');
+      print(stss);

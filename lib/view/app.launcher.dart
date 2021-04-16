@@ -23,7 +23,7 @@ class ScreenLauncher extends StatelessWidget {
               // strutStyle: StrutStyle(),
               text: TextSpan(
                 text: '"',
-                semanticsLabel: Core.instance.appDescription,
+                semanticsLabel: 'Myanmar dictionary',
                 style: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.w300,
@@ -70,21 +70,6 @@ class ScreenLauncher extends StatelessWidget {
                 ]
               )
             ),
-            // CircularProgressIndicator(
-            //   value: progress+0.1,
-            //   backgroundColor: Colors.grey[300],
-            //   valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
-            //   strokeWidth: 1
-            // ),
-            // SizedBox(
-            //   height: 25,
-            //   width: 25,
-            //   child: CircularProgressIndicator(
-            //     semanticsLabel: 'Loading',
-            //     valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-            //     strokeWidth: 2
-            //   ),
-            // ),
             Container(
               margin: EdgeInsets.symmetric(vertical:40),
               padding: EdgeInsets.symmetric(vertical:7, horizontal: 27),
@@ -102,44 +87,9 @@ class ScreenLauncher extends StatelessWidget {
                 ),
               ),
             ),
-            // Row(
-            //   // mainAxisSize: MainAxisSize.min,
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   children: [
-            //     SizedBox(
-            //       height: 20,
-            //       width: 20,
-            //       child: CircularProgressIndicator(
-            //         semanticsLabel: 'Loading',
-            //         // value: progress+0.1,
-            //         // backgroundColor: Colors.grey[300],
-            //         valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-            //         strokeWidth: 2
-            //       ),
-            //     ),
-            //     Text(
-            //       message,
-            //       semanticsLabel: message,
-            //       style: TextStyle(
-            //         color: Colors.red,
-            //         fontSize: 30,
-            //       ),
-            //     ),
-            //   ]
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.all(10),
-            //   child: CircularProgressIndicator(
-            //     // value: progress+0.1,
-            //     backgroundColor: Colors.grey[300],
-            //     valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
-            //     strokeWidth: 1
-            //   ),
-            // ),
             Text(
-              Core.instance.appName,
-              semanticsLabel: Core.instance.appName,
+              "MyOrdbok",
+              semanticsLabel: "MyOrdbok",
               style: TextStyle(
                 fontSize: 22,
                 // color: Colors.grey
@@ -152,38 +102,38 @@ class ScreenLauncher extends StatelessWidget {
     );
   }
 
-  Widget name(){
-    return Container(
-      height: 70,
-      child: Center(
-        child: Text(
-          // store.appVersion,
-          // Store.apple
-          Core.instance.version,
-          // '...',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-            fontWeight: FontWeight.w200,
-            // foreground: Paint()
-            //   ..style = PaintingStyle.stroke
-            //   ..strokeWidth = 2
-            //   ..color = Colors.grey[200],
-            shadows: <Shadow>[
-              // Shadow(
-              //   offset: Offset(0.3, 0.5),
-              //   blurRadius: 0.2,
-              //   color: Colors.black
-              // ),
-              // Shadow(
-              //   offset: Offset(2.0, 1.0),
-              //   blurRadius: 20.0,
-              //   color: Colors.red,
-              // ),
-            ],
-          ),
-        )
-      ),
-    );
-  }
+  // Widget name(){
+  //   return Container(
+  //     height: 70,
+  //     child: Center(
+  //       child: Text(
+  //         // store.appVersion,
+  //         // Store.apple
+  //         'Core.instance.version',
+  //         // '...',
+  //         style: TextStyle(
+  //           fontSize: 14,
+  //           color: Colors.grey,
+  //           fontWeight: FontWeight.w200,
+  //           // foreground: Paint()
+  //           //   ..style = PaintingStyle.stroke
+  //           //   ..strokeWidth = 2
+  //           //   ..color = Colors.grey[200],
+  //           shadows: <Shadow>[
+  //             // Shadow(
+  //             //   offset: Offset(0.3, 0.5),
+  //             //   blurRadius: 0.2,
+  //             //   color: Colors.black
+  //             // ),
+  //             // Shadow(
+  //             //   offset: Offset(2.0, 1.0),
+  //             //   blurRadius: 20.0,
+  //             //   color: Colors.red,
+  //             // ),
+  //           ],
+  //         ),
+  //       )
+  //     ),
+  //   );
+  // }
 }

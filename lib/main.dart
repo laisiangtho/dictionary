@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +7,10 @@ import 'package:lidea/idea.dart';
 import 'package:dictionary/theme.dart';
 import 'package:dictionary/view/app.dart';
 
-void main() => runApp(Dictionary());
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  return runApp(Dictionary());
+}
 
 class Dictionary extends StatelessWidget {
   Dictionary({Key key, this.initialRoute}) : super(key: key);
@@ -24,7 +26,7 @@ class Dictionary extends StatelessWidget {
         customTextDirection: CustomTextDirection.localeBased,
         locale: null,
         platform: defaultTargetPlatform,
-        isTesting: true,
+        isTesting: true
       ),
       child: app()
     );
@@ -33,16 +35,18 @@ class Dictionary extends StatelessWidget {
   Widget app(){
     return Builder(
       builder: (context) => uiOverlayStyle(
-        light: IdeaTheme.of(context).systemBrightness == Brightness.light,
+        has: IdeaTheme.of(context).resolvedSystemBrightness == Brightness.light,
         brightness: IdeaTheme.of(context).resolvedSystemBrightness,
         child: MaterialApp(
-          title: appName,
+          title: "MyOrdbok",
           debugShowCheckedModeBanner: false,
-          darkTheme: IdeaData.darkThemeData.copyWith(
+          darkTheme: IdeaData.dark.copyWith(
             platform: IdeaTheme.of(context).platform,
+            brightness: IdeaTheme.of(context).systemBrightness
           ),
-          theme: IdeaData.lightThemeData.copyWith(
+          theme: IdeaData.light.copyWith(
             platform: IdeaTheme.of(context).platform,
+            brightness: IdeaTheme.of(context).systemBrightness
           ),
           themeMode: IdeaTheme.of(context).themeMode,
           // localizationsDelegates: const [
@@ -55,24 +59,25 @@ class Dictionary extends StatelessWidget {
           initialRoute: initialRoute,
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute<void>(
             builder: (context) => ApplyTextOptions(
-              child: AppView(key: key),
-            ), settings: settings
+              child: AppView(key: key)
+            ),
+            settings: settings
           )
           // onUnknownRoute: RouteConfiguration.onUnknownRoute,
-        ),
+        )
       )
     );
   }
 
-  Widget uiOverlayStyle({bool light, Brightness brightness, Widget child}){
+  Widget uiOverlayStyle({Brightness brightness, bool has, Widget child}){
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: brightness,
         statusBarBrightness: brightness,
-        systemNavigationBarColor: light?IdeaData.lightColorScheme.primary:IdeaData.darkColorScheme.primary,
+        systemNavigationBarColor: has?IdeaData.darkScheme.primary:IdeaData.lightScheme.primary,
         systemNavigationBarDividerColor: Colors.transparent,
-        systemNavigationBarIconBrightness: brightness,
+        systemNavigationBarIconBrightness: brightness
       ),
       child: child
     );

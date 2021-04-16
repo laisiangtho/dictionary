@@ -5,7 +5,7 @@ export 'widget/message.dart';
 // export 'widget/loading.dart';
 // export 'widget/popup.dart';
 // export 'widget/verse.dart';
-// export 'widget/slideableAnimatedList.dart';
+export 'widget/slideableAnimatedList.dart';
 //
 // export 'widget/common.dart';
 // export 'widget/sheetInfo.dart';

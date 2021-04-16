@@ -1,18 +1,12 @@
 part of 'core.dart';
 
-
 mixin _Configuration  {
-  String appName = 'MyOrdbok';
-  String packageName = '';
-  String version = '';
-  String buildNumber = '';
-  final String appDescription = 'A comprehensive Myanmar online dictionary';
+  EnvironmentType env;
 
-  final String _settingName = 'settingPrimary';
-  final String _settingKey = 'setting';
-
-  // final Collection collection = Collection(setting: SettingType(),grammar: Grammar.init());
   final Collection collection = Collection.init();
+
+
+  int counter = 0;
 
   // final String appAnalytics = 'UA-18644721-1';
   // final String assetsFolder = 'assets';
@@ -21,6 +15,7 @@ mixin _Configuration  {
   // final String _liveBookJSON = 'nosj.koob/retsam/elbib/ohtgnaisial/moc.tnetnocresubuhtig.war//:sptth';
 
   // final keyBookmarkList = GlobalKey<SliverAnimatedListState>();
+  final listKeyHistory =  GlobalKey<SliverAnimatedListState>();
 
   // Collection collection;
 
