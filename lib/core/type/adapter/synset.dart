@@ -1,26 +1,26 @@
-part of 'root.dart';
+part of '../root.dart';
 
-class UsageAdapter extends TypeAdapter<UsageType> {
+class SynsetAdapter extends TypeAdapter<SynsetType> {
   @override
-  final int typeId = 3;
+  final int typeId = 4;
 
   @override
-  UsageType read(BinaryReader reader) {
+  SynsetType read(BinaryReader reader) {
     final int numOfFields = reader.readByte();
     final Map<int, dynamic> fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UsageType()
-      ..i = fields[0] as int
+    return SynsetType()
+      ..w = fields[0] as int
       ..v = fields[1] as String;
   }
 
   @override
-  void write(BinaryWriter writer, UsageType obj) {
+  void write(BinaryWriter writer, SynsetType obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.i)
+      ..write(obj.w)
       ..writeByte(1)
       ..write(obj.v);
   }
@@ -31,7 +31,7 @@ class UsageAdapter extends TypeAdapter<UsageType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UsageAdapter &&
+      other is SynsetAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

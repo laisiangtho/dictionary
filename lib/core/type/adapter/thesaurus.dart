@@ -1,37 +1,28 @@
-part of 'root.dart';
+part of '../root.dart';
 
-class SynmapAdapter extends TypeAdapter<SynmapType> {
+class ThesaurusAdapter extends TypeAdapter<ThesaurusType> {
   @override
-  final int typeId = 5;
+  final int typeId = 6;
 
   @override
-  SynmapType read(BinaryReader reader) {
+  ThesaurusType read(BinaryReader reader) {
     final int numOfFields = reader.readByte();
     final Map<int, dynamic> fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return SynmapType()
-      ..w = fields[0] as int
-      ..v = fields[1] as String
-      ..d = fields[2] as int
-      ..t = fields[3] as int;
+    return ThesaurusType()
+      ..w = fields[0] as String
+      ..v = fields[1] as List<String>;
   }
 
   @override
-  void write(BinaryWriter writer, SynmapType obj) {
+  void write(BinaryWriter writer, ThesaurusType obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.w)
-
       ..writeByte(1)
-      ..write(obj.v)
-
-      ..writeByte(2)
-      ..write(obj.d)
-
-      ..writeByte(3)
-      ..write(obj.t);
+      ..write(obj.v);
   }
 
   @override
@@ -40,7 +31,7 @@ class SynmapAdapter extends TypeAdapter<SynmapType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SynmapAdapter &&
+      other is ThesaurusAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

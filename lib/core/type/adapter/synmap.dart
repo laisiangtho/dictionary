@@ -1,34 +1,37 @@
-part of 'root.dart';
+part of '../root.dart';
 
-class SettingAdapter extends TypeAdapter<SettingType> {
+class SynmapAdapter extends TypeAdapter<SynmapType> {
   @override
-  final int typeId = 0;
+  final int typeId = 5;
 
   @override
-  SettingType read(BinaryReader reader) {
+  SynmapType read(BinaryReader reader) {
     final int numOfFields = reader.readByte();
     final Map<int, dynamic> fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return SettingType()
-      ..version = fields[0] as int
-      ..mode = fields[1] as int
-      ..fontSize = fields[2] as double
-      ..searchQuery = fields[3] as String;
+    return SynmapType()
+      ..w = fields[0] as int
+      ..v = fields[1] as String
+      ..d = fields[2] as int
+      ..t = fields[3] as int;
   }
 
   @override
-  void write(BinaryWriter writer, SettingType obj) {
+  void write(BinaryWriter writer, SynmapType obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.version)
+      ..write(obj.w)
+
       ..writeByte(1)
-      ..write(obj.mode)
+      ..write(obj.v)
+
       ..writeByte(2)
-      ..write(obj.fontSize)
+      ..write(obj.d)
+
       ..writeByte(3)
-      ..write(obj.searchQuery);
+      ..write(obj.t);
   }
 
   @override
@@ -37,7 +40,7 @@ class SettingAdapter extends TypeAdapter<SettingType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SettingAdapter &&
+      other is SynmapAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

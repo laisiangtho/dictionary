@@ -1,26 +1,26 @@
-part of 'root.dart';
+part of '../root.dart';
 
-class ThesaurusAdapter extends TypeAdapter<ThesaurusType> {
+class UsageAdapter extends TypeAdapter<UsageType> {
   @override
-  final int typeId = 6;
+  final int typeId = 3;
 
   @override
-  ThesaurusType read(BinaryReader reader) {
+  UsageType read(BinaryReader reader) {
     final int numOfFields = reader.readByte();
     final Map<int, dynamic> fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ThesaurusType()
-      ..w = fields[0] as String
-      ..v = fields[1] as List<String>;
+    return UsageType()
+      ..i = fields[0] as int
+      ..v = fields[1] as String;
   }
 
   @override
-  void write(BinaryWriter writer, ThesaurusType obj) {
+  void write(BinaryWriter writer, UsageType obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.w)
+      ..write(obj.i)
       ..writeByte(1)
       ..write(obj.v);
   }
@@ -31,7 +31,7 @@ class ThesaurusAdapter extends TypeAdapter<ThesaurusType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ThesaurusAdapter &&
+      other is UsageAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
