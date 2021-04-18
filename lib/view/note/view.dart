@@ -105,7 +105,6 @@ class _HistoryItemState extends State<HistoryItem> {
   Widget decoration({Widget child}){
     return Container(
       margin: EdgeInsets.symmetric(horizontal:0,vertical:0.2),
-      // margin: EdgeInsets.only(top:1.0),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         boxShadow: [
@@ -134,14 +133,15 @@ class _HistoryItemState extends State<HistoryItem> {
               flex: 1,
               child: Container(
                 child: Icon(
-                  CupertinoIcons.time,
+                  CupertinoIcons.timer,
                   color: Theme.of(context).backgroundColor,
+                  size: 18
                 ),
               ),
             ),
             Expanded(
               flex: 10,
-              child: Text(widget.word),
+              child: Text(widget.word)
             )
           ]
         )

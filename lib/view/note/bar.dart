@@ -54,7 +54,12 @@ mixin _Bar on _State {
               valueListenable: core.collection.history.listenable(),
               builder: (context, Box<String> box, _) {
                 return CupertinoButton(
-                  child: Text('Clear all'),
+                  child: Text('Clear all',
+                    textScaleFactor:0.9,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300
+                    )
+                  ),
                   onPressed: (box.length == 0)?null: () async {
                     for (var i = 0; i <= core.collection.history.length - 1; i++) {
                       Future.delayed(Duration(milliseconds: 500),(){
