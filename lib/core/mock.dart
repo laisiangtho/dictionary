@@ -2,14 +2,15 @@ part of 'core.dart';
 
 mixin _Mock on _Collection {
 
-  Future<void> _environment() async {
+  Future<void> _environmentInit() async {
     env = await UtilDocument.loadBundleAsString('assets/env-mock.json').then(
       (e) => EnvironmentType.fromJSON(UtilDocument.decodeJSON(e))
     );
   }
 
-  Future<void> _settingInit() async {
-    await _environment();
+  Future<void> settingInit() async {
+    await _environmentInit();
+
     Box<SettingType> box = await Hive.openBox<SettingType>(this.env.settingName);
     SettingType active = box.get(this.env.settingKey,defaultValue: this.env.setting);
 
@@ -32,7 +33,7 @@ mixin _Mock on _Collection {
     }
   }
 
-  Future<void> _historyInit() async {
+  Future<void> historyInit() async {
     collection.history = await Hive.openBox<String>('history');
     // await collection.history.clear();
   }
@@ -59,7 +60,7 @@ mixin _Mock on _Collection {
     }
   }
 
-  Future<void> _wordInit() async {
+  Future<void> wordInit() async {
     final APIType id = this.env.api.firstWhere((e) => e.uid =="word");
     Box<WordType> box = await Hive.openBox<WordType>(id.uid);
     if (box.isEmpty){
@@ -73,7 +74,7 @@ mixin _Mock on _Collection {
     // box.clear();
   }
 
-  Future<void> _senseInit() async {
+  Future<void> senseInit() async {
     final APIType id = this.env.api.firstWhere((e) => e.uid =="sense");
     Box<SenseType> box = await Hive.openBox<SenseType>(id.uid);
     if (box.isEmpty){
@@ -86,7 +87,7 @@ mixin _Mock on _Collection {
     collection.sense = box.values;
   }
 
-  Future<void> _usageInit() async {
+  Future<void> usageInit() async {
     final APIType id = this.env.api.firstWhere((e) => e.uid =="usage");
     Box<UsageType> box = await Hive.openBox<UsageType>(id.uid);
     if (box.isEmpty){
@@ -99,7 +100,7 @@ mixin _Mock on _Collection {
     collection.usage = box.values;
   }
 
-  Future<void> _synsetInit() async {
+  Future<void> synsetInit() async {
     final APIType id = this.env.api.firstWhere((e) => e.uid =="synset");
     Box<SynsetType> box = await Hive.openBox<SynsetType>(id.uid);
     if (box.isEmpty){
@@ -112,7 +113,7 @@ mixin _Mock on _Collection {
     collection.synset = box.values;
   }
 
-  Future<void> _synmapInit() async {
+  Future<void> synmapInit() async {
     final APIType id = this.env.api.firstWhere((e) => e.uid =="synmap");
     Box<SynmapType> box = await Hive.openBox<SynmapType>(id.uid);
     if (box.isEmpty){
@@ -125,7 +126,7 @@ mixin _Mock on _Collection {
     collection.synmap = box.values;
   }
 
-  Future<void> _thesaurusInit() async {
+  Future<void> thesaurusInit() async {
     final APIType id = this.env.api.firstWhere((e) => e.uid =="thesaurus");
     Box<ThesaurusType> box = await Hive.openBox<ThesaurusType>(id.uid);
     if (box.isEmpty){
