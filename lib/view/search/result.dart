@@ -16,14 +16,14 @@ class _ViewResultState extends State<ViewResult> {
   @override
   Widget build(BuildContext context) {
     if (widget.query.isEmpty) {
-      return new WidgetContent(key: widget.key, atLeast: 'search\na',enable:' Word ',task: 'or two\nto get ',message:'definition');
+      return new WidgetContent(key: widget.key, atLeast: 'search\na',enable:' Word ',task: 'or two\nfor ',message:'definition');
     }
 
     try {
       if (core.definition(widget.query).length > 0) {
         return result(core.collection.definition);
       } else {
-        return WidgetContent(key: widget.key, atLeast: 'found no contain\nof ',enable:widget.query,task: '\nin ',message:'bibleInfo?.name');
+        return WidgetContent(key: widget.key, atLeast: 'no result \n',enable:widget.query,task: '\nin ',message:'definition');
       }
     } catch (e) {
       return WidgetMessage(key: widget.key, message: e.toString());
@@ -381,8 +381,7 @@ class MakeUp extends StatelessWidget {
     ).toList();
   }
 
-  Iterable<E> mapIndexed<E, T>(
-    Iterable<T> items, E Function(int index, T item, String last) f) sync* {
+  Iterable<E> mapIndexed<E, T>(Iterable<T> items, E Function(int index, T item, String last) f) sync* {
     int index = 0;
     int last = items.length - 1;
 
