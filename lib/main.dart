@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'package:in_app_purchase/in_app_purchase.dart';
+
 import 'package:lidea/idea.dart';
 
 import 'package:dictionary/theme.dart';
@@ -9,6 +11,7 @@ import 'package:dictionary/view/app.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  InAppPurchaseConnection.enablePendingPurchases();
   return runApp(Dictionary());
 }
 
@@ -59,7 +62,7 @@ class Dictionary extends StatelessWidget {
           initialRoute: initialRoute,
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute<void>(
             builder: (context) => ApplyTextOptions(
-              child: AppView(key: key)
+              child: AppMain(key: key)
             ),
             settings: settings
           )
