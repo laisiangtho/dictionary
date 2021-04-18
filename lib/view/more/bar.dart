@@ -57,10 +57,11 @@ mixin _Bar on _State {
           //   )
           // ),
           Align(
-            alignment: Alignment.lerp(Alignment(-0.5,0.5),Alignment(-0.7,-.1), stretch),
+            alignment: Alignment.lerp(Alignment(-0.8,0.2),Alignment(-0.7,0), stretch),
             // alignment: Alignment(-.9,0),
             child: _barTitle(stretch)
           ),
+
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.end,
           //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,7 +70,8 @@ mixin _Bar on _State {
           //   ]
           // ),
           Align(
-            alignment: Alignment(.95,-1),
+            // alignment: Alignment(.95,-1),
+            alignment: Alignment(.95,0),
             child: _barSortButton(),
           ),
         ]
@@ -79,12 +81,9 @@ mixin _Bar on _State {
 
   Widget _barSortButton(){
     return Tooltip(
-      message: 'Sort available Bible list',
+      message: 'Cart',
       child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        // padding: EdgeInsets.symmetric(vertical:10,horizontal:10),
-        // color: Colors.blue,
-        child: Text('abc'),
+        child: Text('...'),
         onPressed: null
       ),
     );
