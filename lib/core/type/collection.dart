@@ -13,6 +13,7 @@ class Collection{
   Iterable<SynmapType> synmap;
   Iterable<ThesaurusType> thesaurus;
   Box<String> history;
+  // Box<StoreType> store;
 
   // NOTE: result
   String keyword;
@@ -35,6 +36,7 @@ class Collection{
     this.synmap,
     this.thesaurus,
     this.history,
+    // this.store,
     this.keyword,
     this.searchQuery,
     this.wordBase,
@@ -54,6 +56,7 @@ class Collection{
       synmap: [],
       thesaurus: [],
       history: null,
+      // store: null,
       keyword:"",
       searchQuery:"",
       wordBase: [],
@@ -117,7 +120,7 @@ class Collection{
 
   // NOTE: suggestion
   List<WordType> suggest(String laimal)  {
-    if (this.keyword == laimal){
+    if (this.stringCompare(this.keyword,laimal)){
       return this.suggestion;
     }
     this.keyword = laimal;
@@ -213,12 +216,16 @@ class Collection{
   }
   void removeHistory(String laimal) {
     // this.history.values.toList()
-
     var test = this.history.values.firstWhere((e) => stringCompare(e,laimal),orElse: ()=>null);
     if (test == null || test.isNotEmpty){
       this.history.add(laimal);
     }
+  }
 
+  Map<int, String> get mapHistory {
+    return this.history?.toMap()?.map(
+      (key, value) => MapEntry(key, value)
+    );
   }
 
   void toTest() {
