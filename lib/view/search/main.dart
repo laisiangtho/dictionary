@@ -58,7 +58,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
 
   // NOTE: used in bar, suggest & result
   void search(BuildContext context, String word) {
-    if (core.collection.hasNotHistory(word)){
+    if (word.isNotEmpty && core.collection.hasNotHistory(word)){
       final index = core.collection.history.length;
       core.collection.history.add(word);
       if (core.listKeyHistory.currentState != null){
@@ -76,7 +76,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
       form.keyword = word;
     }
 
-    if (form.searchQuery != word) {
+    if (form.searchQuery != word && word.isNotEmpty) {
       form.searchQuery = word;
       core.analyticsSearch(word);
     }
