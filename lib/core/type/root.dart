@@ -1,6 +1,3 @@
-// import "package:flutter/material.dart";
-// import "package:flutter/cupertino.dart";
-// import 'package:flutter/cupertino.dart';
 import "package:hive/hive.dart";
 
 part 'adapter/setting.dart';
@@ -10,6 +7,7 @@ part 'adapter/usage.dart';
 part 'adapter/synmap.dart';
 part 'adapter/synset.dart';
 part 'adapter/thesaurus.dart';
+part 'adapter/store.dart';
 part "definition.dart";
 part "grammar.dart";
 part "collection.dart";
@@ -106,7 +104,7 @@ class WordType {
   }
 
   bool charStartsWith(String word) {
-    return this.v.startsWith(word);
+    return this.v.toLowerCase().startsWith(word.toLowerCase());
   }
 
   bool charMatchExact(String word) {
@@ -279,6 +277,34 @@ class ThesaurusType {
   }
 }
 
+@HiveType(typeId: 7)
+class StoreType {
+  @HiveField(0)
+  String name;
+
+  @HiveField(1)
+  String type;
+
+  StoreType({
+    this.name,
+    this.type,
+  });
+
+  factory StoreType.fromJSON(Map<String, dynamic> o) {
+    return StoreType(
+      name: o["name"] as String,
+      type: o["type"] as String
+    );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "name":name,
+      "type":type
+    };
+  }
+}
+
 // NOTE: only type
 class EnvironmentType {
   String name;
@@ -292,6 +318,7 @@ class EnvironmentType {
   SettingType setting;
 
   List<APIType> api;
+  List<ProductsType> products;
 
   EnvironmentType({
     this.name,
@@ -302,21 +329,22 @@ class EnvironmentType {
     this.settingName,
     this.settingKey,
     this.setting,
-    this.api
+    this.api,
+    this.products
   });
 
   factory EnvironmentType.fromJSON(Map<String, dynamic> o) {
-
     return EnvironmentType(
-      name: o["name"]??"",
-      description: o["description"]??"",
+      name: o["name"]??"MyOrdbok",
+      description: o["description"]??"A comprehensive Myanmar online dictionary",
       package: o["package"]??"",
-      version: o["version"]??"0.0.1",
+      version: o["version"]??"1.0.0",
       buildNumber: o["buildNumber"]??"0",
       settingName: o["settingName"]??"0",
       settingKey: o["settingKey"]??"0",
       setting: SettingType.fromJSON(o["setting"]),
-      api: o['api'].map<APIType>((e) => APIType.fromJSON(e)).toList()
+      api: o['api'].map<APIType>((e) => APIType.fromJSON(e)).toList(),
+      products: o['products'].map<ProductsType>((e) => ProductsType.fromJSON(e)).toList()
     );
   }
 
@@ -330,12 +358,13 @@ class EnvironmentType {
       "settingName":settingName,
       "settingKey":settingKey,
       "setting":setting.toString(),
-      "api":api.map((e)=>e.toJSON()).toList()
+      "api":api.map((e)=>e.toJSON()).toList(),
+      "products":products.map((e)=>e.toJSON()).toList()
     };
   }
 }
 
-// NOTE: only type
+// NOTE: only type, EnvironmentType child
 class APIType {
   String uid;
   List<String> src;
@@ -360,7 +389,7 @@ class APIType {
   }
 }
 
-// NOTE: only type
+// NOTE: only type, EnvironmentType child
 class HistoryType {
   int id;
   String word;
@@ -381,6 +410,35 @@ class HistoryType {
     return {
       "id":id,
       "word":word
+    };
+  }
+}
+
+// NOTE: only type, EnvironmentType child
+class ProductsType {
+  String cart;
+  String name;
+  String type;
+
+  ProductsType({
+    this.cart,
+    this.name,
+    this.type,
+  });
+
+  factory ProductsType.fromJSON(Map<String, dynamic> o) {
+    return ProductsType(
+      cart: o["cart"] as String,
+      name: o["name"] as String,
+      type: o["type"] as String
+    );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "cart":cart,
+      "name":name,
+      "type":type
     };
   }
 }
