@@ -43,14 +43,19 @@ class WidgetContent extends StatelessWidget {
               TextSpan(text:this.atLeast),
               TextSpan(
                 text: this.enable,
-                style: TextStyle(color: Colors.red,),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorDark
+                )
               ),
               TextSpan(
                 text: this.task,
               ),
               TextSpan(
                 text: this.message,
-                style: TextStyle(color: Colors.brown,fontSize: 25),
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Theme.of(context).primaryColorLight
+                )
               ),
               TextSpan(
                 text: this.endWith,
