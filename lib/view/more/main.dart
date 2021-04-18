@@ -1,14 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:lidea/provider.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
+
+// import 'package:lidea/provider.dart';
 import 'package:lidea/scroll.dart';
 import 'package:lidea/idea.dart';
 
-import 'package:dictionary/notifier.dart';
+// import 'package:dictionary/notifier.dart';
 import 'package:dictionary/core.dart';
-// import 'package:dictionary/widget.dart';
+import 'package:dictionary/model.dart';
 
+part 'view.store.dart';
 part 'bar.dart';
 part 'view.dart';
 
@@ -26,6 +31,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   AnimationController animationController;
 
   int testCounter = 0;
+  final List<String> themeName = ["System","Light","Dark"];
 
   @override
   void initState() {
