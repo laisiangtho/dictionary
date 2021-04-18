@@ -12,6 +12,26 @@
   "buildNumber":"1",
   "settingName":"settingPrimary",
   "settingKey":"setting",
+  "products":[
+    {
+      "cart":"offlineaccess", "name":"offline", "type":"unlimited"
+    },
+    {
+      "cart":"consumable", "name":"donateNotWorking", "type":"consumable"
+    },
+    {
+      "cart":"consumable_testing", "name":"donate", "type":"consumable"
+    },
+    {
+      "cart":"upgrade", "name":"upgrade", "type":"unlimited"
+    },
+    {
+      "cart":"subscription_silver", "name":"silver", "type":"unlimited"
+    },
+    {
+      "cart":"subscription_gold", "name":"gold", "type":"unlimited"
+    }
+  ],
   "api":[
     {
       "uid":"word",
