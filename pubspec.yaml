@@ -5,7 +5,7 @@ description: A comprehensive Myanmar online dictionary
 publish_to: 'none'
 
 # Previous version: 1.0.0+1
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -28,7 +28,7 @@ dependencies:
   # Custom
   hive_flutter: ^1.0.0
   share: ^2.0.1
-  flutter_reorderable_list: ^1.0.0
+  in_app_purchase: ^0.5.2
   # flutter_tts: ^1.2.7
 
 dev_dependencies:
@@ -39,6 +39,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/env-mock.json
     - assets/en-mock.v1.json
     - assets/sense-mock.v1.json
     - assets/usage-mock.v1.json
