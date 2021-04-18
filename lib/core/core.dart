@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 import 'package:lidea/engine.dart';
 import 'package:lidea/analytics.dart';
@@ -11,8 +15,8 @@ import 'package:dictionary/model.dart';
 part 'configuration.dart';
 part 'collection.dart';
 part 'utility.dart';
+part 'store.dart';
 part 'mock.dart';
-
 
 // class Core extends _Collection with _Bible, _Bookmark, _Speech, _Mock
 // abstract class _Collection with _Configuration, _Utility
@@ -36,30 +40,35 @@ class Core extends _Collection with _Mock {
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(SettingAdapter());
-    await _settingInit();
+    await settingInit();
+    store = new Store(env: env);
 
-    await _historyInit();
+    Hive.registerAdapter(StoreAdapter());
+    await store.init();
 
-    Hive.registerAdapter(WordAdapter());
-    await _wordInit();
+    await historyInit();
 
-    Hive.registerAdapter(SenseAdapter());
-    await _senseInit();
+    // Hive.registerAdapter(WordAdapter());
+    // await wordInit();
 
-    Hive.registerAdapter(UsageAdapter());
-    await _usageInit();
+    // Hive.registerAdapter(SenseAdapter());
+    // await senseInit();
 
-    Hive.registerAdapter(SynsetAdapter());
-    await _synsetInit();
+    // Hive.registerAdapter(UsageAdapter());
+    // await usageInit();
 
-    Hive.registerAdapter(SynmapAdapter());
-    await _synmapInit();
+    // Hive.registerAdapter(SynsetAdapter());
+    // await synsetInit();
 
-    Hive.registerAdapter(ThesaurusAdapter());
-    await _thesaurusInit();
+    // Hive.registerAdapter(SynmapAdapter());
+    // await synmapInit();
+
+    // Hive.registerAdapter(ThesaurusAdapter());
+    // await thesaurusInit();
   }
 
   Future<void> analyticsReading() async{
     this.analyticsSearch('keyword goes here');
   }
+
 }
