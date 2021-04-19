@@ -38,7 +38,27 @@ class WidgetContent extends StatelessWidget {
           text: TextSpan(
             text: this.startWith,
             semanticsLabel: label,
-            style: TextStyle(color: Colors.grey,fontSize: 29,fontWeight: FontWeight.w300,height: 1.0,),
+            style: TextStyle(
+              // color: Theme.of(context).primaryColor,
+              color: Colors.grey,
+              fontSize: 35,
+              fontWeight: FontWeight.w300,
+              height: 1.0,
+              shadows: <Shadow>[
+                Shadow(
+                  offset: Offset(0.4, 0.5),
+                  blurRadius: 0.2,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  // color: Theme.of(context).shadowColor
+                ),
+                Shadow(
+                  offset: Offset(0.5, 0.5),
+                  blurRadius: 0.4,
+                  color: Color.fromARGB(125, 0, 0, 0),
+                  // color: Theme.of(context).shadowColor
+                ),
+              ]
+            ),
             children: <TextSpan>[
               TextSpan(text:this.atLeast),
               TextSpan(
@@ -49,16 +69,21 @@ class WidgetContent extends StatelessWidget {
               ),
               TextSpan(
                 text: this.task,
+                style: TextStyle(
+                  fontSize: 25
+                )
               ),
               TextSpan(
                 text: this.message,
                 style: TextStyle(
-                  fontSize: 25,
-                  color: Theme.of(context).primaryColorLight
+                  // color: Theme.of(context).primaryColorLight
                 )
               ),
               TextSpan(
                 text: this.endWith,
+                style: TextStyle(
+                  fontSize: 40
+                )
               )
             ]
           )

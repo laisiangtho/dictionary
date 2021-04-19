@@ -15,7 +15,7 @@ class ViewSuggestion extends StatelessWidget {
       if (core.suggestion(this.query).length > 0) {
         return _suggestionKeyword(core.collection.suggestion);
       } else {
-        return WidgetContent(key: this.key,atLeast: 'found no contain\nof ',enable:this.query,task: '\nin ',message:'bibleInfo?.name');
+        return WidgetMessage(key: this.key,message: this.query);
       }
     } catch (e) {
       return WidgetMessage(key: this.key,message: '???');
