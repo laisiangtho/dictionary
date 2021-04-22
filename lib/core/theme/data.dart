@@ -25,6 +25,7 @@ class IdeaData {
       // highlightColor: Colors.transparent,
       // splashColor: Colors.transparent,
       focusColor: focusColor,
+      shadowColor: colorScheme.secondaryVariant,
       // fontFamily: "Lato, 'Paduak', sans-serif",
       // fontFamily: "Lato, Mm3Web",
       fontFamily: "Lato, sans-serif",
@@ -56,15 +57,15 @@ class IdeaData {
         fillColor: colorScheme.primary,
         // fillColor: colorScheme.secondary,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: colorScheme.background, width: 0.2),
-          // borderRadius: BorderRadius.all(Radius.circular(7)),
+          borderSide: BorderSide(color: colorScheme.background, width: 0.7),
+          borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: colorScheme.background, width: 0.2),
-          // borderRadius: BorderRadius.all(Radius.circular(2)),
+          borderSide: BorderSide(color: colorScheme.background, width: 0.7),
+          borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 0.0),
+          borderSide: BorderSide(color: Colors.red, width: 0.6),
           // borderRadius: BorderRadius.all(Radius.circular(5)),
         )
       ),
@@ -80,16 +81,18 @@ class IdeaData {
     primary: Colors.white,
     primaryVariant: Colors.black,
     secondary: Colors.white,
-    secondaryVariant: Colors.indigo,
+    secondaryVariant: Colors.black45,
     background: Color(0xFFD6D6D6),
     surface: Color(0xFFFAFBFB),
     // scaffoldBackgroundColor
-    onBackground: Color(0xFFf2f2f2),
+    // onBackground: Color(0xFFf2f2f2),
+    // onBackground: Color(0xFFecebeb),
+    onBackground: Color(0xFFeff0f4),
     error: _lightFillColor,
     onError: _lightFillColor,
     onPrimary: _lightFillColor,
-    onSecondary: Color(0xFF322942),
-    onSurface: Color(0xFF241E30),
+    onSecondary: _lightFillColor,
+    onSurface: _lightFillColor,
     brightness: Brightness.light
   );
 
