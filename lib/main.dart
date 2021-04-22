@@ -42,6 +42,7 @@ class Dictionary extends StatelessWidget {
         brightness: IdeaTheme.of(context).resolvedSystemBrightness,
         child: MaterialApp(
           title: "MyOrdbok",
+          showSemanticsDebugger: false,
           debugShowCheckedModeBanner: false,
           darkTheme: IdeaData.dark.copyWith(
             platform: IdeaTheme.of(context).platform,
