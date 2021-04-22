@@ -1,6 +1,24 @@
 # dictionary
 
-A comprehensive Myanmar online dictionary
+MyOrdbok is 'A comprehensive Myanmar online dictionary', and providing parts of speech, thesaurus and synonyms. It is aimed to help learning english, as well as burmese vocabularies and expressions. We have 57223 primary words with over 103787 definitions which can be used to lookup with over 200000 words. Our web app supports 24 languages.
+
+Feature:
+
+- Definition
+- Example(usage)
+- Parts of speech
+- Thesaurus and synonyms
+- Bookmark
+- Search (instant suggestion and result)
+- Open Source
+- Offline
+- Customizable
+- Elegant
+- No authentication require
+- No Ads
+- Free
+
+As it is active in develpment, please feel free to rate/write yours review, so that we can bring a better Dictionary app.
 
 ```shell
 1. flutter channel stable
@@ -30,7 +48,24 @@ return Consumer<FormNotifier>(
 
 ```
 
+```sql
+SELECT
+    word, tid, sense, exam
+FROM
+    senses
+INTO OUTFILE 'C:/tmp/sense.csv'
+FIELDS ENCLOSED BY '"'
+TERMINATED BY '|'
+ESCAPED BY '"'
+LINES TERMINATED BY '\r\n';
 
-A new Flutter project.
-
-## Getting Started
+SELECT
+    word, is_derived
+FROM
+    words
+INTO OUTFILE 'C:/tmp/words.csv'
+FIELDS ENCLOSED BY '"'
+TERMINATED BY ';'
+ESCAPED BY '"'
+LINES TERMINATED BY '\r\n';
+```

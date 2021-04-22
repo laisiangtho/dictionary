@@ -4,8 +4,7 @@ description: A comprehensive Myanmar online dictionary
 # Remove this line to publish to pub.dev
 publish_to: 'none'
 
-# Previous version: 1.0.0+1
-version: 1.0.0+3
+version: 1.0.0+12
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -27,6 +26,7 @@ dependencies:
 
   # Custom
   hive_flutter: ^1.0.0
+  # sqflite: ^2.0.0+3
   share: ^2.0.1
   in_app_purchase: ^0.5.2
   # flutter_tts: ^1.2.7
