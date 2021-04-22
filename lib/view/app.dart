@@ -51,12 +51,12 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
     // initiator = new Future.delayed(new Duration(seconds: 1));
     if (pageView.length == 0){
       pageButton.addAll([
-        ModelPage(icon:CustomIcon.chapter_previous, name:"Previous", description: "Previous", action: historyPrevious ),
+        ModelPage(icon:CustomIcon.chapter_previous, name:"Previous", description: "Previous search", action: historyPrevious ),
         ModelPage(icon:CustomIcon.search, name:"Home", description: "Search dictionary", key: 0),
-        ModelPage(icon:CustomIcon.chapter_next, name:"Next", description: "Next", action: historyNext),
+        ModelPage(icon:CustomIcon.chapter_next, name:"Next", description: "Next search", action: historyNext),
 
-        ModelPage(icon:CustomIcon.layers, name:"About", description: "??", key: 1),
-        ModelPage(icon:CustomIcon.dot_horiz, name:"More", description: "??", key: 2),
+        ModelPage(icon:CustomIcon.layers, name:"History", description: "Recent searches", key: 1),
+        ModelPage(icon:CustomIcon.dot_horiz, name:"More", description: "More information", key: 2),
       ]);
       pageView.addAll([
         WidgetKeepAlive(key:homeKey, child: new Home.Main(key: _home)),
