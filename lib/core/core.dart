@@ -48,23 +48,23 @@ class Core extends _Collection with _Mock {
 
     await historyInit();
 
-    // Hive.registerAdapter(WordAdapter());
-    // await wordInit();
+    Hive.registerAdapter(WordAdapter());
+    await wordInit();
 
-    // Hive.registerAdapter(SenseAdapter());
-    // await senseInit();
+    Hive.registerAdapter(SenseAdapter());
+    await senseInit();
 
-    // Hive.registerAdapter(UsageAdapter());
-    // await usageInit();
+    Hive.registerAdapter(UsageAdapter());
+    await usageInit();
 
-    // Hive.registerAdapter(SynsetAdapter());
-    // await synsetInit();
+    Hive.registerAdapter(SynsetAdapter());
+    await synsetInit();
 
-    // Hive.registerAdapter(SynmapAdapter());
-    // await synmapInit();
+    Hive.registerAdapter(SynmapAdapter());
+    await synmapInit();
 
-    // Hive.registerAdapter(ThesaurusAdapter());
-    // await thesaurusInit();
+    Hive.registerAdapter(ThesaurusAdapter());
+    await thesaurusInit();
   }
 
   Future<void> analyticsReading() async{
