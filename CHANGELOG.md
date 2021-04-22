@@ -1,16 +1,30 @@
 # Change log
 
-## 1.0.0+1-3
+## 1.0.0+1-11
 
 Improve
 
-- Accessibility (warning: 313)
+- Contrast
+- Launch background bitmap to color (included dark mode)
+- Cart margin reduce
+- Widget message to plain text with Semantics label
+- History list padding increase
+- search bar with padding
+- TextField
+  - padding resize
+  - more visible
+- Trim searchQuery
+- Accessibility [376] (fontSize and fontColor)
+- Add label using Semantics
 
 Update
 
-  deprecated
+- minSdkVersion back to 16
+- (16)17,099 19(15,756)
 
-  Fix
+deprecated
+
+Fix
 
 Add
 
