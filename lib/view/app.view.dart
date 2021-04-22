@@ -104,27 +104,30 @@ class AppView extends _State {
   }
 
   Widget buttonItem({int index, ModelPage item, bool current, bool route}) {
-    return Tooltip(
-      message: item.description,
-      child: CupertinoButton(
-        minSize: 50,
-        padding: EdgeInsets.symmetric(horizontal:22),
-        child: AnimatedContainer(
-          curve: Curves.easeIn,
-          duration: Duration(milliseconds: 300),
-          padding: EdgeInsets.symmetric(horizontal:0,vertical:10),
-          child: Icon(
-            item.icon,
-            size: route?26:18,
-            // color: route?null:Colors.blueGrey,
-            // color: route?null:Theme.of(context).hintColor,
-            // color: route?null:Theme.of(context).hintColor,
-            // size:current?25:27
-          )
+    return Semantics(
+      label: route?"Page navigation":"History navigation",
+      namesRoute: route,
+      enabled: route && !current,
+      child: Tooltip(
+        message: item.description,
+        excludeFromSemantics:true,
+        child: CupertinoButton(
+          minSize: 50,
+          padding: EdgeInsets.symmetric(horizontal:22),
+          child: AnimatedContainer(
+            curve: Curves.easeIn,
+            duration: Duration(milliseconds: 300),
+            padding: EdgeInsets.symmetric(horizontal:0,vertical:10),
+            child: Icon(
+              item.icon,
+              size: route?26:18,
+              semanticLabel: item.name,
+            )
+          ),
+          disabledColor: route?CupertinoColors.quaternarySystemFill:Theme.of(context).hintColor,
+          // onPressed: current?null:()=>route?_navView(index):item.action(context)
+          onPressed: buttonPressed(context, item,index,current)
         ),
-        disabledColor: route?CupertinoColors.quaternarySystemFill:Theme.of(context).hintColor,
-        // onPressed: current?null:()=>route?_navView(index):item.action(context)
-        onPressed: buttonPressed(context, item,index,current)
       ),
     );
   }

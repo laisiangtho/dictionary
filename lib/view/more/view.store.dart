@@ -62,24 +62,26 @@ class __StoreState extends State<StoreView> {
       msgWidget = Text('Purchase unavailable');
       msgIcon = Icon(Icons.error_outlined,size: 50);
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: msgIcon
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 4),
-          child: msgWidget
-        ),
-        stars(),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-          child: Text('Any contribution makes a huge difference for the future of MyOrdbok.',textAlign: TextAlign.center,)
-        )
-      ]
+    return MergeSemantics(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: msgIcon
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 4),
+            child: msgWidget
+          ),
+          stars(),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+            child: Text('Any contribution makes a huge difference for the future of MyOrdbok.',textAlign: TextAlign.center,)
+          )
+        ]
+      ),
     );
     // return Card(
     //   child: ListTile(
@@ -104,27 +106,27 @@ class __StoreState extends State<StoreView> {
   Widget _buildProductList() {
     List<Widget> productList = <Widget>[];
     // This app needs special configuration to run. Please see example/README.md for instructions.
-    if (core.store.listOfNotFoundId.isNotEmpty) {
-      productList.add(
-        Padding(
-          padding: EdgeInsets.symmetric( vertical: 10),
-          // child: Text('[${core.store.listOfNotFoundId.join(", ")}] not found',
-          //   style: TextStyle(color: ThemeData.light().errorColor)
-          // )
-          child: RichText(
-            text: TextSpan(
-              text: 'Unavailable ',
-              style: TextStyle(color: Theme.of(context).primaryColor),
-              children: core.store.listOfNotFoundId.map((String e) => TextSpan(
-                style: TextStyle(color: Theme.of(context).errorColor),
-                text: "$e, "
-                )
-              ).toList()
-            )
-          )
-        )
-      );
-    }
+    // if (core.store.listOfNotFoundId.isNotEmpty) {
+    //   productList.add(
+    //     Padding(
+    //       padding: EdgeInsets.symmetric( vertical: 10),
+    //       // child: Text('[${core.store.listOfNotFoundId.join(", ")}] not found',
+    //       //   style: TextStyle(color: ThemeData.light().errorColor)
+    //       // )
+    //       child: RichText(
+    //         text: TextSpan(
+    //           text: 'Unavailable ',
+    //           style: TextStyle(color: Theme.of(context).primaryColor),
+    //           children: core.store.listOfNotFoundId.map((String e) => TextSpan(
+    //             style: TextStyle(color: Theme.of(context).errorColor),
+    //             text: "$e, "
+    //             )
+    //           ).toList()
+    //         )
+    //       )
+    //     )
+    //   );
+    // }
 
     Map<String, PurchaseDetails> purchases = core.store.previousPurchase;
 
@@ -153,63 +155,69 @@ class __StoreState extends State<StoreView> {
         borderRadius: BorderRadius.all(Radius.circular(7.0))
       ),
       elevation: 2,
-      margin: EdgeInsets.symmetric(vertical:5, horizontal:15),
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-        leading: hasPurchased?Icon(
-          CupertinoIcons.checkmark_shield_fill,
-          // Icons.verified,
-          // color: Theme.of(context).primaryColorDark,
-          size: 35,
-        ):null,
-        title: Text(
-          productDetails.title.replaceAll(RegExp(r'\(.+?\)$'), ""),
-          style: TextStyle(
-            fontWeight: FontWeight.w300,
-            fontSize: 18
+      margin: EdgeInsets.symmetric(vertical:5, horizontal:7),
+      child: Semantics(
+        child: ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+          leading: hasPurchased?Icon(
+            CupertinoIcons.checkmark_shield_fill,
+            size: 35
+          ):null,
+          title: Text(
+            productDetails.title,//.replaceAll(RegExp(r'\(.+?\)$'), ""),
+            semanticsLabel: productDetails.title,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              color: Theme.of(context).colorScheme.primaryVariant,
+              fontSize: 18
+            )
+          ),
+          subtitle: Padding(
+            padding: EdgeInsets.only(top:10),
+            child: Text(
+              productDetails.description,
+              semanticsLabel: productDetails.description,
+              // textScaleFactor:0.9,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primaryVariant,
+                fontWeight: FontWeight.w300
+              )
+            ),
+          ),
+          trailing: hasPurchased?Text(
+            productDetails.price,
+            semanticsLabel: productDetails.price,
+            style: TextStyle(
+              decoration: TextDecoration.lineThrough,
+              fontWeight: FontWeight.w200,
+              // color: Theme.of(context).backgroundColor,
+              fontSize: 13
+            ),
+          ):TextButton(
+            style: TextButton.styleFrom(
+              minimumSize: Size(90, 30),
+              padding: EdgeInsets.symmetric(vertical:3, horizontal:7),
+              backgroundColor: hasPurchased?null:Theme.of(context).primaryColorDark,
+              // backgroundColor: hasPurchased?null:Colors.red,
+              // primary: Theme.of(context).primaryColorLight,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100)
+              )
+            ),
+            // icon: Icon(
+            //   hasPurchased?Icons.verified:CupertinoIcons.cart_fill,
+            //   size: hasPurchased?40:20,
+            // ),
+            child: Text(
+              productDetails.price,
+              semanticsLabel: productDetails.price,
+              style: TextStyle(
+                color: Theme.of(context).primaryColorLight
+              )
+            ),
+            onPressed: hasPurchased?null:() => core.store.doPurchase(productDetails)
           )
         ),
-        subtitle: Padding(
-          padding: EdgeInsets.only(top:10),
-          child: Text(
-            productDetails.description,
-            textScaleFactor:0.9,
-            style: TextStyle(
-              fontWeight: FontWeight.w300
-            )
-          ),
-        ),
-        trailing: hasPurchased?Text(
-          productDetails.price,
-          style: TextStyle(
-            decoration: TextDecoration.lineThrough,
-            fontWeight: FontWeight.w200,
-            // color: Theme.of(context).backgroundColor,
-            fontSize: 13
-          ),
-        ):TextButton(
-          style: TextButton.styleFrom(
-            minimumSize: Size(90, 30),
-            padding: EdgeInsets.symmetric(vertical:3, horizontal:7),
-            backgroundColor: hasPurchased?null:Theme.of(context).primaryColorDark,
-            // backgroundColor: hasPurchased?null:Colors.red,
-            // primary: Theme.of(context).primaryColorLight,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100)
-            )
-          ),
-          // icon: Icon(
-          //   hasPurchased?Icons.verified:CupertinoIcons.cart_fill,
-          //   size: hasPurchased?40:20,
-          // ),
-          child: Text(
-            productDetails.price,
-            style: TextStyle(
-              color: Theme.of(context).primaryColorLight
-            )
-          ),
-          onPressed: hasPurchased?null:() => core.store.doPurchase(productDetails)
-        )
       ),
     );
   }

@@ -7,27 +7,37 @@ class WidgetMsg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
       key: key,
-      child: Container(
-        margin: new EdgeInsets.symmetric(horizontal:60),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              this.message, textAlign: TextAlign.center,
+      margin: new EdgeInsets.symmetric(horizontal:60),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Semantics(
+            label: "Message",
+            child: Text(
+              this.message,
+              semanticsLabel: this.message,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 21
               ),
             ),
-            Padding(
+          ),
+          Semantics(
+            label: "Icon",
+            child: Padding(
               padding: EdgeInsets.only(bottom: 20,top: 20),
-              child: Icon(CupertinoIcons.ellipsis,size: 25,),
+              child: Icon(
+                CupertinoIcons.ellipsis,
+                semanticLabel: "ellipsis",
+                size: 40
+              )
             ),
-          ],
-        )
+          )
+        ]
       )
     );
   }
@@ -44,7 +54,7 @@ class WidgetMessage extends StatelessWidget {
       key: key,
       hasScrollBody: false,
       fillOverscroll: false,
-      child: WidgetMsg(message: message,)
+      child: WidgetMsg(message: message)
     );
   }
 }

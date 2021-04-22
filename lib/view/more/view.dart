@@ -42,26 +42,21 @@ class View extends _State with _Bar {
           // crossAxisAlignment: CrossAxisAlignment.center,
           // mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Padding(
-            //   padding: EdgeInsets.symmetric(vertical: 4),
-            //   child: Icon(Icons.lightbulb,size: 50)
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-            //   child: Text('Switch theme')
-            // ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.lightbulb,size:20),
-                  Text('Switch theme',
-                    style: TextStyle(
-                      fontSize: 18
+              child: Semantics(
+                label: "Switch theme mode",
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.lightbulb,size:20),
+                    Text('Switch theme',
+                      style: TextStyle(
+                        fontSize: 18
+                      )
                     )
-                  )
-                ],
+                  ],
+                ),
               )
             ),
             Divider(),
@@ -72,12 +67,20 @@ class View extends _State with _Bar {
                 children: ThemeMode.values.map<Widget>((e){
                   bool active = IdeaTheme.of(context).themeMode == e;
                   // IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.system));
-                  return CupertinoButton(
-                    borderRadius: new BorderRadius.circular(30.0),
-                    padding: EdgeInsets.symmetric(vertical:5, horizontal:10),
-                    minSize: 20,
-                    // color: Theme.of(context).primaryColorDark,
-                    child: Text(themeName[e.index]), onPressed: active?null:()=>IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: e))
+                  return Semantics(
+                    label: "Switch to",
+                    selected: active,
+                    child: CupertinoButton(
+                      borderRadius: new BorderRadius.circular(30.0),
+                      padding: EdgeInsets.symmetric(vertical:5, horizontal:10),
+                      minSize: 20,
+                      // color: Theme.of(context).primaryColorDark,
+                      child: Text(
+                        themeName[e.index],
+                        semanticsLabel: themeName[e.index],
+                      ),
+                      onPressed: active?null:()=>IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: e))
+                    ),
                   );
                 }).toList()
               )

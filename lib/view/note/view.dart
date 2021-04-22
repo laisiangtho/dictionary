@@ -123,7 +123,8 @@ class _HistoryItemState extends State<HistoryItem> {
   Widget menu(){
     return decoration(
       child: CupertinoButton(
-        padding: EdgeInsets.symmetric(horizontal:13,vertical:5),
+        // padding: EdgeInsets.symmetric(horizontal:13,vertical:5),
+        padding: EdgeInsets.symmetric(horizontal:13,vertical:17),
         onPressed: widget.launch,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -135,13 +136,19 @@ class _HistoryItemState extends State<HistoryItem> {
                 child: Icon(
                   CupertinoIcons.timer,
                   color: Theme.of(context).backgroundColor,
-                  size: 18
+                  // size: 22
                 ),
               ),
             ),
             Expanded(
               flex: 10,
-              child: Text(widget.word)
+              child: Text(
+                widget.word,
+                style: TextStyle(
+                  height: 1.0
+                  // fontSize: 20
+                )
+              )
             )
           ]
         )

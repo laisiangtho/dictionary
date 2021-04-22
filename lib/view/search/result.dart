@@ -15,13 +15,13 @@ class _ViewResultState extends State<ViewResult> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.query.isEmpty) {
-      return new WidgetContent(key: widget.key, atLeast: 'search\na',enable:' Word ',task: 'or two\nfor ',message:'definition');
-    }
+    if (widget.query.isEmpty) return this.noQuery;
 
     try {
       if (core.definition(widget.query).length > 0) {
         return result(core.collection.definition);
+      } else if (widget.query.isEmpty) {
+        return this.noQuery;
       } else {
         return WidgetContent(key: widget.key, atLeast: 'no result \n',enable:widget.query,task: '\nin ',message:'definition');
       }
@@ -29,6 +29,8 @@ class _ViewResultState extends State<ViewResult> {
       return WidgetMessage(key: widget.key, message: e.toString());
     }
   }
+
+  Widget get noQuery => new WidgetContent(key: widget.key, atLeast: 'search\na',enable:' Word ',task: 'or two\nfor ',message:'definition');
 
   Widget result(List<ResultModel> _r) {
     return new SliverList(
@@ -41,30 +43,27 @@ class _ViewResultState extends State<ViewResult> {
   }
 
   Widget _resultContainer({String searchQuery, int index, ResultModel data}) {
-    return Padding(
-      padding: EdgeInsets.zero,
-      child: new Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          _wordContainer(data.word),
-          ListView.builder(
-            key: UniqueKey(),
-            shrinkWrap: true,
-            primary: false,
-            itemCount: data.sense.length,
-            itemBuilder: (context, index) => _senseContainer(data.sense.elementAt(index))
-          ),
-          _thesaurusContainer(data.thesaurus)
-        ]
-      ),
+    return new Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        _wordContainer(data.word),
+        ListView.builder(
+          key: UniqueKey(),
+          shrinkWrap: true,
+          primary: false,
+          itemCount: data.sense.length,
+          itemBuilder: (context, index) => _senseContainer(data.sense.elementAt(index))
+        ),
+        _thesaurusContainer(data.thesaurus)
+      ]
     );
   }
 
   Widget _wordContainer(String word) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 17),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +91,7 @@ class _ViewResultState extends State<ViewResult> {
                 fontSize: 25,
                 fontWeight: FontWeight.w400,
                 shadows: <Shadow>[
-                  Shadow(offset: Offset(0.9, 0.2),blurRadius: 0.4,color: Colors.black54)
+                  Shadow(offset: Offset(0.2, 0.2),blurRadius: 0.4,color:Theme.of(context).backgroundColor)
                 ]
               )
             )
@@ -104,7 +103,7 @@ class _ViewResultState extends State<ViewResult> {
 
   Widget _senseContainer(SenseModel sense){
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 7),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
@@ -148,6 +147,7 @@ class _ViewResultState extends State<ViewResult> {
       ),
       child: Text(
         pOS,
+        semanticsLabel: pOS,
         style:TextStyle(
           fontStyle: FontStyle.italic,
           fontWeight: FontWeight.w300,
@@ -277,7 +277,7 @@ class _ViewResultState extends State<ViewResult> {
               child: Text(thes[index]),
               borderRadius: BorderRadius.all(Radius.circular(100.0)),
               padding: EdgeInsets.symmetric(vertical:7, horizontal:15),
-              minSize:30,
+              minSize:50,
               onPressed: () => widget.search(context,thes[index])
             ),
           )

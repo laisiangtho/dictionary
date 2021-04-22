@@ -10,10 +10,13 @@ class ViewSuggestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (this.query.isEmpty) return WidgetMessage(key: this.key,message: 'suggestion');
+    if (this.query.isEmpty) return this.noQuery;
+
     try {
       if (core.suggestion(this.query).length > 0) {
         return _suggestionKeyword(core.collection.suggestion);
+      } else if (this.query.isEmpty) {
+        return this.noQuery;
       } else {
         return WidgetMessage(key: this.key,message: this.query);
       }
@@ -21,6 +24,8 @@ class ViewSuggestion extends StatelessWidget {
       return WidgetMessage(key: this.key,message: '???');
     }
   }
+
+  Widget get noQuery => WidgetMessage(key: this.key,message: 'suggestion');
 
   Widget _suggestionKeyword(List<WordType> _r) {
     return new SliverList(
@@ -61,7 +66,7 @@ class SuggestionList extends StatelessWidget {
 
   Widget container({BuildContext context}){
     return CupertinoButton(
-      padding: EdgeInsets.symmetric(horizontal:13,vertical:10),
+      padding: EdgeInsets.symmetric(horizontal:13,vertical:18),
       onPressed: () => this.search(context, data.v),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -74,20 +79,30 @@ class SuggestionList extends StatelessWidget {
               child: Icon(
                 CupertinoIcons.arrow_turn_down_right,
                 color: Theme.of(context).backgroundColor,
+                semanticLabel: 'Recent search icon'
               ),
             ),
           ),
           Expanded(
             flex: 7,
             child: RichText(
-              strutStyle: StrutStyle(height: 1.0,),
+              strutStyle: StrutStyle(height: 1.0),
               text: TextSpan(
                 text: data.v.substring(0, this.query.length),
-                style: TextStyle( fontSize: 18, color: Theme.of(context).colorScheme.primaryVariant, fontWeight: FontWeight.w300),
+                semanticsLabel: data.v,
+                style: TextStyle(
+                  // fontSize: 20,
+                  color: Theme.of(context).textTheme.caption.color,
+                  fontWeight: FontWeight.w300
+                ),
                 children: <TextSpan>[
                   TextSpan(
                     text: data.v.substring(this.query.length),
-                    style: TextStyle(color: Theme.of(context).textTheme.caption.color, fontWeight: FontWeight.w400)
+                    style: TextStyle(
+                      // color: Theme.of(context).textTheme.caption.color,
+                      color: Theme.of(context).colorScheme.primaryVariant,
+                      fontWeight: FontWeight.w400
+                    )
                   )
                 ]
               )

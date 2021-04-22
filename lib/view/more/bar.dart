@@ -81,29 +81,32 @@ mixin _Bar on _State {
 
   Widget _barSortButton(){
     return Tooltip(
-      message: 'Cart',
-      child: CupertinoButton(
-        child: Text('...'),
-        onPressed: null
-      ),
-    );
+        message: 'Restore',
+        child: CupertinoButton(
+          child: Icon(Icons.restore),
+          onPressed: null
+        ),
+      );
   }
 
   Widget _barTitle(double shrink){
-    return Text(
-      core.env.name,
-      semanticsLabel: core.env.name,
-      style: TextStyle(
-        fontFamily: "sans-serif",
-        // color: Color.lerp(Colors.white, Colors.white24, stretch),
-        // color: Colors.black,
-        fontWeight: FontWeight.w200,
-        // fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
-        // fontSize:35 - (16*stretch),
-        fontSize:(35*shrink).clamp(25.0, 35.0),
-        // shadows: <Shadow>[
-        //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
-        // ]
+    return Semantics(
+      label: "Setting",
+      child: Text(
+        core.env.name,
+        semanticsLabel: core.env.name,
+        style: TextStyle(
+          fontFamily: "sans-serif",
+          // color: Color.lerp(Colors.white, Colors.white24, stretch),
+          // color: Colors.black,
+          fontWeight: FontWeight.w200,
+          // fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
+          // fontSize:35 - (16*stretch),
+          fontSize:(35*shrink).clamp(25.0, 35.0),
+          // shadows: <Shadow>[
+          //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
+          // ]
+        )
       )
     );
   }

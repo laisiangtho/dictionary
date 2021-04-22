@@ -55,7 +55,6 @@ mixin _Bar on _State {
               builder: (context, Box<String> box, _) {
                 return CupertinoButton(
                   child: Text('Clear all',
-                    textScaleFactor:0.9,
                     style: TextStyle(
                       fontWeight: FontWeight.w300
                     )
