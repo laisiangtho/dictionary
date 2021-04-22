@@ -9,66 +9,70 @@ class ScreenLauncher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Theme.of(context).primaryColor,
-      // drawerEnableOpenDragGesture: false,
-      // endDrawerEnableOpenDragGesture: false,
       body: Center(
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            RichText(
-              textAlign: TextAlign.center,
-              // strutStyle: StrutStyle(),
-              text: TextSpan(
-                text: '"',
-                semanticsLabel: 'Myanmar dictionary',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 33,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text:'A',
-                    style: TextStyle(
-                      fontSize: 19,
+            MergeSemantics(
+              child: RichText(
+                textAlign: TextAlign.center,
+                // strutStyle: StrutStyle(),
+                text: TextSpan(
+                  text: '"',
+                  semanticsLabel: "open quotation mark",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 33,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text:'A',
+                      semanticsLabel: "A",
+                      style: TextStyle(
+                        fontSize: 19,
+                      )
+                    ),
+                    TextSpan(
+                      text: ' comprehensive\n',
+                      semanticsLabel: "comprehensive",
+                      style: TextStyle(
+                        color: Colors.brown,
+                        fontSize: 20,
+                      )
+                    ),
+                    TextSpan(
+                      text: 'Myanmar\n',
+                      semanticsLabel: "Myanmar",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 36
+                      )
+                    ),
+                    TextSpan(
+                      text: 'online ',
+                      semanticsLabel: "online",
+                      style: TextStyle(
+                        // color: Colors.brown,
+                        fontSize: 19,
+                      )
+                    ),
+                    TextSpan(
+                      text: 'dictionary',
+                      semanticsLabel: "dictionary",
+                      style: TextStyle(
+                        fontSize: 22
+                      )
+                    ),
+                    TextSpan(
+                      text: '"',
+                      semanticsLabel: "close quotation mark"
                     )
-                  ),
-                  TextSpan(
-                    text: ' comprehensive\n',
-                    style: TextStyle(
-                      color: Colors.brown,
-                      fontSize: 20,
-                    )
-                  ),
-                  TextSpan(
-                    text: 'Myanmar\n',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 36,
-                    )
-                  ),
-                  TextSpan(
-                    text: 'online ',
-                    style: TextStyle(
-                      // color: Colors.brown,
-                      fontSize: 19,
-                    )
-                  ),
-                  TextSpan(
-                    text: 'dictionary',
-                    style: TextStyle(
-                      fontSize: 22,
-                    )
-                  ),
-                  TextSpan(
-                    text: '"'
-                  ),
-                ]
-              )
+                  ]
+                )
+              ),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical:40),
@@ -77,28 +81,32 @@ class ScreenLauncher extends StatelessWidget {
                 color: Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: Text(
-                message,
-                semanticsLabel: message,
-                style: TextStyle(
-                  // color: Colors.white,
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 18,
+              child: Semantics(
+                label: "Message",
+                child: Text(
+                  message,
+                  semanticsLabel: message,
+                  style: TextStyle(
+                    // color: Colors.white,
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),
-            Text(
-              "MyOrdbok",
-              semanticsLabel: "MyOrdbok",
-              style: TextStyle(
-                fontSize: 22,
-                // color: Colors.grey
+            Semantics(
+              label: "App name",
+              child: Text(
+                "MyOrdbok",
+                semanticsLabel: "MyOrdbok",
+                style: TextStyle(
+                  fontSize: 22
+                )
               )
-            ),
-          ],
-        ),
-      ),
-      // bottomNavigationBar: name(),
+            )
+          ]
+        )
+      )
     );
   }
 
