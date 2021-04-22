@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.myordbok.app">
    <application
-        android:label="MyOrdbok"
-		android:icon="@mipmap/icon"
-		android:roundIcon="@mipmap/iconrounded">
+      android:label="MyOrdbok"
+      android:icon="@mipmap/icon"
+      android:roundIcon="@mipmap/iconrounded">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
