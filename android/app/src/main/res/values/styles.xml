@@ -24,6 +24,6 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/primary</item>
     </style>
-    <color name="background">#eff0f4</color>
-    <color name="primary">#eff0f4</color>
+    <color name="background">#ffffff</color>
+    <color name="primary">#ffffff</color>
 </resources>
