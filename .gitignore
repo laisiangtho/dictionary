@@ -2,7 +2,7 @@
 **/*v[0-9].md
 **/*v[0-9].rar
 **/*v[0-9].json
-assets/**/delete
+# assets/**/delete
 # assets/env.json
 assets/**
 !assets/fonts
