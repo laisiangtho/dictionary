@@ -6,16 +6,19 @@ class AppView extends _State {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (context) => FormData()),
-        ChangeNotifierProxyProvider<FormData, FormNotifier>(
-          create: (context) => FormNotifier(),
-          update: (context, data, form) {
-            if (form == null) throw ArgumentError.notNull('form');
-            form.searchQuery = data.searchQuery;
-            form.keyword = data.keyword;
-            return form;
-          },
-        ),
+        // Provider(create: (context) => FormData()),
+        // ChangeNotifierProxyProvider<FormData, FormNotifier>(
+        //   create: (context) => FormNotifier(),
+        //   update: (context, data, form) {
+        //     if (form == null) throw ArgumentError.notNull('form');
+        //     form.searchQuery = data.searchQuery;
+        //     form.keyword = data.keyword;
+        //     return form;
+        //   },
+        // ),
+        // ChangeNotifierProvider<FormNotifier>(
+        //   create: (context) => FormNotifier(),
+        // ),
         ChangeNotifierProvider<NodeNotifier>(
           create: (context) => NodeNotifier(),
         ),
@@ -27,27 +30,18 @@ class AppView extends _State {
         future: initiator,
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return ScreenLauncher(message:'A moment');
+            case ConnectionState.done:
+              return start();
               break;
-            case ConnectionState.active:
-              return ScreenLauncher(message:'...wait');
-              break;
-            case ConnectionState.none:
-              return ScreenLauncher(message:'getting ready...');
-              break;
-            // case ConnectionState.done:
-            //   return _start();
-            //   break;
             default:
-              return _start();
+              return ScreenLauncher(message:'Initializing');
           }
         }
       )
     );
   }
 
-  Widget _start() {
+  Widget start() {
     return Scaffold(
       key: scaffoldKey,
       primary: true,
@@ -62,7 +56,7 @@ class AppView extends _State {
           allowImplicitScrolling:false,
           physics:new NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) => pageView[index],
-          itemCount: pageView.length,
+          itemCount: pageView.length
         )
       ),
       // extendBody: true,
@@ -132,7 +126,7 @@ class AppView extends _State {
     );
   }
 
-  int get asdfasdfasd => core.collection.history.length;
+  // int get asdfasdfasd => core.collection.history.length;
 
   Function buttonPressed(BuildContext context, ModelPage item, int index, bool disable) {
     if (disable) {

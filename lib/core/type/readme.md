@@ -167,9 +167,36 @@ String makeupChildrenTesting(String str) {
   });
 }
 
-List<String> makeupChildrenTesting(String str) {
+String makeupChildrenTesting(String str) {
+  // RegExp(r'\b\w+\b')
+  return str.replaceAllMapped(RegExp(r'\[(.*?)\]'), (Match reg) {
+    if (reg.groupCount > 1) return reg.group(0).toString();
 
-  return RegExp(r'\[(.*?)\]').allMatches(str).map(
+    String m = reg.group(1).toString();
+    List<String> t = m.split(':');
+    String name = t.first;
+    String e = t.last;
+    if (e.isNotEmpty) {
+      return '($m)';
+    }
+    return reg.group(0).toString();
+  });
+}
+
+final mks = 'none (-~-) {-zoo-} {-year-} (-also-) {-yuppy-} {-good-}, {-better-}, {-best-}';
+final str = 'hello world (love) [none] [~:zoo(abc)] [space list:year] [also:yuppy] [list:good/better/best] last!';
+final regExp = RegExp(r'\[(.*?)\]|\((.*?)\)',multiLine: true, dotAll: false, unicode: true);
+List<String> makeupChildrenTesting() {
+  return str.split(regExp.allMatches(str).map(
+    (Match reg)  {
+      return reg.group(0).toString();
+    }
+  ));
+}
+
+List<String> makeupChildrenList(String str) {
+
+  return RegExp(r'\[(.*?)\]|\((.*?)\)').allMatches(str).map(
     (Match reg)  {
       if (reg.groupCount > 1) return reg.group(0).toString();
       List<String> t = reg.group(1).toString().split(':');
@@ -206,6 +233,43 @@ List<String> makeupChildrenTesting(String str) {
     }
   ).toList();
 }
+
+final str = 'hello world (love) [none] [~:zoo(abc)] [space list:year] [also:yuppy] [list:good/better/best] last!';
+final mks = 'none (-~-) {-zoo-} {-year-} (-also-) {-yuppy-} {-good-}, {-better-}, {-best-}';
+final regExp = RegExp(r'\((.*?)\)|\[(.*?)\]',multiLine: true, dotAll: false, unicode: true);
+List<String> makeupChildrenTesting() {
+  return str.split(regExp);
+}
+
+final List<String> span = [];
+
+void main() {
+  str.splitMapJoin(regExp,
+    onMatch: (Match match) {
+      String matchString = match.group(0).toString();
+
+      List<String> t = chunks[i].replaceAllMapped(exp, (Match e) => e.group(1)).toString().split(':');
+      String name = t.first;
+      String e = t.last;
+      if (t.length == 2 && e.isNotEmpty) {
+      }
+      if (match.group(1).isNotEmpty)
+
+      span.add(matchString);
+      return matchString;
+    },
+    onNonMatch: (String nonMatch) {
+      nonMatch = nonMatch.trim();
+      if (nonMatch.isNotEmpty) {
+        span.add(nonMatch);
+      }
+      return nonMatch;
+    }
+  );
+  print(span);
+}
+
+
 ```
 
 ```dart
@@ -215,9 +279,3 @@ ValueListenableBuilder(
   builder: (context, Box<BoxModel> items, _) => 'return widget'
 );
 ```
-
-
-    var stss = 'Eats shoots leaves'.splitMapJoin((RegExp(r'shoots')),
-      onMatch:    (m) => '${m[0]}',  // or no onMatch at all
-      onNonMatch: (n) => '* ($n)');
-      print(stss);

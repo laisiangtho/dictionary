@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -7,15 +7,19 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
+import 'package:sqflite/sqflite.dart';
+
 import 'package:lidea/engine.dart';
 import 'package:lidea/analytics.dart';
 
 import 'package:dictionary/model.dart';
+// import 'package:dictionary/notifier.dart';
 
 part 'configuration.dart';
 part 'collection.dart';
-part 'utility.dart';
 part 'store.dart';
+part 'sqlite.dart';
+part 'utility.dart';
 part 'mock.dart';
 
 // class Core extends _Collection with _Bible, _Bookmark, _Speech, _Mock
@@ -37,34 +41,27 @@ class Core extends _Collection with _Mock {
   // retrieve the instance through the app
   static Core get instance => _instance;
 
-  Future<void> init() async {
+  FutureOr<void> init() async {
+    await _environmentInit();
+    collection.notify.progress.value = 0.1;
+
     await Hive.initFlutter();
     Hive.registerAdapter(SettingAdapter());
     await settingInit();
-    store = new Store(env: env);
 
+    collection.notify.progress.value = 0.2;
+
+    store = new Store(env: collection.env);
     Hive.registerAdapter(StoreAdapter());
     await store.init();
+    collection.notify.progress.value = 0.3;
+
+    sql = new SQLite(collection: collection);
+    await sql.init();
+    collection.notify.progress.value = 0.5;
 
     await historyInit();
-
-    Hive.registerAdapter(WordAdapter());
-    await wordInit();
-
-    Hive.registerAdapter(SenseAdapter());
-    await senseInit();
-
-    Hive.registerAdapter(UsageAdapter());
-    await usageInit();
-
-    Hive.registerAdapter(SynsetAdapter());
-    await synsetInit();
-
-    Hive.registerAdapter(SynmapAdapter());
-    await synmapInit();
-
-    Hive.registerAdapter(ThesaurusAdapter());
-    await thesaurusInit();
+    collection.notify.progress.value = 1.0;
   }
 
   Future<void> analyticsReading() async{

@@ -14,7 +14,8 @@ import 'package:dictionary/icon.dart';
 
 import 'package:dictionary/view/search/main.dart' as Home;
 import 'package:dictionary/view/note/main.dart' as Note;
-import 'package:dictionary/view/more/main.dart' as More;
+// import 'package:dictionary/view/more/main.dart' as More;
+import 'package:dictionary/view/app.nestedScroll.dart' as More;
 
 part 'app.launcher.dart';
 part 'app.view.dart';
@@ -61,7 +62,8 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
       pageView.addAll([
         WidgetKeepAlive(key:homeKey, child: new Home.Main(key: _home)),
         WidgetKeepAlive(key:noteKey, child: new Note.Main(key: _note)),
-        WidgetKeepAlive(key:moreKey, child: new More.Main(key: _more))
+        WidgetKeepAlive(key:moreKey, child: new More.Main(key: _more)),
+        // WidgetKeepAlive(child: new  TestView())
       ]);
     }
 
@@ -77,6 +79,7 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
       core.analyticsScreen(page.name,'${page.name}State');
 
       // pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
+      // pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.linear);
       // navigator.currentState.pushNamed(index.toString());
       // Navigator.of(context).push(MaterialPageRoute(
       //   builder: (context) => Note(),

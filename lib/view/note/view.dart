@@ -25,11 +25,14 @@ class View extends _State with _Bar {
             animation: animation,
             word:core.collection.history.getAt(index),
             index: index,
-            launch: () {
-              controller.master.bottom.pageChange(0);
-              FormNotifier form = Provider.of<FormNotifier>(context,listen: false);
-              form.searchQuery = core.collection.history.getAt(index);
-            },
+            launch: () => this.search(core.collection.history.getAt(index)),
+            // launch: () {
+            //   // FormNotifier form = Provider.of<FormNotifier>(context,listen: false);
+            //   // form.searchQuery = core.collection.history.getAt(index);
+            //   core.collection.notify.searchQuery.value = core.collection.history.getAt(index);
+            //   controller.master.bottom.pageChange(0);
+            //   // print(core.collection.history.getAt(index));
+            // },
             delete: (){
               // core.listKeyHistory.currentState.removeItem(
               //   index,

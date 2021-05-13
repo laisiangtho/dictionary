@@ -18,24 +18,14 @@ class View extends _State {
         Bar(focusNode: focusNode, textController: textController, search: this.search),
         new SliverPadding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-          sliver: context.watch<NodeNotifier>().focus?suggestion:definition
+          sliver: context.watch<NodeNotifier>().focus?suggestionWidget:definitionWidget
         )
       ]
     );
   }
 
-  Widget get suggestion {
-    return ViewSuggestion(
-      query: context.watch<FormNotifier>().keyword,
-      search: this.search
-    );
-  }
-
-  Widget get definition {
-    return ViewResult(
-      query: context.watch<FormNotifier>().searchQuery,
-      search: this.search
-    );
-  }
+  // core.collection.notify.suggestQuery.value
+  Widget get suggestionWidget => ViewSuggestion(query: '',search: this.search);
+  Widget get definitionWidget => ViewResult(query: '',search: this.search);
 
 }

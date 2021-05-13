@@ -164,8 +164,8 @@ class __StoreState extends State<StoreView> {
             size: 35
           ):null,
           title: Text(
-            productDetails.title,//.replaceAll(RegExp(r'\(.+?\)$'), ""),
-            semanticsLabel: productDetails.title,
+            productDetails.title.replaceAll(RegExp(r'\(.+?\)$'), ""),
+            // semanticsLabel: productDetails.title,
             style: TextStyle(
               fontWeight: FontWeight.w400,
               color: Theme.of(context).colorScheme.primaryVariant,

@@ -93,8 +93,8 @@ mixin _Bar on _State {
     return Semantics(
       label: "Setting",
       child: Text(
-        core.env.name,
-        semanticsLabel: core.env.name,
+        core.collection.env.name,
+        semanticsLabel: core.collection.env.name,
         style: TextStyle(
           fontFamily: "sans-serif",
           // color: Color.lerp(Colors.white, Colors.white24, stretch),
