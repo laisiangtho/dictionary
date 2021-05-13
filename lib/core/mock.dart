@@ -1,191 +1,141 @@
 part of 'core.dart';
 
-Future<String> requestAPI(APIType id) async {
-  // for (var item in id.src) {
-  //   bool _validURL = Uri.parse(item).isAbsolute;
-  //   print('$item $_validURL');
-  //   if (_validURL) {
-  //     return UtilClient.request(item).then(
-  //       (body) => UtilDocument.decodeJSON(body)
-  //     );
-  //   } else {
-  //     return await UtilDocument.loadBundleAsString(item).then(
-  //       (e) => UtilDocument.decodeJSON(e)
-  //     );
-  //   }
-  // }
-  String item = id.src.first;
-  if (Uri.parse(item).isAbsolute) {
-    return await UtilClient.request(item);//.then(UtilDocument.decodeJSON);
-  } else {
-    return await UtilDocument.loadBundleAsString(item);//.then(UtilDocument.decodeJSON);
-  }
-}
-
-Future<Iterable<WordType>> wordCompute(APIType id) async {
-  Box<WordType> box = await Hive.openBox<WordType>(id.uid);
-  if (box.isEmpty){
-    final response = await requestAPI(id);
-    final parsed = await compute(wordParse, response);
-    await box.addAll(parsed);
-  }
-  return box.values;
-}
-List<WordType> wordParse(String response) {
-  final parsed = UtilDocument.decodeJSON(response).cast<Map<String, dynamic>>();
-  return parsed.map<WordType>((o) => WordType.fromJSON(o)).toList();
-}
-
-Future<Iterable<SenseType>> senseCompute(APIType id) async {
-  Box<SenseType> box = await Hive.openBox<SenseType>(id.uid);
-  if (box.isEmpty){
-    final response = await requestAPI(id);
-    final parsed = await compute(senseParse, response);
-    await box.addAll(parsed);
-  }
-  return box.values;
-}
-List<SenseType> senseParse(String response) {
-  final parsed = UtilDocument.decodeJSON(response).cast<Map<String, dynamic>>();
-  return parsed.map<SenseType>((o) => SenseType.fromJSON(o)).toList();
-}
-
-Future<Iterable<UsageType>> usageCompute(APIType id) async {
-  Box<UsageType> box = await Hive.openBox<UsageType>(id.uid);
-  if (box.isEmpty){
-    final response = await requestAPI(id);
-    final parsed = await compute(usageParse, response);
-    await box.addAll(parsed);
-  }
-  return box.values;
-}
-List<UsageType> usageParse(String response) {
-  final parsed = UtilDocument.decodeJSON(response).cast<Map<String, dynamic>>();
-  return parsed.map<UsageType>((o) => UsageType.fromJSON(o)).toList();
-}
-
-Future<Iterable<SynsetType>> synsetCompute(APIType id) async {
-  Box<SynsetType> box = await Hive.openBox<SynsetType>(id.uid);
-  if (box.isEmpty){
-    final response = await requestAPI(id);
-    final parsed = await compute(synsetParse, response);
-    await box.addAll(parsed);
-  }
-  return box.values;
-}
-List<SynsetType> synsetParse(String response) {
-  final parsed = UtilDocument.decodeJSON(response).cast<Map<String, dynamic>>();
-  return parsed.map<SynsetType>((o) => SynsetType.fromJSON(o)).toList();
-}
-
-Future<Iterable<SynmapType>> synmapCompute(APIType id) async {
-  Box<SynmapType> box = await Hive.openBox<SynmapType>(id.uid);
-  if (box.isEmpty){
-    final response = await requestAPI(id);
-    final parsed = await compute(synmapParse, response);
-    await box.addAll(parsed);
-  }
-  return box.values;
-}
-List<SynmapType> synmapParse(String response) {
-  final parsed = UtilDocument.decodeJSON(response).cast<Map<String, dynamic>>();
-  return parsed.map<SynmapType>((o) => SynmapType.fromJSON(o)).toList();
-}
-
-Future<Iterable<ThesaurusType>> thesaurusCompute(APIType id) async {
-  Box<ThesaurusType> box = await Hive.openBox<ThesaurusType>(id.uid);
-  if (box.isEmpty){
-    final response = await requestAPI(id);
-    final parsed = await compute(thesaurusParse, response);
-    await box.addAll(parsed);
-  }
-  return box.values;
-}
-List<ThesaurusType> thesaurusParse(String response) {
-  final parsed = UtilDocument.decodeJSON(response).cast<Map<String, dynamic>>();
-  return parsed.map<ThesaurusType>((o) => ThesaurusType.fromJSON(o)).toList();
-}
-
-
 mixin _Mock on _Collection {
 
-  Future<void> _environmentInit() async {
-    env = await UtilDocument.loadBundleAsString('assets/env-mock.json').then(
-      (e) => EnvironmentType.fromJSON(UtilDocument.decodeJSON(e))
-    );
+  Future<List<Map<String, Object>>> suggestionGenerate(String word) async {
+
+    // final List<Map<String, Object>> result = [
+    //   {"word","abc"} as Map
+    // ];
+    // result.add({"word","suggestion"} as Map);
+    // yield result;
+    final List<Map<String, Object>> result = await sql.suggestion(word);
+    // print(result.toString());
+    return result;
+    // result.first.values
+    // final abc = result.elementAt(0);
+    // final words = abc.values.first;
+    // print(words);
+    // final apple = this.suggestQuery.stream.toList();
+    // print(word);
+    //
+    // this.suggestList.add(result);
+    // this.suggestList.sink.add(result);
   }
 
-  Future<void> settingInit() async {
-    await _environmentInit();
-
-    Box<SettingType> box = await Hive.openBox<SettingType>(this.env.settingName);
-    SettingType active = box.get(this.env.settingKey,defaultValue: this.env.setting);
-
-    if (box.isEmpty){
-      debugPrint('Import ${env.settingName}');
-      box.put(this.env.settingKey,this.env.setting);
-    } else if (active.version != this.env.setting.version){
-      debugPrint('Upgrade ${env.settingName} ${this.env.setting.toJSON()}');
-      box.put(this.env.settingKey,active?.merge(this.env.setting));
-    } else {
-      debugPrint('Ok ${env.settingName}');
-    }
-    collection.setting = active;
-    // box.clear();
-  }
-
-  void _settingUpdate(SettingType data){
-    if (data != null) {
-      Hive.box<SettingType>(this.env.settingName).put(this.env.settingKey,data);
-    }
-  }
-
-  Future<void> historyInit() async {
-    collection.history = await Hive.openBox<String>('history');
-    // await collection.history.clear();
-  }
-
-  Future<void> wordInit() async {
-    final APIType id = this.apiName("word");
-    collection.word = await wordCompute(id);
-  }
-
-  Future<void> senseInit() async {
-    final APIType id = this.apiName("sense");
-    collection.sense = await senseCompute(id);
-  }
-
-  Future<void> usageInit() async {
-    final APIType id = this.apiName("usage");
-    collection.usage = await usageCompute(id);
-  }
-
-  Future<void> synsetInit() async {
-    final APIType id = this.apiName("synset");
-    collection.synset = await synsetCompute(id);
-  }
-
-  Future<void> synmapInit() async {
-    final APIType id = this.apiName("synmap");
-    collection.synmap = await synmapCompute(id);
-  }
-
-  Future<void> thesaurusInit() async {
-    final APIType id = this.apiName("thesaurus");
-    collection.thesaurus = await thesaurusCompute(id);
-  }
-
-  APIType apiName(String name) => this.env.api.firstWhere((e) => e.uid == name);
-
-  List<WordType> suggestion(String word) {
-    return collection.suggest(word);
-  }
-
-  List<ResultModel> definition(String word) {
+  /// TODO: definition on multi words
+  Future<List<Map<String, dynamic>>> definition(String word) async {
+    debugPrint('search start: $word');
     if (word.isNotEmpty && collection.setting.searchQuery != word){
       this._settingUpdate(collection.setting.copyWith(searchQuery: word));
     }
-    // if (this.collection.hasNotHistory(word)) this.collection.history.add(word);
-    return collection.search(word);
+    List<Map<String, Object>> raw = [];
+    List<Map<String, Object>> root;
+    List<Map<String, Object>> rawSense;
+
+    rawSense = await sql.search(word);
+    if (rawSense.isEmpty){
+      root = await sql.rootWord(word);
+      if (root.isNotEmpty){
+        final i = root.map((e) => e['word'].toString()).toSet().toList();
+        for (String e in i){
+          final r = await sql.search(e);
+          if (r.isNotEmpty){
+            raw.addAll(r);
+          }
+        }
+      }
+    } else {
+      root = await sql.baseWord(word);
+      raw.addAll(rawSense);
+    }
+    if (root.isNotEmpty){
+      final tmp = this.groupByBase(root);
+      raw.addAll(tmp);
+    }
+
+    final result = this.groupByWord(raw);
+
+    final words = raw.map((e) => e['word'].toString()).toSet().toList();
+    for (String str in words){
+      final thes = await sql.thesaurus(str);
+      if (thes.isNotEmpty){
+        final wordBlock = result.firstWhere((e) => e['word'] == str);
+        wordBlock['thesaurus'] = thes.map((e) => e['word'].toString()).toSet().toList();
+      }
+    }
+    // result.forEach((a1) {
+    //   debugPrint('word: ${a1["word"]}');
+    //   a1['sense'].forEach((a2) {
+    //     debugPrint(' pos: ${a2["pos"]}');
+    //     a2['clue'].forEach((a3) {
+    //       debugPrint('  def: $a3');
+    //     });
+    //   });
+    //   debugPrint('thesaurus: ${a1["thesaurus"]}');
+    // });
+
+    debugPrint('search end: $word');
+    return result;
   }
+
+  List<Map<String, dynamic>> groupByWord(List<Map<String, Object>> raw) {
+    return raw.fold(Map<String, List<dynamic>>(), (Map<String, List<dynamic>> a, b) {
+      a.putIfAbsent(b['word'], () => []).add(b);
+      return a;
+    }).values.map((e) =>{
+      'word': e.first['word'],
+      'sense': this.groupByPOS(e),
+      'thesaurus': []
+    }).toList();
+  }
+
+  List<Map<String, dynamic>> groupByPOS(List<dynamic> raw) {
+    return raw.fold(Map<int, List<Map<String, dynamic>>>(), (Map<int, List<Map<String, dynamic>>> a, b) {
+      a.putIfAbsent(b['wrte'], () => []).add(b);
+      return a;
+    }).values.map((e) => {
+      'pos': collection.env.grammar(e.first['wrte']).name,
+      'clue': this.groupSense(e)
+    }).toList();
+  }
+
+  List<Map<String, dynamic>> groupSense(List<Map<String, dynamic>> raw) {
+    final List<Map<String, dynamic>> result = [];
+    for (var row in raw) {
+      String mean;
+      List<String> exam = [];
+      if (row.containsKey('sense')){
+        if (row['exam'] !=null){
+          exam = row['exam'].split("\r\n");
+        }
+        mean = row['sense'];
+      } else {
+        final pos = collection.env.pos(row['dete']).name;
+        // final pos = collection.env.grammar(row['wrte']).name;
+        mean = '[~:${row['derived']}] ($pos)';
+      }
+      result.add({'mean':mean,'exam':exam});
+    }
+    return result;
+  }
+
+  List<Map<String, dynamic>> groupByBase(List<dynamic> raw) {
+    return raw.fold(Map<int, List<Map<String, dynamic>>>(), (Map<int, List<Map<String, dynamic>>> a, b) {
+      a.putIfAbsent(b['wrte'], () => []).add(b);
+      return a;
+    }).values.map((e) => {
+      'word': e.first['word'],
+      'wrte': e.first['wrte'],
+      'sense': e.map<String>(
+        (o) {
+          final _derived = o['derived'];
+          final _pos = collection.env.pos(o['dete']).name;
+          return '[~:$_derived] ($_pos)';
+        }
+      ).join('; '),
+      'exam': null
+    }).toList();
+  }
+
 }
