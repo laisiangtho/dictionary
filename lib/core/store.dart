@@ -187,7 +187,7 @@ class Store extends ChangeNotifier {
             return;
           }
         }
-        if (Platform.isAndroid) {
+        if (io.Platform.isAndroid) {
           if (!autoConsume && this.isConsume(purchaseDetails)) {
             await this.instance.consumePurchase(purchaseDetails);
           }
@@ -219,9 +219,9 @@ class Store extends ChangeNotifier {
   Future<bool> purchaseVerification(PurchaseDetails purchaseDetails) {
     // IMPORTANT!! Always verify a purchase before delivering the product.
     // For the purpose of an example, we directly return true.
-    // if (this.isConsume(purchaseDetails)) {
-    //   return Future<bool>.value(false);
-    // }
+    if (this.isConsume(purchaseDetails)) {
+      return Future<bool>.value(false);
+    }
     return Future<bool>.value(true);
   }
 
@@ -264,7 +264,7 @@ class Store extends ChangeNotifier {
     PurchaseParam purchaseParam = PurchaseParam(
         productDetails: productDetails,
         applicationUserName: null,
-        changeSubscriptionParam: Platform.isAndroid &&
+        changeSubscriptionParam: io.Platform.isAndroid &&
                 oldSubscription != null
             ? ChangeSubscriptionParam(
                 oldPurchaseDetails: oldSubscription,
@@ -272,7 +272,7 @@ class Store extends ChangeNotifier {
                     ProrationMode.immediateWithTimeProration)
             : null);
     if (productDetails.id == this.consumableId) {
-      this.instance.buyConsumable(purchaseParam: purchaseParam, autoConsume: this.autoConsume || Platform.isIOS);
+      this.instance.buyConsumable(purchaseParam: purchaseParam, autoConsume: this.autoConsume || io.Platform.isIOS);
     } else {
       this.instance.buyNonConsumable(purchaseParam: purchaseParam);
     }
