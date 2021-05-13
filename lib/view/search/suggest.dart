@@ -8,42 +8,55 @@ class ViewSuggestion extends StatelessWidget {
 
   final core = Core();
 
-  @override
-  Widget build(BuildContext context) {
-    if (this.query.isEmpty) return this.noQuery;
 
-    try {
-      if (core.suggestion(this.query).length > 0) {
-        return _suggestionKeyword(core.collection.suggestion);
-      } else if (this.query.isEmpty) {
-        return this.noQuery;
-      } else {
-        return WidgetMessage(key: this.key,message: this.query);
-      }
-    } catch (e) {
-      return WidgetMessage(key: this.key,message: '???');
-    }
+
+  @override
+  Widget build(BuildContext context){
+    // if (this.query.isEmpty) return this.noQuery;
+
+    // try {
+    //   if (core.suggestion(this.query).length > 0) {
+    //     return suggestion(core.collection.suggestion);
+    //   } else if (this.query.isEmpty) {
+    //     return this.noQuery;
+    //   } else {
+    //     return WidgetMessage(key: this.key,message: this.query);
+    //   }
+    // } catch (e) {
+    //   return WidgetMessage(key: this.key,message: '???');
+    // }
+
+    return ValueListenableBuilder<List<Map<String, Object>>>(
+      key: this.key,
+      valueListenable: core.collection.notify.suggestResult,
+      builder: (BuildContext context, List<Map<String, dynamic>> value, Widget child) => this.suggestion(value),
+      child: noQuery,
+    );
   }
 
-  Widget get noQuery => WidgetMessage(key: this.key,message: 'suggestion');
+  Widget get noQuery => WidgetMessage(message: 'suggestion');
 
-  Widget _suggestionKeyword(List<WordType> _r) {
+  Widget suggestion(List<Map<String, Object>> _r) {
     return new SliverList(
-      key: this.key,
+      // key: this.key,
       delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int i) => SuggestionList(query: this.query, search: this.search, index: i, data: _r.elementAt(i)),
+        (BuildContext context, int i) => _SuggestionList(query: core.collection.notify.suggestQuery.value, search: this.search, index: i, data: _r.elementAt(i)),
         childCount: _r.length
       )
     );
   }
 }
 
-class SuggestionList extends StatelessWidget {
-  SuggestionList({Key key,this.query, this.search, this.data, this.index}): super(key: key);
+class _SuggestionList extends StatelessWidget {
+  _SuggestionList({Key key,this.query, this.search, this.data, this.index}): super(key: key);
   final String query;
   final void Function(BuildContext context, String word) search;
-  final WordType data;
+  final Map<String, Object> data;
   final int index;
+
+  String get word => data.values.first.toString();
+  int get hightlight => this.query.length < word.length?this.query.length:word.length;
+  // String get abc => 'asf';
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +80,7 @@ class SuggestionList extends StatelessWidget {
   Widget container({BuildContext context}){
     return CupertinoButton(
       padding: EdgeInsets.symmetric(horizontal:13,vertical:18),
-      onPressed: () => this.search(context, data.v),
+      onPressed: () => this.search(context, word),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,20 +101,21 @@ class SuggestionList extends StatelessWidget {
             child: RichText(
               strutStyle: StrutStyle(height: 1.0),
               text: TextSpan(
-                text: data.v.substring(0, this.query.length),
-                semanticsLabel: data.v,
+                text: word.substring(0, hightlight),
+                semanticsLabel: word,
                 style: TextStyle(
-                  // fontSize: 20,
+                  fontSize: 20,
                   color: Theme.of(context).textTheme.caption.color,
                   fontWeight: FontWeight.w300
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: data.v.substring(this.query.length),
+                    text: word.substring(hightlight),
                     style: TextStyle(
                       // color: Theme.of(context).textTheme.caption.color,
-                      color: Theme.of(context).colorScheme.primaryVariant,
-                      fontWeight: FontWeight.w400
+                      // color: Theme.of(context).colorScheme.primaryVariant,
+                      color: Theme.of(context).primaryTextTheme.button.color
+                      // fontWeight: FontWeight.w400
                     )
                   )
                 ]

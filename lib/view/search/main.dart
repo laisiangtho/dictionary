@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:lidea/scroll.dart';
 import 'package:lidea/provider.dart';
-// import 'package:flutter/foundation.dart';
+
 import 'package:dictionary/widget.dart';
 import 'package:dictionary/core.dart';
-import 'package:dictionary/model.dart';
+// import 'package:dictionary/model.dart';
 import 'package:dictionary/icon.dart';
 import 'package:dictionary/notifier.dart';
 part 'view.dart';
@@ -34,8 +34,13 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    this.textController.text = context.read<FormNotifier>().keyword;
-    // textController.addListener(() {});
+    // this.textController.text = core.collection.notify.searchQuery.value ;
+    // this.textController.text = '';
+    textController.addListener(() async {
+      final word = textController.text.replaceAll(RegExp(' +'), ' ').trim();
+      core.collection.notify.suggestQuery.value = word;
+      core.collection.notify.suggestResult.value = await core.suggestionGenerate(word);
+    });
     // focusNode.addListener(() {
     //   if(focusNode.hasFocus) {
     //     textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);
@@ -48,6 +53,8 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     controller.dispose();
     focusNode.dispose();
     textController.dispose();
+    core.collection.notify.suggestQuery.dispose();
+    core.collection.notify.suggestResult.dispose();
     super.dispose();
   }
 
@@ -57,7 +64,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   }
 
   // NOTE: used in bar, suggest & result
-  void search(BuildContext context, String word) {
+  void search(BuildContext context, String word) async {
     if (word.isNotEmpty && core.collection.hasNotHistory(word)){
       final index = core.collection.history.length;
       core.collection.history.add(word);
@@ -71,15 +78,19 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     // context.read<FormNotifier>().searchQuery = word;
     // context.read<FormNotifier>().searchQuery = word;
     // Provider.of<FormNotifier>(context,listen: false).searchQuery = word;
-    FormNotifier form = Provider.of<FormNotifier>(context,listen: false);
-    if (form.keyword != word) {
-      form.keyword = word;
-    }
+    // FormNotifier form = Provider.of<FormNotifier>(context,listen: false);
+    // if (form.keyword != word) {
+    //   form.keyword = word;
+    // }
+    core.collection.notify.suggestQuery.value = word;
 
-    if (form.searchQuery != word && word.isNotEmpty) {
-      form.searchQuery = word;
-      core.analyticsSearch(word);
-    }
+    // if (form.searchQuery != word && word.isNotEmpty) {
+    //   form.searchQuery = word;
+    //   core.analyticsSearch(word);
+    // }
+    core.collection.notify.searchQuery.value = word;
+    // this.textController.text = word;
+    core.collection.notify.searchResult.value = await core.definition(word);
     controller.animateTo(
       controller.position.minScrollExtent,
       curve: Curves.easeOut,

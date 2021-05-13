@@ -48,19 +48,7 @@ class _BarState extends State<Bar> {
           )
         ]
       ),
-      child: sf(child)
-    );
-  }
-
-  Widget sf(Widget child){
-    return Consumer<FormNotifier>(
-      builder: (BuildContext context, FormNotifier form, Widget _) {
-        // var abcs = Provider.of<FormNotifier>(context,listen: false);
-        if (form.keyword != widget.textController.text){
-          widget.textController.text = form.keyword;
-        }
-        return child;
-      }
+      child: child
     );
   }
 
@@ -101,7 +89,7 @@ class _BarState extends State<Bar> {
                   enabled: true,
                   label: "Cancel",
                   child: new CupertinoButton(
-                    onPressed: () => widget.search(context,context.read<FormNotifier>().searchQuery),
+                    onPressed: () => widget.search(context,core.collection.notify.searchQuery.value),
                     padding: EdgeInsets.zero,
                     minSize: 35.0,
                     child:Text(
@@ -119,9 +107,6 @@ class _BarState extends State<Bar> {
   }
 
   Widget form(BuildContext context, double shrink, double stretch){
-    // final isFocus = context.watch<NodeNotifier>().focus;
-    // final clearActive = isFocus && context.watch<FormNotifier>().keyword.isNotEmpty;
-    // final clearActive = isFocus && widget.textController.text.isNotEmpty;
     return Focus(
       canRequestFocus:true,
       onFocusChange: (hasFocus) {
@@ -136,9 +121,7 @@ class _BarState extends State<Bar> {
           focusNode: widget.focusNode,
           textInputAction: TextInputAction.search,
           keyboardType: TextInputType.text,
-          onChanged: (String word){
-            context.read<FormNotifier>().keyword = word.replaceAll(RegExp(' +'), ' ').trim();
-          },
+          // onChanged: (String word) => widget.textController.text = word.replaceAll(RegExp(' +'), ' ').trim(),
           onFieldSubmitted: (String word) => widget.search(context,word.replaceAll(RegExp(' +'), ' ').trim()),
           // autofocus: true,
           enableInteractiveSelection: true,
@@ -149,7 +132,7 @@ class _BarState extends State<Bar> {
             fontFamily: 'sans-serif',
             // fontSize: (10+(15-10)*stretch),
             fontWeight: FontWeight.w300,
-            height: 1.0,
+            height: 1.1,
             // fontSize: 15 + (2*stretch),
             // fontSize: 17 + (2*shrink),
             fontSize: 20 + (2*shrink),
@@ -161,24 +144,26 @@ class _BarState extends State<Bar> {
             suffixIcon: Opacity(
               opacity: shrink,
               child: SizedBox.shrink(
-                // context.read<NodeNotifier>().focus && this.textController.value.isNotEmpty)
-                child: (context.watch<NodeNotifier>().focus && context.watch<FormNotifier>().keyword.isNotEmpty)?Semantics(
-                  label: "Clear",
-                  child: new CupertinoButton (
-                    onPressed: () {
-                      widget.textController.clear();
-                      context.read<FormNotifier>().keyword = "";
-                    },
-                    // padding: EdgeInsets.zero,
-                    padding: EdgeInsets.symmetric(horizontal: 1,vertical: (10*shrink)),
-                    child:Icon(
-                    CupertinoIcons.xmark_circle_fill,
-                      color:Colors.grey,
-                      size: 20,
-                      semanticLabel: "input"
-                    ),
-                  )
-                ):null
+                child: ValueListenableBuilder<String>(
+                  valueListenable: core.collection.notify.suggestQuery,
+                  builder: (context, value, _) => (context.watch<NodeNotifier>().focus && value.isNotEmpty)?_:Container(),
+                  child: Semantics(
+                    label: "Clear",
+                    child: new CupertinoButton (
+                      onPressed: () {
+                        widget.textController.clear();
+                      },
+                      // padding: EdgeInsets.zero,
+                      padding: EdgeInsets.symmetric(horizontal: 1,vertical: (10*shrink)),
+                      child:Icon(
+                      CupertinoIcons.xmark_circle_fill,
+                        color:Colors.grey,
+                        size: 20,
+                        semanticLabel: "input"
+                      ),
+                    )
+                  ),
+                )
               )
             ),
             prefixIcon: Icon(
@@ -198,7 +183,7 @@ class _BarState extends State<Bar> {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).backgroundColor.withOpacity(shrink),width: 0.9),
               // borderSide: BorderSide(color: Theme.of(context).shadowColor.withOpacity(shrink),width: 0.3),
-              borderRadius: BorderRadius.all(Radius.circular(7)),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.red, width: 3.0),
