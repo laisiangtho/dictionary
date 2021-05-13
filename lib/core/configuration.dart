@@ -1,7 +1,7 @@
 part of 'core.dart';
 
 mixin _Configuration  {
-  EnvironmentType env;
+  SQLite sql;
   final Collection collection = Collection.init();
   // final Store store = new Store();
   Store store;
