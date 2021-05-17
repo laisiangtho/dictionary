@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class WidgetMsg extends StatelessWidget {
   final String message;
-  WidgetMsg({Key key, this.message:'?'}): super(key: key);
+  WidgetMsg({Key? key, this.message:'?'}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class WidgetMsg extends StatelessWidget {
 
 class WidgetMessage extends StatelessWidget {
   final String message;
-  WidgetMessage({Key key, this.message:'?'}): super(key: key);
+  WidgetMessage({Key? key, this.message:'?'}): super(key: key);
 
 
   @override

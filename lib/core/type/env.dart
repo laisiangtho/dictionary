@@ -1,3 +1,4 @@
+
 part of "root.dart";
 
 // NOTE: only type
@@ -14,23 +15,25 @@ class EnvironmentType {
 
   List<SynsetType> synset;
   List<SynmapType> synmap;
+  TokenType token;
 
   List<APIType> api;
   List<ProductsType> products;
 
   EnvironmentType({
-    this.name,
-    this.description,
-    this.package,
-    this.version,
-    this.buildNumber,
-    this.settingName,
-    this.settingKey,
-    this.setting,
-    this.synset,
-    this.synmap,
-    this.api,
-    this.products
+    required this.name,
+    required this.description,
+    required this.package,
+    required this.version,
+    required this.buildNumber,
+    required this.settingName,
+    required this.settingKey,
+    required this.setting,
+    required this.synset,
+    required this.synmap,
+    required this.api,
+    required this.token,
+    required this.products
   });
 
   factory EnvironmentType.fromJSON(Map<String, dynamic> o) {
@@ -46,6 +49,7 @@ class EnvironmentType {
       synset: o["synset"].map<SynsetType>((o) => SynsetType.fromJSON(o)).toList(),
       synmap: o["synmap"].map<SynmapType>((o) => SynmapType.fromJSON(o)).toList(),
       api: o['api'].map<APIType>((e) => APIType.fromJSON(e)).toList(),
+      token: TokenType.fromJSON(o["token"]),
       products: o['products'].map<ProductsType>((e) => ProductsType.fromJSON(e)).toList()
     );
   }
@@ -60,15 +64,29 @@ class EnvironmentType {
       "settingName":settingName,
       "settingKey":settingKey,
       "setting":setting.toString(),
+      "token":token.toString(),
       "api":api.map((e)=>e.toJSON()).toList(),
       "products":products.map((e)=>e.toJSON()).toList()
     };
   }
 
-  APIType get word => this.api.firstWhere((e) => e.uid == 'word');
-  APIType get sense => this.api.firstWhere((e) => e.uid == 'sense');
-  APIType get derive => this.api.firstWhere((e) => e.uid == 'derive');
-  APIType get thesaurus => this.api.firstWhere((e) => e.uid == 'thesaurus');
+  // APIType get word => this.api.firstWhere((e) => e.uid == 'word',orElse: () => null);
+  // APIType get sense => this.api.firstWhere((e) => e.uid == 'sense',orElse: () => null);
+  // APIType get derive => this.api.firstWhere((e) => e.uid == 'derive',orElse: () => null);
+  // APIType get thesaurus => this.api.firstWhere((e) => e.uid == 'thesaurus',orElse: () => null);
+
+  /// Every database
+  Iterable<APIType> get listOfDatabase => this.api.where((e) => e.src.length > 0);
+  /// Every table
+  // Iterable<APIType> get listOfTable => this.api.where((e) => e.table.isNotEmpty);
+
+  /// the primary database and table
+  // APIType get primary => this.api.firstWhere((e) => e.isMain, orElse: () => null!);
+  APIType get primary => this.api.firstWhere((e) => e.isMain);
+  /// the primary database and it table except primary table
+  Iterable<APIType> get children => this.api.where((e) => e.isChild);
+  /// Other database to attached
+  Iterable<APIType> get secondary => this.api.where((e) => e.isAttach);
 
   SynsetType grammar(int id) => this.synset.firstWhere((e) => e.id == id);
   SynmapType pos(int id) => this.synmap.firstWhere((e) => e.id == id);
@@ -77,46 +95,98 @@ class EnvironmentType {
 // NOTE: only type, EnvironmentType child
 class APIType {
   String uid;
-  String tableName;
+  String table;
+  int kind;
   Map<dynamic, String> query;
   List<String> src;
 
   APIType({
-    this.uid,
-    this.tableName,
-    this.query,
-    this.src
+    required this.uid,
+    required this.table,
+    required this.kind,
+    required this.query,
+    required this.src
   });
   // map<K2, V2>((K, V) => MapEntry<K2, V2>) => Map<K2, V2>)
 
   factory APIType.fromJSON(Map<String, dynamic> o) {
     return APIType(
       uid: o["uid"] as String,
-      tableName: o["tableName"] as String,
+      table: o["table"]??'',
+      kind: (o['kind']??0) as int,
       query: (o['query']??{}).map<dynamic, String>(
-        (k, v) => MapEntry(k, v.toString().replaceFirst('??', o["tableName"]))
+        (k, v) => MapEntry(k, v.toString())
       ),
-      src: List.from((o['src']??[]).map((e)=>e.split('').reversed.join())),
+      // query: (o['query']??{}).map<dynamic, String>(
+      //   (k, v) => MapEntry(k, v.toString().replaceFirst('??', _tableName))
+      // ),
+      // NOTE: .split('').reverse().join('')
+      src: List.from(
+        (o['src']??[]).map<String>(
+          (e) => e.toString().gitHack()
+        )
+      )
+      // child: List.from((o['child']??[]).map<APIType>((e) => APIType.fromJSON(e)))
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
       "uid":uid,
-      "tableName":tableName,
+      "table":table,
+      "kind":kind,
       "query":query,
-      "src":src.toList()
+      "src":src.toList(),
+      // "child":child.map((e)=>e.toJSON()).toList()
     };
   }
 
   String get db => '$uid.db';
-  Iterable<MapEntry<dynamic, String>> get listQuery => query.entries;
-  // String get createTable => listQuery.firstWhere((e) => e.key == 'create').value;
-  // String get dropTable => listQuery.firstWhere((e) => e.key == 'drop').value;
-  // String get deleteTable => listQuery.firstWhere((e) => e.key == 'delete').value;
 
-  String get importQuery => listQuery.firstWhere((e) => e.key == 'import').value;
-  String get createIndex => listQuery.firstWhere((e) => e.key == 'createIndex').value;
+  // isMain == true is also built-in as bundle
+  bool get isMain => kind == 1 && src.length > 0;
+  bool get isChild => kind == 1 && src.length == 0;
+  bool get isAttach => kind == 0 && src.length > 0;
+
+  Iterable<MapEntry<dynamic, String>> get listQuery => query.entries;
+
+  // Table name alias
+  String get tableName => isAttach?'$uid.$table':table;
+  // String get createIndex => listQuery.firstWhere((e) => e.key == 'createIndex',orElse: () => null)?.value?.replaceFirst('??', tableName);
+  String? get createIndex {
+    final val = listQuery.firstWhere((e) => e.key == 'createIndex');
+
+    if (val.value.isNotEmpty) {
+      return val.value.replaceAll('?!', tableName).replaceAll('#', uid).replaceAll('??', table);
+    }
+    return null;
+  }
+}
+
+// NOTE: only type, EnvironmentType child
+class TokenType {
+  String key;
+  String id;
+
+  TokenType({
+    required this.key,
+    required this.id
+  });
+
+  factory TokenType.fromJSON(Map<String, dynamic> o) {
+    return TokenType(
+      key: o["key"].toString().bracketsHack(),
+      id: o["id"].toString().bracketsHack()
+    );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "key":key,
+      "id":id
+    };
+  }
+
 }
 
 // NOTE: only type, EnvironmentType child
@@ -125,8 +195,8 @@ class HistoryType {
   String word;
 
   HistoryType({
-    this.id,
-    this.word
+    required this.id,
+    required this.word
   });
 
   factory HistoryType.fromJSON(Map<String, dynamic> o) {
@@ -151,9 +221,9 @@ class ProductsType {
   String type;
 
   ProductsType({
-    this.cart,
-    this.name,
-    this.type,
+    required this.cart,
+    required this.name,
+    required this.type,
   });
 
   factory ProductsType.fromJSON(Map<String, dynamic> o) {
@@ -178,7 +248,7 @@ class SynsetType {
   final int id;
   final String name;
   final String shortname;
-  SynsetType({this.id, this.name, this.shortname});
+  SynsetType({required this.id, required this.name, required this.shortname});
 
   factory SynsetType.fromJSON(Map<String, dynamic> o) {
     return SynsetType(
@@ -202,7 +272,7 @@ class SynmapType {
   final int id;
   final int type;
   final String name;
-  SynmapType({this.id, this.type, this.name});
+  SynmapType({required this.id, required this.type, required this.name});
 
   factory SynmapType.fromJSON(Map<String, dynamic> o) {
     return SynmapType(

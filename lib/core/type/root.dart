@@ -1,6 +1,7 @@
 // import 'dart:async';
 import 'package:flutter/foundation.dart';
 import "package:hive/hive.dart";
+import "package:lidea/extension.dart";
 
 part 'adapter/setting.dart';
 // part 'adapter/word.dart';
@@ -18,17 +19,17 @@ part "notify.dart";
 @HiveType(typeId: 0)
 class SettingType {
   @HiveField(0)
-  int version;
+  int? version;
 
   // 0 = system 1 = light 2 = dark
   @HiveField(1)
-  int mode;
+  int? mode;
 
   @HiveField(2)
-  double fontSize;
+  double? fontSize;
 
   @HiveField(3)
-  String searchQuery;
+  String? searchQuery;
 
   SettingType({
     this.version:0,
@@ -65,10 +66,10 @@ class SettingType {
   }
 
   SettingType copyWith({
-    int version,
-    int mode,
-    double fontSize,
-    String searchQuery,
+    int? version,
+    int? mode,
+    double? fontSize,
+    String? searchQuery,
   }) {
     return SettingType(
       version: version??this.version,
@@ -83,10 +84,10 @@ class SettingType {
 @HiveType(typeId: 7)
 class StoreType {
   @HiveField(0)
-  String name;
+  String? name;
 
   @HiveField(1)
-  String type;
+  String? type;
 
   StoreType({
     this.name,

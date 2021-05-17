@@ -6,12 +6,12 @@ mixin _Bar on _State {
     return new SliverPersistentHeader(
       floating:true,
       pinned: true,
-      delegate: new ScrollHeaderDelegate(_barMain,maxHeight: 120)
+      delegate: new ViewHeaderDelegate(_barMain,maxHeight: 120)
       // delegate: new ScrollPageBarDelegate(bar)
     );
   }
 
-  Widget _barDecoration({double stretch, Widget child}){
+  Widget _barDecoration({required double stretch, required Widget child}){
     return Container(
       decoration: BoxDecoration(
         // color: this.backgroundColor??Theme.of(context).primaryColor,
@@ -57,7 +57,7 @@ mixin _Bar on _State {
           //   )
           // ),
           Align(
-            alignment: Alignment.lerp(Alignment(-0.8,0.2),Alignment(-0.7,0), stretch),
+            alignment: Alignment.lerp(Alignment(-0.8,0.2),Alignment(-0.7,0), stretch)!,
             // alignment: Alignment(-.9,0),
             child: _barTitle(stretch)
           ),
@@ -93,8 +93,8 @@ mixin _Bar on _State {
     return Semantics(
       label: "Setting",
       child: Text(
-        core.collection.env.name,
-        semanticsLabel: core.collection.env.name,
+        core.collection.env!.name,
+        semanticsLabel: core.collection.env!.name,
         style: TextStyle(
           fontFamily: "sans-serif",
           // color: Color.lerp(Colors.white, Colors.white24, stretch),

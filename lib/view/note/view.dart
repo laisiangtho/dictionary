@@ -4,9 +4,9 @@ class View extends _State with _Bar {
 
   @override
   Widget build(BuildContext context) {
-    return new ScrollPage(
+    return new ViewPage(
       key: scaffoldKey,
-      controller: controller,
+      // controller: controller,
       child: _body(),
     );
   }
@@ -19,13 +19,13 @@ class View extends _State with _Bar {
         sliverPersistentHeader(),
         new SliverAnimatedList(
           key: core.listKeyHistory,
-          initialItemCount: core.collection.history.length,
+          initialItemCount: core.collection.history!.length,
           itemBuilder: (BuildContext _, int index, Animation<double> animation) => HistoryItem(
             key: ValueKey(index),
             animation: animation,
-            word:core.collection.history.getAt(index),
+            word:core.collection.history!.getAt(index)!,
             index: index,
-            launch: () => this.search(core.collection.history.getAt(index)),
+            launch: () => this.search(core.collection.history!.getAt(index)!),
             // launch: () {
             //   // FormNotifier form = Provider.of<FormNotifier>(context,listen: false);
             //   // form.searchQuery = core.collection.history.getAt(index);
@@ -41,7 +41,7 @@ class View extends _State with _Bar {
               SliverAnimatedList.of(_).removeItem(index,
                 (_, animation) => HistoryItem(key:ValueKey(index),index: index, animation: animation, word: "",)
               );
-              core.collection.history.deleteAt(index);
+              core.collection.history!.deleteAt(index);
             }
           )
         )
@@ -53,18 +53,18 @@ class View extends _State with _Bar {
 
 class HistoryItem extends StatefulWidget {
   const HistoryItem({
-    Key key,
-    this.index,
-    this.word,
+    Key? key,
+    required this.index,
+    required this.word,
     this.delete,
     this.launch,
-    this.animation,
+    required this.animation,
   }) : super(key: key);
 
   final int index;
   final String word;
-  final void Function() delete;
-  final void Function() launch;
+  final void Function()? delete;
+  final void Function()? launch;
   final Animation<double> animation;
 
   @override
@@ -105,7 +105,7 @@ class _HistoryItemState extends State<HistoryItem> {
     );
   }
 
-  Widget decoration({Widget child}){
+  Widget decoration({required Widget child}){
     return Container(
       margin: EdgeInsets.symmetric(horizontal:0,vertical:0.2),
       decoration: BoxDecoration(

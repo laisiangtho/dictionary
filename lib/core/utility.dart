@@ -1,4 +1,4 @@
-part of 'core.dart';
+part of 'main.dart';
 
 mixin _Utility {
   final UtilAnalytics utilAnalytics = new UtilAnalytics();

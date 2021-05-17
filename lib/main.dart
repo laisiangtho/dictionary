@@ -2,32 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
+
+
+// import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 import 'package:lidea/idea.dart';
+// import 'package:lidea/connectivity.dart';
 
 import 'package:dictionary/theme.dart';
-import 'package:dictionary/view/app.dart';
+// import 'package:dictionary/view/app.dart';
+import 'package:dictionary/view/cart/main.dart';
 
+const bool isProduction = bool.fromEnvironment('dart.vm.product');
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  InAppPurchaseConnection.enablePendingPurchases();
+
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+  }
+
+  if (isProduction) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
   return runApp(Dictionary());
 }
 
 class Dictionary extends StatelessWidget {
-  Dictionary({Key key, this.initialRoute}) : super(key: key);
+  Dictionary({Key? key, this.initialRoute}) : super(key: key);
 
-  final String initialRoute;
+  final String? initialRoute;
 
   @override
   Widget build(BuildContext context){
     return IdeaModel(
       initialModel: IdeaTheme(
         themeMode: ThemeMode.system,
-        textScaleFactor: systemTextScaleFactorOption,
+        textFactor: systemTextScaleFactorOption,
         customTextDirection: CustomTextDirection.localeBased,
         locale: null,
+        timeDilation: timeDilation,
         platform: defaultTargetPlatform,
         isTesting: true
       ),
@@ -60,7 +75,7 @@ class Dictionary extends StatelessWidget {
           // supportedLocales: GalleryLocalizations.supportedLocales,
           locale: IdeaTheme.of(context).locale,
           localeResolutionCallback: (locale, supportedLocales) => locale,
-          initialRoute: initialRoute,
+          // initialRoute: initialRoute,
           onGenerateRoute: (RouteSettings settings) => MaterialPageRoute<void>(
             builder: (context) => ApplyTextOptions(
               child: AppMain(key: key)
@@ -73,7 +88,8 @@ class Dictionary extends StatelessWidget {
     );
   }
 
-  Widget uiOverlayStyle({Brightness brightness, bool has, Widget child}){
+  // Widget uiOverlayStyle({Brightness brightness, bool has, Widget child}){
+  Widget uiOverlayStyle({required Brightness brightness, required bool has, required Widget child}){
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,

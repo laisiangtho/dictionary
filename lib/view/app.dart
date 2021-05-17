@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 
 import 'package:lidea/provider.dart';
-import 'package:lidea/scroll.dart';
+// import 'package:lidea/scroll.dart';
+import 'package:lidea/view.dart';
 
 import 'package:dictionary/notifier.dart';
 import 'package:dictionary/core.dart';
@@ -14,14 +15,14 @@ import 'package:dictionary/icon.dart';
 
 import 'package:dictionary/view/search/main.dart' as Home;
 import 'package:dictionary/view/note/main.dart' as Note;
-// import 'package:dictionary/view/more/main.dart' as More;
-import 'package:dictionary/view/app.nestedScroll.dart' as More;
+import 'package:dictionary/view/more/main.dart' as More;
+// import 'package:dictionary/view/app.nestedScroll.dart' as More;
 
 part 'app.launcher.dart';
 part 'app.view.dart';
 
 class AppMain extends StatefulWidget {
-  AppMain({Key key}) : super(key: key);
+  AppMain({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => AppView();
 }
@@ -31,6 +32,7 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
   final pageController = PageController(keepPage: true);
   final _controller = ScrollController();
   final core = Core();
+  final viewNotifyNavigation = ViewNotify.navigation;
 
   final GlobalKey<Home.View> _home = GlobalKey<Home.View>();
   final GlobalKey<Note.View> _note = GlobalKey<Note.View>();
@@ -41,9 +43,9 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
   final moreKey = UniqueKey();
 
   final List<Widget> pageView = [];
-  final List<ModelPage> pageButton = [];
+  final List<ViewNavigationModel> pageButton = [];
 
-  Future<void> initiator;
+  late Future<void> initiator;
 
   @override
   void initState() {
@@ -52,12 +54,12 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
     // initiator = new Future.delayed(new Duration(seconds: 1));
     if (pageView.length == 0){
       pageButton.addAll([
-        ModelPage(icon:CustomIcon.chapter_previous, name:"Previous", description: "Previous search", action: historyPrevious ),
-        ModelPage(icon:CustomIcon.search, name:"Home", description: "Search dictionary", key: 0),
-        ModelPage(icon:CustomIcon.chapter_next, name:"Next", description: "Next search", action: historyNext),
+        ViewNavigationModel(icon:CustomIcon.chapter_previous, name:"Previous", description: "Previous search", action: historyPrevious ),
+        ViewNavigationModel(icon:CustomIcon.search, name:"Home", description: "Search dictionary", key: 0, action: null),
+        ViewNavigationModel(icon:CustomIcon.chapter_next, name:"Next", description: "Next search", action: historyNext),
 
-        ModelPage(icon:CustomIcon.layers, name:"History", description: "Recent searches", key: 1),
-        ModelPage(icon:CustomIcon.dot_horiz, name:"More", description: "More information", key: 2),
+        ViewNavigationModel(icon:CustomIcon.layers, name:"History", description: "Recent searches", key: 1, action: null),
+        ViewNavigationModel(icon:CustomIcon.dot_horiz, name:"More", description: "More information", key: 2, action: null),
       ]);
       pageView.addAll([
         WidgetKeepAlive(key:homeKey, child: new Home.Main(key: _home)),
@@ -67,10 +69,15 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
       ]);
     }
 
-    _controller.master.bottom.pageListener((int index){
+    // viewNotifyNavigation.addListener((){
+    //   print('index change: ${viewNotifyNavigation.value}');
+    // });
+    viewNotifyNavigation.addListener((){
+      final index = viewNotifyNavigation.value;
+      print('index change: ${viewNotifyNavigation.value}');
       // navigator.currentState.pushReplacementNamed(index.toString());
 
-      ModelPage page = pageButton.firstWhere((e) => e?.key == index, orElse: () => pageButton.first);
+      ViewNavigationModel page = pageButton.firstWhere((e) => e?.key == index, orElse: () => pageButton.first);
       // NOTE: check State isMounted
       // if(page.key.currentState != null){
       //   page.key.currentState.setState(() {});
@@ -92,7 +99,7 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
 
   @override
   void dispose() {
-    core.store.subscription.cancel();
+    // core.store?.subscription?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -103,7 +110,8 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
   }
 
   void _navView(int index){
-    _controller.master.bottom.pageChange(index);
+    // _controller.master.bottom.pageChange(index);
+    viewNotifyNavigation.value = index;
   }
 
   void historyPrevious(BuildContext context){

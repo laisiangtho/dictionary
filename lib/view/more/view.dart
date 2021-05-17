@@ -5,12 +5,10 @@ class View extends _State with _Bar {
   @override
   Widget build(BuildContext context) {
     // super.build(context);
-    return Scaffold(
+    return ViewPage(
       key: scaffoldKey,
-      body: ScrollPage(
-        controller: controller,
-        child: _body()
-      )
+      // controller: controller,
+      child: _body()
     );
   }
 

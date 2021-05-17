@@ -3,7 +3,7 @@ part of 'app.dart';
 class ScreenLauncher extends StatelessWidget {
   final String message;
 
-  ScreenLauncher({this.message});
+  ScreenLauncher({this.message:'?'});
 
   // A comprehensive Myanmar online dictionary
 
@@ -23,7 +23,7 @@ class ScreenLauncher extends StatelessWidget {
                   text: '"',
                   semanticsLabel: "open quotation mark",
                   style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.button.color,
+                    color: Theme.of(context).primaryTextTheme.button!.color,
                     fontSize: 25
                   ),
                   children: <TextSpan>[
@@ -78,14 +78,14 @@ class ScreenLauncher extends StatelessWidget {
               label: "Progress",
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical:50),
-                child: ValueListenableBuilder<double>(
+                child: ValueListenableBuilder<double?>(
                   valueListenable: Core.instance.collection.notify.progress,
                   builder: (context, value, _)  => CircularProgressIndicator(
                     semanticsLabel: 'percentage',
                     semanticsValue: value.toString(),
                     strokeWidth: 2.0,
                     value: value,
-                    valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryTextTheme.button.color),
+                    valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryTextTheme.button!.color!),
                   )
                 )
               )

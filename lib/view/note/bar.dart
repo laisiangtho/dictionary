@@ -6,12 +6,12 @@ mixin _Bar on _State {
     return new SliverPersistentHeader(
       floating:true,
       pinned: true,
-      delegate: new ScrollHeaderDelegate(_barMain)
+      delegate: new ViewHeaderDelegate(_barMain)
       // delegate: new ScrollPageBarDelegate(bar)
     );
   }
 
-  Widget _barDecoration({double stretch, Widget child}){
+  Widget _barDecoration({required double stretch, required Widget child}){
     return Container(
       decoration: BoxDecoration(
         // color: this.backgroundColor??Theme.of(context).primaryColor,
@@ -51,8 +51,8 @@ mixin _Bar on _State {
           Expanded(
             flex:0,
             child: ValueListenableBuilder(
-              valueListenable: core.collection.history.listenable(),
-              builder: (context, Box<String> box, _) {
+              valueListenable: core.collection.history!.listenable(),
+              builder: (context, Box<String?> box, _) {
                 return CupertinoButton(
                   child: Text('Clear all',
                     style: TextStyle(
@@ -60,14 +60,14 @@ mixin _Bar on _State {
                     )
                   ),
                   onPressed: (box.length == 0)?null: () async {
-                    for (var i = 0; i <= core.collection.history.length - 1; i++) {
+                    for (var i = 0; i <= core.collection.history!.length - 1; i++) {
                       Future.delayed(Duration(milliseconds: 500),(){
-                        core.listKeyHistory.currentState.removeItem(0,
+                        core.listKeyHistory.currentState!.removeItem(0,
                           (BuildContext context, Animation<double> animation) => HistoryItem(index: i, animation: animation, word: "")
                         );
                       });
                     }
-                    core.collection.history.clear();
+                    core.collection.history!.clear();
                   }
                 );
               }

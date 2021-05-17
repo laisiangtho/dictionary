@@ -1,4 +1,4 @@
-# dictionary
+# Dictionary (MyOrdbok)
 
 MyOrdbok is 'A comprehensive Myanmar online dictionary', and providing parts of speech, thesaurus and synonyms. It is aimed to help learning english, as well as burmese vocabularies and expressions. We have 57223 primary words with over 103787 definitions which can be used to lookup with over 200000 words. Our web app supports 24 languages.
 
@@ -19,6 +19,27 @@ Feature:
 - Free
 
 As it is active in develpment, please feel free to rate/write yours review, so that we can bring a better Dictionary app.
+
+## Todo
+
+- [x] Definition makeup
+- [ ] none result lookup
+- [ ] Cart
+- [ ] analytics
+- [ ] History
+- [ ] Like
+- [ ] Improve scroll for NestedScrollView
+
+lidea
+ledi, lidea lai l
+zaideih
+laist
+ledic
+le
+dictionary
+myordbok
+ordbok
+l
 
 ```shell
 1. flutter channel stable

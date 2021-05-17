@@ -1,4 +1,4 @@
-part of 'core.dart';
+part of 'main.dart';
 
 class SQLite {
   final Collection collection;
@@ -6,24 +6,31 @@ class SQLite {
   // factory SQLite() => _instance;
   // SQLite.internal();
 
-  Database _instance;
+  Database? _instance;
   final int version = 1;
 
-  SQLite({this.collection});
+  SQLite({required this.collection});
 
-  APIType get _wordContext => collection.env.word;
+  // String get _primaryDatabase => collection.env.primary.db;
+  // List<String> get _secondaryDatabase => collection.env.secondary.map((e) => e.db);
+
+  // APIType get _wordContext => collection.env.word;
+  APIType get _wordContext => collection.env!.primary;
   String get _wordTable => _wordContext.tableName;
 
-  APIType get _senseContext => collection.env.sense;
-  String get _senseTable => _senseContext.tableName;
-
-  APIType get _deriveContext => collection.env.derive;
+  // APIType get _deriveContext => collection.env.derive;
+  APIType get _deriveContext => collection.env!.children.first;
   String get _deriveTable => _deriveContext.tableName;
 
-  APIType get _thesaurusContext => collection.env.thesaurus;
+  // APIType get _senseContext => collection.env.sense;
+  APIType get _senseContext => collection.env!.secondary.first;
+  String get _senseTable => _senseContext.tableName;
+
+  // APIType get _thesaurusContext => collection.env.thesaurus;
+  APIType get _thesaurusContext => collection.env!.secondary.last;
   String get _thesaurusTable => _thesaurusContext.tableName;
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_instance == null) {
       _instance = await init();
     }
@@ -31,10 +38,11 @@ class SQLite {
   }
 
   FutureOr<Database> init() async {
+    // send primary db, attach except db
     final String file = await UtilDocument.fileName(_wordContext.db);
-    debugPrint('load start');
-    await this.load(_wordContext);
-    debugPrint('load end');
+    // debugPrint('load start');
+    // await this.load(_wordContext);
+    // debugPrint('load end');
     return await openDatabase(
       file,
       version: this.version,
@@ -52,169 +60,157 @@ class SQLite {
   }
 
   FutureOr<void> onCreate(Database db, int v) async {
-    // batch.execute(_senseContext.dropTable);
-    // batch.execute(_senseContext.createTable);
-    // batch.execute(_senseContext.createTable);
-
     collection.notify.progress.value = null;
-    // debugPrint('transaction start');
     await db.transaction((txn) async {
       Batch batch = txn.batch();
-      batch.execute(_wordContext.createIndex);
-      batch.execute(_senseContext.createIndex);
-      batch.execute(_deriveContext.createIndex);
-      batch.execute(_thesaurusContext.createIndex);
-      // debugPrint('import start');
-      await this.import(_senseContext, batch).whenComplete(
-        () async {
-          // debugPrint('batch.commit start');
-          await batch.commit(noResult: true);
-          // debugPrint('batch.commit end');
-        }
-      );
-      // debugPrint('import end');
+      batch.execute(_wordContext.createIndex!);
+      batch.execute(_deriveContext.createIndex!);
+      await batch.commit(noResult: true);
     });
-    // debugPrint('transaction end');
   }
 
   FutureOr<void> onUpgrade(Database db, int ov, int nv) async {
     collection.notify.progress.value = null;
-    // debugPrint('transaction start');
     await db.transaction((txn) async {
       Batch batch = txn.batch();
-      // debugPrint('import start');
-      await this.import(_senseContext, batch).whenComplete(
-        () async {
-          // debugPrint('batch.commit start');
-          await batch.commit(noResult: true);
-          // debugPrint('batch.commit end');
-        }
-      );
-      // debugPrint('import end');
+      batch.execute(_wordContext.createIndex!);
+      batch.execute(_deriveContext.createIndex!);
+      await batch.commit(noResult: true);
     });
-    // debugPrint('transaction end');
   }
 
   FutureOr<void> onDowngrade(Database db, int ov, int nv) async {
     collection.notify.progress.value = null;
     await db.transaction((txn) async {
       Batch batch = txn.batch();
-      await this.import(_senseContext, batch).whenComplete(
-        () async => await batch.commit(noResult: true)
-      );
+      batch.execute(_wordContext.createIndex!);
+      batch.execute(_deriveContext.createIndex!);
+      await batch.commit(noResult: true);
     });
   }
 
-  FutureOr<void> onOpen(Database db) {
+  FutureOr<void> onOpen(Database db) async{
     collection.notify.progress.value = 0.4;
-    // debugPrint('opening');
-    // String _filePath = await UtilDocument.fileName(senseContext.file);
-    // await lethil.rawQuery("ATTACH DATABASE '$_filePath' AS mean");
+    await attach(db);
   }
 
-  FutureOr<void> load(APIType id) async{
-    String file = await UtilDocument.exists(id.db);
-    if (file.isEmpty){
-      List<int> data;
-      String _fileOrUrl = id.src.first;
-      bool _validURL = Uri.parse(_fileOrUrl).isAbsolute;
-      if (_validURL){
-        data = await this.loadFromHostByte(_fileOrUrl);
-      } else {
-        data = await this.loadFromAssetByte(_fileOrUrl);
-      }
-      await UtilDocument.writeAsByte(id.db, data, true);
-    }
-  }
-
-  /// make request
-  Future<io.HttpClientResponse> requestClient(String url) async {
-    final client = new io.HttpClient();
-    final request = await client.getUrl(Uri.parse(url));
-    final response = await request.close();
-    // if (response.statusCode != 200) throw "Error on initializing data";
-    if (response.statusCode != 200) return Future.error("Error on initializing data");
-    return response;
-  }
-
-  /// load word from assets
-  Future<List<int>> loadFromAssetByte(String fileName) async {
-    final data = await UtilDocument.loadBundleAsByte(fileName);
-    // return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    return await compute(UtilDocument.byteToListInt, data);
-  }
-
-
-  /// load word from client
-  Future<List<int>> loadFromHostByte(String url) async {
-    final data = await this.requestClient(url);
-    return await consolidateHttpClientResponseBytes(data);
-  }
-
-  Future<void> import(APIType id, Batch batch) async{
-    List<dynamic> raw;
-    // String item = id.src.first;
-
-    for (var item in id.src) {
-      String res;
-      bool _validURL = Uri.parse(item).isAbsolute;
-      // debugPrint('loop: $_validURL $item');
-      if (_validURL){
-        res = await UtilClient.request(item).catchError((e){
-          return null;
-        }).then((value) {
-          return value;
+  /// `PRAGMA database_list;` `DETACH DATABASE ?;` `ATTACH DATABASE / as ?;`
+  FutureOr<void> attach(Database db) async{
+    final ath = await db.rawQuery("PRAGMA database_list;");
+    // {seq: 0, name: main, file: /}
+    Batch batch = db.batch();
+    for (var item in collection.env!.secondary) {
+      // final bool notAttached = ath.firstWhere((e) => e['name'] == item.uid, orElse:()=> null) == null;
+      final notAttached = ath.firstWhere((e) => e['name'] == item.uid).isEmpty;
+      if (notAttached) {
+        String _filePath = await UtilDocument.fileName(item.db);
+        // await db.rawQuery("DETACH DATABASE ${item.uid};");
+        await db.rawQuery("ATTACH DATABASE '$_filePath' AS ${item.uid};").then((value){
+          if (item.createIndex != null && item.createIndex!.isNotEmpty){
+            batch.execute(item.createIndex!);
+          }
+        }).catchError((e){
+          debugPrint(e.toString());
         });
       } else {
-        res = await UtilDocument.loadBundleAsString(item);
-      }
-      if (res != null && res.isNotEmpty) {
-        raw = await parseListDyanmic(res).catchError((e){
-          // debugPrint('parse error $e');
-          return null;
-        });
-        if (raw != null){
-          break;
-        }
+        debugPrint('attached ${item.db}');
       }
     }
-
-    if (raw != null){
-      raw.forEach((row) => batch.execute(id.importQuery,row));
-    }
+    await batch.commit(noResult: true);
   }
 
-  Future<List<dynamic>> parseListDyanmic(String response) async{
-    try {
-      return await UtilDocument.decodeJSON(response).cast<List<dynamic>>();
-    } on Exception catch (exception) {
-      return Future.error(exception);
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
+  // Future<void> test() async {
+  //   Stopwatch stopwatch = new Stopwatch()..start();
+  //   try {
+  //     // await client.transaction((txn) async {
+  //     //   Batch batch = txn.batch();
+  //     //   for (APIType item in collection.env.secondary) {
+  //     //     if (item.createIndex != null && item.createIndex.isNotEmpty){
+  //     //       print('item.createIndex ${item.createIndex}');
+  //     //       batch.execute(item.createIndex);
+  //     //     }
+  //     //   }
+  //     //   await batch.commit(noResult: true);
+  //     // });
+  //     // await client.rawQuery("SELECT count(*) as count FROM sense.sqlite_master WHERE type = 'table';").then(
+  //     //   (v) {
+  //     //     debugPrint(v.toString());
+  //     //   }
+  //     // ).catchError((e){
+  //     //   debugPrint(e.toString());
+  //     // });
+  //     // sense.list_sense
+  //     // await client.rawQuery("SELECT * FROM $_senseTable LIMIT 1;").then(
+  //     //   (v) {
+  //     //     debugPrint(v.toString());
+  //     //   }
+  //     // ).catchError((e){
+  //     //   debugPrint(e.toString());
+  //     // });
+  //     // await search('love').then(
+  //     //   (v) {
+  //     //     debugPrint(v.toString());
+  //     //   }
+  //     // ).catchError((e){
+  //     //   debugPrint(e.toString());
+  //     // });
+  //     // await rootWord('love').then(
+  //     //   (v) {
+  //     //     debugPrint(v.toString());
+  //     //   }
+  //     // ).catchError((e){
+  //     //   print(e);
+  //     //   // debugPrint(e.toString());
+  //     // });
+  //     // await baseWord('loved').then(
+  //     //   (v) {
+  //     //     debugPrint(v.toString());
+  //     //   }
+  //     // ).catchError((e){
+  //     //   debugPrint(e.toString());
+  //     // });
+  //     await thesaurus('love').then(
+  //       (v) {
+  //         debugPrint(v.toString());
+  //       }
+  //     ).catchError((e){
+  //       debugPrint(e.toString());
+  //     });
+  //     // var client = await this.db;
+  //     // await client.rawQuery("SELECT * FROM $_wordTable LIMIT 1").then(
+  //     //   (v) {
+  //     //     debugPrint(v.toString());
+  //     //   }
+  //     // ).catchError((e){
+  //     //   debugPrint(e.toString());
+  //     // });
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   }
+  //   debugPrint('sql.test() executed in ${stopwatch.elapsedMilliseconds} Milliseconds');
+  // }
 
   /// get suggestion
-  Future<List<Map<String, Object>>> suggestion(String keyword) async {
+  Future<List<Map<String, Object?>>> suggestion(String keyword) async {
     // return await _instance.query(_senseTable, columns:['word'],where: 'word LIKE ?',whereArgs: [keyword+'%'] ,orderBy: 'word',limit: 10);
     // return await _instance.rawQuery("SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word LIMIT 10;",[keyword+'%']);
     return await this.db.then(
-      (e) => e.rawQuery("SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word LIMIT 30;",['$keyword%'])
+      (e) => e!.rawQuery("SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word LIMIT 30;",['$keyword%'])
     );
   }
 
   /// get definition
-  Future<List<Map<String, Object>>> search(String keyword) async {
+  Future<List<Map<String, Object?>>> search(String keyword) async {
     return await this.db.then(
-      (e) => e.rawQuery("SELECT word, wrte, sense, exam FROM $_senseTable WHERE word LIKE ? ORDER BY wrte, wseq;",[keyword])
+      (e) => e!.rawQuery("SELECT word, wrte, sense, exam FROM $_senseTable WHERE word LIKE ? ORDER BY wrte, wseq;",[keyword])
     );
   }
 
   /// get root
-  /// d.word, c.wrte, c.dete, c.wirg, w.word AS derived
-  Future<List<Map<String, Object>>> rootWord(String keyword) async {
-
-    return await _instance.rawQuery("""SELECT
+  /// [d.word, c.wrte, c.dete, c.wirg, w.word AS derived]
+  Future<List<Map<String, Object?>>> rootWord(String keyword) async {
+    var client = await this.db;
+    return client!.rawQuery("""SELECT
       d.word, c.wrte, c.dete, c.wirg, w.word AS derived
     FROM $_wordTable AS w
       INNER JOIN $_deriveTable c ON w.id = c.wrid
@@ -224,9 +220,10 @@ class SQLite {
   }
 
   /// get base
-  /// w.word, c.wrte, c.dete, c.wirg, d.word AS derived
-  Future<List<Map<String, Object>>> baseWord(String keyword) async {
-    return await _instance.rawQuery("""SELECT
+  /// [w.word, c.wrte, c.dete, c.wirg, d.word AS derived]
+  Future<List<Map<String, Object?>>> baseWord(String keyword) async {
+    var client = await this.db;
+    return client!.rawQuery("""SELECT
       w.word, c.wrte, c.dete, c.wirg, d.word AS derived
     FROM $_wordTable AS w
       INNER JOIN $_deriveTable c ON w.id = c.id
@@ -236,9 +233,10 @@ class SQLite {
   }
 
   /// get thesaurus
-  /// w.id AS root, c.wlid AS wrid, d.word, d.derived
-  Future<List<Map<String, Object>>> thesaurus(String keyword) async {
-    return await _instance.rawQuery("""SELECT
+  /// [w.id AS root, c.wlid AS wrid, d.word, d.derived]
+  Future<List<Map<String, Object?>>> thesaurus(String keyword) async {
+    var client = await this.db;
+    return client!.rawQuery("""SELECT
       d.word, d.derived
     FROM $_wordTable AS w
       INNER JOIN $_thesaurusTable c ON w.id = c.wrid
@@ -248,8 +246,9 @@ class SQLite {
   }
 
   /// temp: get number of tables
-  Future<List<Map<String, Object>>> countTable() async {
+  Future<List<Map<String, Object?>>> countTable() async {
     var client = await this.db;
-    return await client.rawQuery("SELECT count(*) as count FROM sqlite_master WHERE type = 'table';");
+    return client!.rawQuery("SELECT count(*) as count FROM sqlite_master WHERE type = 'table';");
   }
+
 }

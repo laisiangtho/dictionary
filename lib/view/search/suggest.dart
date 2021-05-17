@@ -1,7 +1,11 @@
 part of 'main.dart';
 
 class ViewSuggestion extends StatelessWidget {
-  ViewSuggestion({Key key,this.query, this.search}) : super(key: key);
+  ViewSuggestion({
+    Key? key,
+    required this.query,
+    required this.search
+  }) : super(key: key);
 
   final String query;
   final void Function(BuildContext context, String word) search;
@@ -26,17 +30,17 @@ class ViewSuggestion extends StatelessWidget {
     //   return WidgetMessage(key: this.key,message: '???');
     // }
 
-    return ValueListenableBuilder<List<Map<String, Object>>>(
+    return ValueListenableBuilder<List<Map<String, Object?>>>(
       key: this.key,
       valueListenable: core.collection.notify.suggestResult,
-      builder: (BuildContext context, List<Map<String, dynamic>> value, Widget child) => this.suggestion(value),
+      builder: (BuildContext context, List<Map<String, dynamic>> value, Widget? child) => this.suggestion(value),
       child: noQuery,
     );
   }
 
   Widget get noQuery => WidgetMessage(message: 'suggestion');
 
-  Widget suggestion(List<Map<String, Object>> _r) {
+  Widget suggestion(List<Map<String, Object?>> _r) {
     return new SliverList(
       // key: this.key,
       delegate: SliverChildBuilderDelegate(
@@ -48,10 +52,16 @@ class ViewSuggestion extends StatelessWidget {
 }
 
 class _SuggestionList extends StatelessWidget {
-  _SuggestionList({Key key,this.query, this.search, this.data, this.index}): super(key: key);
+  _SuggestionList({
+    Key? key,
+    required this.query,
+    required this.search,
+    required this.data,
+    required this.index
+  }): super(key: key);
   final String query;
   final void Function(BuildContext context, String word) search;
-  final Map<String, Object> data;
+  final Map<String, Object?> data;
   final int index;
 
   String get word => data.values.first.toString();
@@ -77,7 +87,7 @@ class _SuggestionList extends StatelessWidget {
     );
   }
 
-  Widget container({BuildContext context}){
+  Widget container({required BuildContext context}){
     return CupertinoButton(
       padding: EdgeInsets.symmetric(horizontal:13,vertical:18),
       onPressed: () => this.search(context, word),
@@ -105,7 +115,7 @@ class _SuggestionList extends StatelessWidget {
                 semanticsLabel: word,
                 style: TextStyle(
                   fontSize: 20,
-                  color: Theme.of(context).textTheme.caption.color,
+                  color: Theme.of(context).textTheme.caption!.color,
                   fontWeight: FontWeight.w300
                 ),
                 children: <TextSpan>[
@@ -114,7 +124,7 @@ class _SuggestionList extends StatelessWidget {
                     style: TextStyle(
                       // color: Theme.of(context).textTheme.caption.color,
                       // color: Theme.of(context).colorScheme.primaryVariant,
-                      color: Theme.of(context).primaryTextTheme.button.color
+                      color: Theme.of(context).primaryTextTheme.button!.color
                       // fontWeight: FontWeight.w400
                     )
                   )

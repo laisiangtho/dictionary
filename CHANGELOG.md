@@ -1,5 +1,18 @@
 # Change log
 
+## 1.0.0+12
+
+Improve
+
+- Performance
+- Contrast
+- Semantics
+- Null safety
+
+Update
+
+- Null safety
+
 ## 1.0.0+1-11
 
 Improve

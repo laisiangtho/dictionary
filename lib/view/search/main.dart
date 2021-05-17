@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'package:lidea/scroll.dart';
+import 'package:lidea/view.dart';
 import 'package:lidea/provider.dart';
 
 import 'package:dictionary/widget.dart';
@@ -16,7 +16,7 @@ part 'result.dart';
 part 'bar.dart';
 
 class Main extends StatefulWidget {
-  Main({Key key}) : super(key: key);
+  Main({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => View();
 }
@@ -63,16 +63,18 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     if(mounted) super.setState(fn);
   }
 
+
+
   // NOTE: used in bar, suggest & result
   void search(BuildContext context, String word) async {
     if (word.isNotEmpty && core.collection.hasNotHistory(word)){
-      final index = core.collection.history.length;
-      core.collection.history.add(word);
+      final index = core.collection.history!.length;
+      core.collection.history!.add(word);
       if (core.listKeyHistory.currentState != null){
-        core.listKeyHistory.currentState.insertItem(index);
+        core.listKeyHistory.currentState!.insertItem(index);
       }
     }
-    this.focusNode?.unfocus();
+    this.focusNode.unfocus();
     // FocusScope.of(context).unfocus();
     // FormNotifier form = context.read<FormNotifier>();
     // context.read<FormNotifier>().searchQuery = word;

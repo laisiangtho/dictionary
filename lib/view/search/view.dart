@@ -3,9 +3,9 @@ part of 'main.dart';
 class View extends _State {
   @override
   Widget build(BuildContext context) {
-    return ScrollPage(
+    return ViewPage(
       key: scaffoldKey,
-      controller: controller,
+      // controller: controller,
       child: _scroll()
     );
   }

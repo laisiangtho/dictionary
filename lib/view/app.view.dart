@@ -32,7 +32,7 @@ class AppView extends _State {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               return start();
-              break;
+              // return ScreenLauncher(message:'done');
             default:
               return ScreenLauncher(message:'Initializing');
           }
@@ -65,15 +65,15 @@ class AppView extends _State {
   }
 
   Widget bottom() {
-    return ScrollPageBottom(
-      controller: _controller,
+    return ViewNavigation(
+      // controller: _controller,
       items: pageButton,
-      builderDecoration: bottomDecoration,
-      builderButton: buttonItem
+      itemDecoration: bottomDecoration,
+      itemBuilder: buttonItem
     );
   }
 
-  Widget bottomDecoration({Widget child}) {
+  Widget bottomDecoration({Widget? child}) {
     return DecoratedBox(
       decoration: BoxDecoration(
         // color: Theme.of(context).scaffoldBackgroundColor,
@@ -97,7 +97,7 @@ class AppView extends _State {
     );
   }
 
-  Widget buttonItem({int index, ModelPage item, bool current, bool route}) {
+  Widget buttonItem({int? index, required ViewNavigationModel item, required bool current, required bool route}) {
     return Semantics(
       label: route?"Page navigation":"History navigation",
       namesRoute: route,
@@ -120,7 +120,7 @@ class AppView extends _State {
           ),
           disabledColor: route?CupertinoColors.quaternarySystemFill:Theme.of(context).hintColor,
           // onPressed: current?null:()=>route?_navView(index):item.action(context)
-          onPressed: buttonPressed(context, item,index,current)
+          onPressed: buttonPressed(context, item, index!,current)
         ),
       ),
     );
@@ -128,7 +128,7 @@ class AppView extends _State {
 
   // int get asdfasdfasd => core.collection.history.length;
 
-  Function buttonPressed(BuildContext context, ModelPage item, int index, bool disable) {
+  VoidCallback? buttonPressed(BuildContext context, ViewNavigationModel item, int index, bool disable) {
     if (disable) {
       return null;
     } else if (item.action == null) {

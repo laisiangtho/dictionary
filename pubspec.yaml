@@ -6,9 +6,6 @@ publish_to: 'none'
 
 version: 1.0.0+12
 
-environment:
-  sdk: ">=2.7.0 <3.0.0"
-
 dependencies:
   flutter:
     sdk: flutter
@@ -28,12 +25,16 @@ dependencies:
   hive_flutter: ^1.0.0
   sqflite: ^2.0.0+3
   share: ^2.0.1
-  in_app_purchase: ^0.5.2
+  in_app_purchase: ^0.6.0
   # flutter_tts: ^1.2.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.20.0"
 
 flutter:
   uses-material-design: true
@@ -41,7 +42,11 @@ flutter:
   assets:
     - assets/env.json
     - assets/word.db
-    - assets/sense.json
+    # - assets/sense.json
+
+    # - assets/word.sqlite
+    # - assets/sense.sqlite
+    # - assets/thesaurus.sqlite
     # - assets/sense.db
     # - assets/list-sense.json
     # - assets/list-sense-only-10.json

@@ -1,7 +1,11 @@
 part of 'main.dart';
 
 class ViewResult extends StatefulWidget {
-  ViewResult({Key key,this.query, this.search}) : super(key: key);
+  ViewResult({
+    Key? key,
+    required this.query,
+    required this.search
+  }) : super(key: key);
 
   final String query;
   final void Function(BuildContext context, String word) search;
@@ -29,10 +33,10 @@ class _ViewResultState extends State<ViewResult> {
     //   return WidgetMessage(key: widget.key, message: e.toString());
     // }
 
-    return ValueListenableBuilder<List<Map<String, dynamic>>>(
+    return ValueListenableBuilder<List<Map<String, dynamic?>>>(
       key: widget.key,
       valueListenable: core.collection.notify.searchResult,
-      builder: (BuildContext context, List<Map<String, dynamic>> value, Widget child) => this.result(value),
+      builder: (BuildContext context, List<Map<String, dynamic?>> value, Widget? child) => this.result(value),
       child: noQuery,
     );
     // return ValueListenableBuilder<String>(
@@ -49,16 +53,16 @@ class _ViewResultState extends State<ViewResult> {
 
   Widget get noQuery => new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nfor ',message:'definition');
 
-  Widget result(List<Map<String, dynamic>> _r) {
+  Widget result(List<Map<String, dynamic?>> _r) {
     return new SliverList(
       delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int i) => _resultContainer(searchQuery: widget.query, index: i, data: _r.elementAt(i)),
+        (BuildContext context, int i) => _resultContainer(index: i, data: _r.elementAt(i)),
         childCount: _r.length
       )
     );
   }
 
-  Widget _resultContainer({String searchQuery, int index, Map<String, dynamic> data}) {
+  Widget _resultContainer({required int index, required Map<String, dynamic?> data}) {
     return new Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -225,7 +229,7 @@ class _ViewResultState extends State<ViewResult> {
     );
   }
 
-  Widget _examContainer(List<dynamic> exam) {
+  Widget _examContainer(List<dynamic>? exam) {
     if (exam == null || exam.length == 0){
       return Container();
     }
@@ -309,7 +313,12 @@ class _ViewResultState extends State<ViewResult> {
 }
 
 class MakeUp extends StatelessWidget {
-  MakeUp({Key key, this.str, this.style, this.search}): super(key: key);
+  MakeUp({
+    Key? key,
+    required this.str,
+    required this.style,
+    required this.search
+  }): super(key: key);
   final String str;
   final TextStyle style;
   final void Function(BuildContext context, String word) search;
@@ -318,10 +327,6 @@ class MakeUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (str == null) {
-      return RichText(key:this.key, text: TextSpan(text:''));
-    }
-
     final span = TextSpan(
       style:style,
       // style:style.copyWith(height: 1.7),
@@ -332,7 +337,7 @@ class MakeUp extends StatelessWidget {
         String none = match.group(0).toString();
         if (match.group(1) != null) {
           // (.*)
-          span.children.add(this.inParentheses(context, none));
+          span.children!.add(this.inParentheses(context, none));
         } else {
           // [.*]
           String matchString = match.group(2).toString();
@@ -343,7 +348,7 @@ class MakeUp extends StatelessWidget {
             List<String> href = e.split('/');
             if (name == 'list'){
               // [list:*]
-              span.children.add(
+              span.children!.add(
                 TextSpan(
                   text: '',
                   children: this.asGesture(context, href)
@@ -351,7 +356,7 @@ class MakeUp extends StatelessWidget {
               );
             } else {
               // [*:*]
-              span.children.add(
+              span.children!.add(
                 TextSpan(
                   text: "$name ",
                   style: TextStyle(
@@ -362,13 +367,13 @@ class MakeUp extends StatelessWidget {
               );
             }
           } else {
-            span.children.add(this.inBrackets(context, none));
+            span.children!.add(this.inBrackets(context, none));
           }
         }
         return '';
       },
       onNonMatch: (String nonMatch) {
-        span.children.add(TextSpan(text:nonMatch));
+        span.children!.add(TextSpan(text:nonMatch));
         return '';
       }
     );
@@ -389,7 +394,7 @@ class MakeUp extends StatelessWidget {
   TextSpan inParentheses(BuildContext context, String term) => TextSpan(
     text: term,
     style: TextStyle(
-      fontSize: (style.fontSize-3).toDouble(),
+      fontSize: (style.fontSize!-3).toDouble(),
       fontWeight: FontWeight.w400,
       // color: Theme.of(context).backgroundColor
     )
@@ -398,7 +403,7 @@ class MakeUp extends StatelessWidget {
   TextSpan inBrackets(BuildContext context, String term) => TextSpan(
     text: term,
     style: TextStyle(
-      fontSize: (style.fontSize-2).toDouble(),
+      fontSize: (style.fontSize!-2).toDouble(),
       // fontStyle: FontStyle.italic,
       fontWeight: FontWeight.w300,
       // color: Theme.of(context).backgroundColor.
@@ -406,7 +411,7 @@ class MakeUp extends StatelessWidget {
   );
 
   List<TextSpan> asGesture(BuildContext context, List<String> href){
-    return mapIndexed(href,
+    final abc = mapIndexed(href,
       (int index, String item, String comma) => TextSpan(
         text: "$item$comma",
         style: TextStyle(
@@ -416,6 +421,8 @@ class MakeUp extends StatelessWidget {
         recognizer: TapGestureRecognizer()..onTap = () => this.search(context, item)
       )
     ).toList();
+
+    return abc;
   }
 
   Iterable<E> mapIndexed<E, T>(Iterable<T> items, E Function(int index, T item, String last) f) sync* {

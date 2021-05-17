@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class WidgetContent extends StatelessWidget {
 
   WidgetContent({
-    Key key,
+    Key? key,
     this.startWith:'...',
     this.atLeast:'enable at least\na ',
     this.enable:'Bible',

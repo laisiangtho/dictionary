@@ -2,10 +2,10 @@ part of 'main.dart';
 
 class Bar extends StatefulWidget {
   Bar({
-    Key key,
-    this.focusNode,
-    this.textController,
-    this.search
+    Key? key,
+    required this.focusNode,
+    required this.textController,
+    required this.search
   }) : super(key: key);
 
   final FocusNode focusNode;
@@ -22,15 +22,15 @@ class _BarState extends State<Bar> {
   @override
   Widget build(BuildContext context) {
     return new SliverPersistentHeader(
-      key: widget.key,
+
       pinned: true,
       floating:true,
-      // delegate: new ScrollHeaderDelegate(bar,minHeight: 40)
-      delegate: new ScrollHeaderDelegate(bar,minHeight: 60)
+      // delegate: new ViewHeaderDelegate(bar,minHeight: 40)
+      delegate: new ViewHeaderDelegate(bar,minHeight: 60)
     );
   }
 
-  Widget decoration({BuildContext context, double stretch, Widget child}){
+  Widget decoration({required BuildContext context, required double stretch, required Widget child}){
     // DecoratedBox
     return Container(
       padding: EdgeInsets.only(top:7, bottom:7),
@@ -146,7 +146,7 @@ class _BarState extends State<Bar> {
               child: SizedBox.shrink(
                 child: ValueListenableBuilder<String>(
                   valueListenable: core.collection.notify.suggestQuery,
-                  builder: (context, value, _) => (context.watch<NodeNotifier>().focus && value.isNotEmpty)?_:Container(),
+                  builder: (context, value, _) => (context.watch<NodeNotifier>().focus && value.isNotEmpty)?_!:Container(),
                   child: Semantics(
                     label: "Clear",
                     child: new CupertinoButton (
