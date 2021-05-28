@@ -112,11 +112,14 @@ git push
 
 ## How would I clone correctly
 
-All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.laisiangtho.bible` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
+All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.myordbok.app` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
+
+Rename `assets/env-mock.json` to **assets/env.json** and `assets/word-mock.db` to **assets/word.db**.
 
 There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to [lidea repo][lidea] as a seperated package. But they will work the same as bundle scripts.
 
 In `pubspec.yaml` remove local package `lidea` and uncomment git
+
 
 ```yaml
 dependencies:
@@ -160,8 +163,8 @@ dependencies:
 
 - ?
 
-[playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
-[playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
+[playStore]: https://play.google.com/store/apps/details?id=com.myordbok.app
+[playStore Join]: https://play.google.com/apps/testing/com.myordbok.app/join
 [Home]: https://github.com/laisiangtho/development
 [lidea]: https://github.com/laisiangtho/lidea
 
