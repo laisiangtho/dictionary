@@ -3,8 +3,9 @@
 **/*v[0-9].rar
 **/*v[0-9].json
 # assets/**/delete
-# assets/env.json
 assets/**
+# assets/*.*
+# assets/word.db
 !assets/fonts
 !assets/psd
 !assets/*-mock.*
