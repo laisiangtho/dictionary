@@ -9,7 +9,7 @@ mixin _Utility {
 
   Future<void> analyticsScreen(String name, String classes) async {
     // await new FirebaseAnalytics().setCurrentScreen(creenName: 'home',screenClassOverride: 'HomeState');
-    // print('analyticsScreen $name $classes');
+    // debugPrint('analyticsScreen $name $classes');
     await utilAnalytics.send.setCurrentScreen(screenName: name,screenClassOverride: classes);
   }
 }

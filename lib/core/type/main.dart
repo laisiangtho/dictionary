@@ -1,5 +1,23 @@
+// import 'dart:async';
+// import 'package:flutter/foundation.dart';
+import "package:hive/hive.dart";
+import "package:lidea/extension.dart";
 
-part of "root.dart";
+part 'adapter/setting.dart';
+// part 'adapter/word.dart';
+// part 'adapter/sense..dart';
+// part 'adapter/usage.dart';
+// part 'adapter/synmap.dart';
+// part 'adapter/synset.dart';
+// part 'adapter/thesaurus.dart';
+part 'adapter/purchase.dart';
+part 'adapter/history.dart';
+
+part 'purchase.dart';
+part 'history.dart';
+part 'setting.dart';
+part "collection.dart";
+// part 'notify.md';
 
 // NOTE: only type
 class EnvironmentType {
@@ -112,7 +130,7 @@ class APIType {
   factory APIType.fromJSON(Map<String, dynamic> o) {
     return APIType(
       uid: o["uid"] as String,
-      table: o["table"]??'',
+      table: (o["table"]??'').toString(),
       kind: (o['kind']??0) as int,
       query: (o['query']??{}).map<dynamic, String>(
         (k, v) => MapEntry(k, v.toString())
@@ -190,29 +208,29 @@ class TokenType {
 }
 
 // NOTE: only type, EnvironmentType child
-class HistoryType {
-  int id;
-  String word;
+// class HistoryType {
+//   int id;
+//   String word;
 
-  HistoryType({
-    required this.id,
-    required this.word
-  });
+//   HistoryType({
+//     required this.id,
+//     required this.word
+//   });
 
-  factory HistoryType.fromJSON(Map<String, dynamic> o) {
-    return HistoryType(
-      id: o["id"] as int,
-      word: o["word"] as String
-    );
-  }
+//   factory HistoryType.fromJSON(Map<String, dynamic> o) {
+//     return HistoryType(
+//       id: o["id"] as int,
+//       word: o["word"] as String
+//     );
+//   }
 
-  Map<String, dynamic> toJSON() {
-    return {
-      "id":id,
-      "word":word
-    };
-  }
-}
+//   Map<String, dynamic> toJSON() {
+//     return {
+//       "id":id,
+//       "word":word
+//     };
+//   }
+// }
 
 // NOTE: only type, EnvironmentType child
 class ProductsType {
@@ -252,9 +270,9 @@ class SynsetType {
 
   factory SynsetType.fromJSON(Map<String, dynamic> o) {
     return SynsetType(
-      id: o["id"],
-      name: o["name"],
-      shortname: o["shortname"]
+      id: o["id"] as int,
+      name: o["name"] as String,
+      shortname: (o["shortname"]??'') as String
     );
   }
 
@@ -278,7 +296,7 @@ class SynmapType {
     return SynmapType(
       id: o["id"] as int,
       type: o["type"] as int,
-      name: o["name"]
+      name: o["name"] as String
     );
   }
 

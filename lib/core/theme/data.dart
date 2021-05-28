@@ -57,20 +57,24 @@ class IdeaData {
         fillColor: colorScheme.primary,
         // fillColor: colorScheme.secondary,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: colorScheme.background, width: 0.7),
+          borderSide: BorderSide(color: Colors.transparent, width: 0.0),
           borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: colorScheme.background, width: 0.7),
+          borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+          borderRadius: BorderRadius.all(Radius.circular(7)),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent,width: 0.0),
           borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 0.6),
-          // borderRadius: BorderRadius.all(Radius.circular(5)),
+          borderSide: BorderSide(color: Colors.transparent,width: 0.0),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
         )
       ),
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: colorScheme.background,
+        cursorColor: colorScheme.primaryVariant,
         selectionColor: colorScheme.background,
         selectionHandleColor: colorScheme.background,
       )
@@ -82,7 +86,8 @@ class IdeaData {
     primaryVariant: Colors.black,
     secondary: Colors.white,
     secondaryVariant: Colors.black45,
-    background: Color(0xFFD6D6D6),
+    background: Color(0xFFe0e1e6),
+    // background: Color(0xFFD6D6D6),
     surface: Color(0xFFFAFBFB),
     // scaffoldBackgroundColor
     // onBackground: Color(0xFFf2f2f2),
@@ -119,16 +124,23 @@ class IdeaData {
   static final _fontWeighSemiBold = FontWeight.w600;
   static final _fontWeighBold = FontWeight.w700;
 
+  // { TextStyle? body2, TextStyle? body1}
   static final TextTheme _textTheme = TextTheme(
-    caption: TextStyle(fontWeight: _fontWeighSemiBold, fontSize: 16.0),
-    subtitle1: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
-    subtitle2: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
-    overline: TextStyle(fontWeight: _fontWeighMedium, fontSize: 12.0),
-    bodyText1: TextStyle(fontWeight: _fontWeighRegular, fontSize: 14.0),
-    bodyText2: TextStyle(fontWeight: _fontWeighRegular, fontSize: 16.0),
+    headline1: TextStyle(fontWeight: _fontWeighBold, fontSize: 26.0),
+    headline2: TextStyle(fontWeight: _fontWeighBold, fontSize: 24.0),
+    headline3: TextStyle(fontWeight: _fontWeighBold, fontSize: 22.0),
     headline4: TextStyle(fontWeight: _fontWeighBold, fontSize: 20.0),
     headline6: TextStyle(fontWeight: _fontWeighBold, fontSize: 16.0),
-    headline5: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
-    button: TextStyle(fontWeight: _fontWeightThin,fontSize: 14.0,height: 1.5)
+    headline5: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
+
+    subtitle1: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
+    subtitle2: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
+
+    bodyText1: TextStyle(fontWeight: _fontWeighRegular, fontSize: 16.0),
+    bodyText2: TextStyle(fontWeight: _fontWeighRegular, fontSize: 14.0),
+
+    caption: TextStyle(fontWeight: _fontWeighSemiBold, fontSize: 16.0),
+    button: TextStyle(fontWeight: _fontWeightThin,fontSize: 14.0,height: 1.5),
+    overline: TextStyle(fontWeight: _fontWeighMedium, fontSize: 12.0)
   );
 }

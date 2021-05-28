@@ -1,4 +1,4 @@
-part of '../root.dart';
+part of '../main.dart';
 
 class SettingAdapter extends TypeAdapter<SettingType> {
   @override

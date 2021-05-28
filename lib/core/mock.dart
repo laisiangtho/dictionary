@@ -10,23 +10,35 @@ mixin _Mock on _Abstract {
     // check network
     // await mockCheckDatabaseFiles();
     // await archivePassageMock();
-    // print('abc');
+    // debugPrint('abc');
 
     // final toLoads = collection.env.primary;
     // await loadArchiveMock(toLoads).catchError((e){
-    //   print('asdf $e');
+    //   debugPrint('asdf $e');
     // });
 
     // final result = await initArchive();
-    // print('result $result');
-    await definition('love');
-
+    // debugPrint('result $result');
+    // await _definitionGenerator('love');
+    debugPrint(collection.setting.fontSize.toString());
+    // collection.setting.purchase.add(WorkingStoreType(productId: 'a',purchaseId: 'b',completePurchase: false,transactionDate: 'c'));
+    // collection.setting.purchase.add({"productId":"a","purchaseId":"b","completePurchase":false,"transactionDate":"c"});
+    // collection.settingUpdate(collection.setting);
+    // debugPrint(collection.setting.purchase.toString());
     debugPrint('mockTest in ${mockWatch.elapsedMilliseconds} Milliseconds');
+
+  }
+
+  Future<dynamic> mockCheckDatabaseFiles() async {
+    // final abc = new GistData(token:collection.env.token.key,id:collection.env.token.id);
+    // return await abc.test();
+    debugPrint('token: ${collection.env.token.key}, id: ${collection.env.token.id}');
+    // debugPrint(collection.env.listOfDBfile.map((e) => e.toJSON()).toList());
   }
 
   Future<bool> initArchive() async{
     bool toChecks = false;
-    for (var item in collection.env!.listOfDatabase) {
+    for (var item in collection.env.listOfDatabase) {
       toChecks = await UtilDocument.exists(item.db).then(
         (e) => e.isEmpty
       ).catchError((_)=>true);
@@ -39,7 +51,7 @@ mixin _Mock on _Abstract {
       debugPrint('continuous checking on ${item.uid}');
     }
     if (toChecks) {
-      return await loadArchiveMock(collection.env!.primary).then((e) => true).catchError((_)=>false);
+      return await loadArchiveMock(collection.env.primary).then((e) => true).catchError((_)=>false);
     }
     // Nothing to unpack so everything is Ok!
     debugPrint('Nothing to unpack, everything seems fine!');
@@ -72,122 +84,122 @@ mixin _Mock on _Abstract {
     return Future.error("Failed to load");
   }
 
-  Future<dynamic> mockCheckDatabaseFiles() async {
-    // final abc = new GistData(token:collection.env.token.key,id:collection.env.token.id);
-    // return await abc.test();
-    print('token: ${collection.env!.token.key}, id: ${collection.env!.token.id}');
-    // print(collection.env.listOfDBfile.map((e) => e.toJSON()).toList());
-  }
-
-  Future<List<Map<String, Object?>>> suggestionGenerate(String word) async {
-
-    // final List<Map<String, Object>> result = [
-    //   {"word","abc"} as Map
-    // ];
-    // result.add({"word","suggestion"} as Map);
-    // yield result;
-    final List<Map<String, Object?>> result = await sql!.suggestion(word);
-    // print(result.toString());
-    return result;
-    // result.first.values
-    // final abc = result.elementAt(0);
-    // final words = abc.values.first;
-    // print(words);
-    // final apple = this.suggestQuery.stream.toList();
-    // print(word);
-    //
-    // this.suggestList.add(result);
-    // this.suggestList.sink.add(result);
+  Future<void> suggestionGenerate(String word) async {
+    this.suggestionQuery = word;
+    this.suggestionList = await _sql.suggestion(word);
+    notifyListeners();
   }
 
   // ignore: todo
   // TODO: definition on multi words
-  Future<List<Map<String, dynamic>>> definition(String word) async {
+  // see
+  Future<void> definitionGenerate(String word) async {
+    Stopwatch definitionWatch = new Stopwatch()..start();
+    this.definitionQuery = word;
+    this.definitionList = await _definitionGenerator(word);
+    debugPrint('definitionTest in ${definitionWatch.elapsedMilliseconds} Milliseconds');
+    notifyListeners();
+  }
 
-    if (word.isNotEmpty && collection.setting!.searchQuery != word){
-      this._settingUpdate(collection.setting!.copyWith(searchQuery: word));
-    }
+  Future<List<Map<String, dynamic>>> _definitionGenerator(String word) async {
+    // if (word.isNotEmpty && collection.setting.searchQuery != word){
+    //   collection.settingUpdate(collection.setting.copyWith(searchQuery: word));
+    // }
+    collection.searchQueryUpdate(word);
+
     List<Map<String, Object?>> raw = [];
     List<Map<String, Object?>> root;
     List<Map<String, Object?>> rawSense;
 
-    rawSense = await sql!.search(word);
+    rawSense = await _sql.search(word);
     if (rawSense.isEmpty){
-      root = await sql!.rootWord(word);
+      root = await _sql.rootWord(word);
       if (root.isNotEmpty){
         final i = root.map((e) => e['word'].toString()).toSet().toList();
         for (String e in i){
-          final r = await sql!.search(e);
+          final r = await _sql.search(e);
           if (r.isNotEmpty){
             raw.addAll(r);
           }
         }
       }
     } else {
-      root = await sql!.baseWord(word);
+      root = await _sql.baseWord(word);
       raw.addAll(rawSense);
     }
     if (root.isNotEmpty){
-      final tmp = this.groupByBase(root);
+      final tmp = _groupByBase(root);
       raw.addAll(tmp);
     }
 
-    final result = this.groupByWord(raw);
+    final result = _groupByWord(raw);
 
-    final words = raw.map((e) => e['word'].toString()).toSet().toList();
-    for (String str in words){
-      final thes = await sql!.thesaurus(str);
-      if (thes.isNotEmpty){
-        final wordBlock = result.firstWhere((e) => e['word'] == str);
-        wordBlock['thesaurus'] = thes.map((e) => e['word'].toString()).toSet().toList();
-      }
-    }
+    // final words = raw.map((e) => e['word'].toString()).toSet().toList(growable: false);
+    // for (String str in words){
+    //   final thes = await sql.thesaurus(str);
+    //   if (thes.isNotEmpty){
+    //     final wordBlock = result.firstWhere((e) => e['word'] == str);
+    //     wordBlock['thesaurus'] = thes.map((e) => e['word'].toString()).toSet().toList(growable: false);
+    //   }
+    // }
 
     return result;
   }
 
-  List<Map<String, dynamic>> groupByWord(List<Map<String, Object?>> raw) {
-    return raw.fold(Map<String, List<dynamic?>>(), (Map<String, List<dynamic?>> a, b) {
+  Future<List<Map<String, Object?>>> thesaurusGenerate(String word) async{
+    await Future.delayed(Duration(milliseconds: 700));
+    print('thesaurusGenerate return now');
+    final thes = await _sql.thesaurus(word);
+    return thes;
+  }
+
+  List<Map<String, dynamic>> _groupByWord(List<Map<String, Object?>> raw) {
+    return raw.fold(Map<String, List<dynamic>>(), (Map<String, List<dynamic>> a, b) {
       a.putIfAbsent(b['word'].toString(), () => []).add(b);
       return a;
     }).values.map((e) =>{
       'word': e.first['word'],
-      'sense': this.groupByPOS(e),
-      'thesaurus': []
+      'sense': _groupByPOS(e),
+      // 'thesaurus': []
+      // 'thesaurus': e.first['word']
     }).toList();
   }
 
-  List<Map<String, dynamic>> groupByPOS(List<dynamic> raw) {
+  List<Map<String, dynamic>> _groupByPOS(List<dynamic> raw) {
     return raw.fold(Map<int, List<Map<String, dynamic>>>(), (Map<int, List<Map<String, dynamic>>> a, b) {
       a.putIfAbsent(b['wrte'], () => []).add(b);
       return a;
     }).values.map((e) => {
-      'pos': collection.env!.grammar(e.first['wrte']).name,
-      'clue': this.groupSense(e)
+      'pos': collection.env.grammar(e.first['wrte']).name,
+      'clue': _groupSense(e)
     }).toList();
   }
 
-  List<Map<String, dynamic>> groupSense(List<Map<String, dynamic>> raw) {
+  List<Map<String, dynamic>> _groupSense(List<Map<String, dynamic>> raw) {
     final List<Map<String, dynamic>> result = [];
     for (var row in raw) {
-      String mean;
+      String? mean;
       List<String> exam = [];
-      if (row.containsKey('sense')){
+      // row.containsKey('sense')
+      if (row['sense'] != null && row.containsKey('sense')){
         if (row['exam'] !=null){
           exam = row['exam'].split("\r\n");
         }
+        // _TypeError (type 'Null' is not a subtype of type 'String')
         mean = row['sense'];
-      } else {
-        final pos = collection.env!.pos(row['dete']).name;
+      } else if (row['dete'] != null && row['derived'] != null) {
+        final pos = collection.env.pos(row['dete']).name;
         // final pos = collection.env.grammar(row['wrte']).name;
         mean = '[~:${row['derived']}] ($pos)';
       }
-      result.add({'mean':mean,'exam':exam});
+      if (mean != null) {
+        result.add({'mean':mean,'exam':exam});
+      }
     }
     return result;
   }
 
-  List<Map<String, dynamic>> groupByBase(List<dynamic> raw) {
+  List<Map<String, dynamic>> _groupByBase(List<dynamic> raw) {
     return raw.fold(Map<int, List<Map<String, dynamic>>>(), (Map<int, List<Map<String, dynamic>>> a, b) {
       a.putIfAbsent(b['wrte'], () => []).add(b);
       return a;
@@ -197,7 +209,7 @@ mixin _Mock on _Abstract {
       'sense': e.map<String>(
         (o) {
           final _derived = o['derived'];
-          final _pos = collection.env!.pos(o['dete']).name;
+          final _pos = collection.env.pos(o['dete']).name;
           return '[~:$_derived] ($_pos)';
         }
       ).join('; '),

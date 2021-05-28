@@ -1,3 +1,6 @@
+# ?
+
+```dart
 part of 'main.dart';
 
 class View extends _State {
@@ -11,6 +14,7 @@ class View extends _State {
   }
 
   CustomScrollView _scroll() {
+    print('search scroll');
     return CustomScrollView(
       controller: controller,
       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -18,7 +22,11 @@ class View extends _State {
         Bar(focusNode: focusNode, textController: textController, search: this.search),
         new SliverPadding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-          sliver: context.watch<NodeNotifier>().focus?suggestionWidget:definitionWidget
+          // sliver: context.watch<NodeNotifier>().focus?suggestionWidget:definitionWidget
+          sliver: Selector<Core, bool>(
+            selector: (_, e) => e.nodeFocus,
+            builder: (BuildContext _, bool focus, Widget? child) => focus?suggestionWidget:definitionWidget
+          )
         )
       ]
     );

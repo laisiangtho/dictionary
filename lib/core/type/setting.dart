@@ -1,20 +1,5 @@
-// import 'dart:async';
-import 'package:flutter/foundation.dart';
-import "package:hive/hive.dart";
-import "package:lidea/extension.dart";
 
-part 'adapter/setting.dart';
-// part 'adapter/word.dart';
-// part 'adapter/sense..dart';
-// part 'adapter/usage.dart';
-// part 'adapter/synmap.dart';
-// part 'adapter/synset.dart';
-// part 'adapter/thesaurus.dart';
-part 'adapter/store.dart';
-part "env.dart";
-part "definition.dart";
-part "collection.dart";
-part "notify.dart";
+part of 'main.dart';
 
 @HiveType(typeId: 0)
 class SettingType {
@@ -69,7 +54,7 @@ class SettingType {
     int? version,
     int? mode,
     double? fontSize,
-    String? searchQuery,
+    String? searchQuery
   }) {
     return SettingType(
       version: version??this.version,
@@ -77,34 +62,5 @@ class SettingType {
       fontSize: fontSize??this.fontSize,
       searchQuery: searchQuery??this.searchQuery
     );
-  }
-}
-
-
-@HiveType(typeId: 7)
-class StoreType {
-  @HiveField(0)
-  String? name;
-
-  @HiveField(1)
-  String? type;
-
-  StoreType({
-    this.name,
-    this.type,
-  });
-
-  factory StoreType.fromJSON(Map<String, dynamic> o) {
-    return StoreType(
-      name: o["name"] as String,
-      type: o["type"] as String
-    );
-  }
-
-  Map<String, dynamic> toJSON() {
-    return {
-      "name":name,
-      "type":type
-    };
   }
 }

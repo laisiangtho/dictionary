@@ -1,3 +1,6 @@
+# ?
+
+```dart
 part of 'main.dart';
 
 class ViewResult extends StatefulWidget {
@@ -8,7 +11,7 @@ class ViewResult extends StatefulWidget {
   }) : super(key: key);
 
   final String query;
-  final void Function(BuildContext context, String word) search;
+  final void Function(String word) search;
 
   @override
   _ViewResultState createState() => _ViewResultState();
@@ -33,12 +36,12 @@ class _ViewResultState extends State<ViewResult> {
     //   return WidgetMessage(key: widget.key, message: e.toString());
     // }
 
-    return ValueListenableBuilder<List<Map<String, dynamic?>>>(
-      key: widget.key,
-      valueListenable: core.collection.notify.searchResult,
-      builder: (BuildContext context, List<Map<String, dynamic?>> value, Widget? child) => this.result(value),
-      child: noQuery,
-    );
+    // return ValueListenableBuilder<List<Map<String, dynamic>>>(
+    //   key: widget.key,
+    //   valueListenable: core.collection.notify.searchResult,
+    //   builder: (BuildContext context, List<Map<String, dynamic>> value, Widget? child) => this.result(value),
+    //   child: noQuery,
+    // );
     // return ValueListenableBuilder<String>(
     //   key: widget.key,
     //   valueListenable: core.collection.notify.searchQuery,
@@ -49,11 +52,46 @@ class _ViewResultState extends State<ViewResult> {
     //   ),
     //   child: noQuerys,
     // );
+    return new SliverList(
+      delegate: new SliverChildListDelegate(
+        <Widget>[
+          ElevatedButton(
+            child: Text('popup'),
+            onPressed: (){
+              navigateAndDisplaySelection(context);
+            }
+          )
+        ]
+      )
+    );
+  }
+
+  void navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    // final result = await Navigator.push(context,
+    //   MaterialPageRoute(builder: (context) => SuggestionView()),
+    // );
+    final result = await Navigator.push(context, CustomNavRoute(
+      builder: (context) => SearchBar(isSearching: false)
+      )
+    );
+    // final result = await Navigator.pushReplacement(context, CustomNavRoute(
+    //   builder: (context) => SuggestionView()
+    //   )
+    // );
+
+
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text('$result')));
   }
 
   Widget get noQuery => new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nfor ',message:'definition');
 
-  Widget result(List<Map<String, dynamic?>> _r) {
+  Widget result(List<Map<String, dynamic>> _r) {
     return new SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int i) => _resultContainer(index: i, data: _r.elementAt(i)),
@@ -62,7 +100,7 @@ class _ViewResultState extends State<ViewResult> {
     );
   }
 
-  Widget _resultContainer({required int index, required Map<String, dynamic?> data}) {
+  Widget _resultContainer({required int index, required Map<String, dynamic> data}) {
     return new Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -216,7 +254,7 @@ class _ViewResultState extends State<ViewResult> {
         ),
         Expanded(
           flex: 10,
-          child: MakeUp(
+          child: Highlight(
             str: mean,
             search: widget.search,
             style: TextStyle(
@@ -269,7 +307,7 @@ class _ViewResultState extends State<ViewResult> {
               Expanded(
                 flex: 8,
                 // child: Text(exam[index]),
-                child: MakeUp(
+                child: Highlight(
                   str:exam[index],
                   search: widget.search,
                   style:TextStyle(
@@ -303,135 +341,11 @@ class _ViewResultState extends State<ViewResult> {
               borderRadius: BorderRadius.all(Radius.circular(100.0)),
               padding: EdgeInsets.symmetric(vertical:5, horizontal:15),
               minSize:35,
-              onPressed: () => widget.search(context,thes[index])
+              onPressed: () => widget.search(thes[index])
             ),
           )
         )
       ),
     );
-  }
-}
-
-class MakeUp extends StatelessWidget {
-  MakeUp({
-    Key? key,
-    required this.str,
-    required this.style,
-    required this.search
-  }): super(key: key);
-  final String str;
-  final TextStyle style;
-  final void Function(BuildContext context, String word) search;
-
-  final regExp = RegExp(r'\((.*?)\)|\[(.*?)\]',multiLine: true, dotAll: false, unicode: true);
-
-  @override
-  Widget build(BuildContext context) {
-    final span = TextSpan(
-      style:style,
-      // style:style.copyWith(height: 1.7),
-      children: []
-    );
-    str.splitMapJoin(regExp,
-      onMatch: (Match match) {
-        String none = match.group(0).toString();
-        if (match.group(1) != null) {
-          // (.*)
-          span.children!.add(this.inParentheses(context, none));
-        } else {
-          // [.*]
-          String matchString = match.group(2).toString();
-          List<String> o = matchString.split(':');
-          String name = o.first;
-          String e = o.last;
-          if (o.length == 2 && e.isNotEmpty) {
-            List<String> href = e.split('/');
-            if (name == 'list'){
-              // [list:*]
-              span.children!.add(
-                TextSpan(
-                  text: '',
-                  children: this.asGesture(context, href)
-                )
-              );
-            } else {
-              // [*:*]
-              span.children!.add(
-                TextSpan(
-                  text: "$name ",
-                  style: TextStyle(
-                    color: Colors.grey
-                  ),
-                  children: this.asGesture(context, href)
-                )
-              );
-            }
-          } else {
-            span.children!.add(this.inBrackets(context, none));
-          }
-        }
-        return '';
-      },
-      onNonMatch: (String nonMatch) {
-        span.children!.add(TextSpan(text:nonMatch));
-        return '';
-      }
-    );
-
-
-
-    return SelectableText.rich(
-      span,
-      strutStyle: StrutStyle(
-        height: style.height,
-        forceStrutHeight: true
-      ),
-      key:this.key
-    );
-
-  }
-
-  TextSpan inParentheses(BuildContext context, String term) => TextSpan(
-    text: term,
-    style: TextStyle(
-      fontSize: (style.fontSize!-3).toDouble(),
-      fontWeight: FontWeight.w400,
-      // color: Theme.of(context).backgroundColor
-    )
-  );
-
-  TextSpan inBrackets(BuildContext context, String term) => TextSpan(
-    text: term,
-    style: TextStyle(
-      fontSize: (style.fontSize!-2).toDouble(),
-      // fontStyle: FontStyle.italic,
-      fontWeight: FontWeight.w300,
-      // color: Theme.of(context).backgroundColor.
-    )
-  );
-
-  List<TextSpan> asGesture(BuildContext context, List<String> href){
-    final abc = mapIndexed(href,
-      (int index, String item, String comma) => TextSpan(
-        text: "$item$comma",
-        style: TextStyle(
-          inherit: false,
-          color: Colors.blue
-        ),
-        recognizer: TapGestureRecognizer()..onTap = () => this.search(context, item)
-      )
-    ).toList();
-
-    return abc;
-  }
-
-  Iterable<E> mapIndexed<E, T>(Iterable<T> items, E Function(int index, T item, String last) f) sync* {
-    int index = 0;
-    int last = items.length - 1;
-
-    for (final item in items) {
-      yield f(index, item, last == index?'':', ');
-      index = index + 1;
-    }
   }
 }

@@ -1,29 +1,32 @@
-part of '../root.dart';
+part of '../main.dart';
 
-class StoreAdapter extends TypeAdapter<StoreType> {
+class HistoryAdapter extends TypeAdapter<HistoryType> {
   @override
-  final int typeId = 7;
+  final int typeId = 1;
 
   @override
-  StoreType read(BinaryReader reader) {
+  HistoryType read(BinaryReader reader) {
     final int numOfFields = reader.readByte();
     final Map<int, dynamic> fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return StoreType()
-      ..name = fields[0] as String
-      ..type = fields[1] as String;
+    return HistoryType()
+      ..word = fields[0] as String
+      ..hit = fields[1] as int
+      ..date = fields[2] as DateTime;
   }
 
   @override
-  void write(BinaryWriter writer, StoreType obj) {
+  void write(BinaryWriter writer, HistoryType obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
 
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.word)
       ..writeByte(1)
-      ..write(obj.type);
+      ..write(obj.hit)
+      ..writeByte(2)
+      ..write(obj.date);
   }
 
   @override
@@ -32,7 +35,7 @@ class StoreAdapter extends TypeAdapter<StoreType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StoreAdapter &&
+      other is HistoryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 

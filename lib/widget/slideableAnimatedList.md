@@ -1,3 +1,6 @@
+# ?
+
+```dart
 import 'package:flutter/material.dart';
 
 class SlideableAnimatedList extends StatefulWidget {
@@ -120,13 +123,13 @@ class _SlideableAnimatedListState extends State<SlideableAnimatedList> with Sing
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: widget.right?.map((Widget item) {
+                              children: widget.right.map((Widget item) {
                                 return new Expanded(
                                   child: FadeTransition(
                                     opacity: animationDouble, child: item
                                   )
                                 );
-                              })?.toList()??[]
+                              }).toList()
                             )
                           )
                         ]

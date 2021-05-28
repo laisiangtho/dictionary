@@ -24,69 +24,145 @@ As it is active in develpment, please feel free to rate/write yours review, so t
 
 - [x] Definition makeup
 - [ ] none result lookup
-- [ ] Cart
+- [x] Cart
 - [ ] analytics
-- [ ] History
+- [x] History (Recent searches)
 - [ ] Like
-- [ ] Improve scroll for NestedScrollView
+- [x] Improve scroll for NestedScrollView
+- [ ] History navigator
+- [ ] History view sort
+- [ ] gist backup
 
-lidea
-ledi, lidea lai l
-zaideih
-laist
-ledic
-le
-dictionary
-myordbok
-ordbok
-l
+> Flutter SDK command line tools
 
 ```shell
-1. flutter channel stable
-2. flutter upgrade
-3. flutter config --enable-web
-4. cd into project directory
-5. flutter create .
-6. flutter run -d chrome
+flutter channel stable
+flutter upgrade
+flutter config --enable-web
+cd into project directory
+flutter create .
+flutter run -d chrome
 ```
 
-```pug
+## Android
 
- #{tagName}(class!=attributes.class)!= e.replace(/\"(.+?)\"/g, '<q>$1</q>')
- .replace(/\(-(.+?)-\)/g, '<small>$1</small>')
- .replace(/\((.+?)\)/g, '<em>$1</em>')
- .replace(/\{-(.+?)-\}/g, (_,q)=>'<a href="definition?q='+encodeURI(q)+'">'+q+'</a>').replace(/\[(.*?)\]/g, '<b>$1</b>')
+### minSdkVersion=16
 
+- [x] `flutter build appbundle --release`
+- [ ] `flutter build appbundle --target-platform android-arm,android-arm64`
+- [ ] `flutter build apk --release --target-platform=android-arm`
+- [ ] `flutter build appbundle --release --target-platform=android-arm`
+- [ ] `flutter run --release --target-platform=android-arm`
+
+### minSdkVersion=21
+
+- [ ] `flutter build appbundle --release --target-platform=android-arm64`
+- [ ] `flutter build apk --release --target-platform=android-arm64`
+- [ ] `flutter run --target-platform=android-arm64`
+- [ ] `flutter run --enable-software-rendering --target-platform=android-arm64`
+- [ ] `flutter build appbundle --release --target-platform=android-arm64`
+- [ ] `flutter build apk --split-per-abi --release`
+
+### analytics (debug on windows)
+
+```Shell
+cd C:\dev\android-sdk\platform-tools
+adb shell setprop debug.firebase.analytics.app "com.myordbok.app"
 ```
 
-hive
+### Directory
 
-```dart
+- (production) android/key.properties
+- (development) android/local.properties
+- build/app/outputs/apk/release/app-release.apk
+- android\gradle.properties
+- android\app\build.gradle
 
-return Consumer<FormNotifier>(
-  builder: (BuildContext context, FormNotifier form, Widget child) => Text(??)
-);
+### Android->release
 
+  versionCode android-arm
+  versionCode++ android-arm64
+
+```Shell
+git commit -m "Update docs to wiki"
+git push origin master
+
+git add .
+git commit -a -m "commit" (do not need commit message either)
+git push
 ```
 
-```sql
-SELECT
-    word, tid, sense, exam
-FROM
-    senses
-INTO OUTFILE 'C:/tmp/sense.csv'
-FIELDS ENCLOSED BY '"'
-TERMINATED BY '|'
-ESCAPED BY '"'
-LINES TERMINATED BY '\r\n';
+## Re-Useable
 
-SELECT
-    word, is_derived
-FROM
-    words
-INTO OUTFILE 'C:/tmp/words.csv'
-FIELDS ENCLOSED BY '"'
-TERMINATED BY ';'
-ESCAPED BY '"'
-LINES TERMINATED BY '\r\n';
+- [`idea`](#idea)
+- [`scroll`](#scroll)
+- [`util`](#util)
+
+### idea
+
+... Top layer responsible for theme color and font-size
+
+### scroll
+
+... Primary view scroll gesture for bar, body bottom
+
+### util
+
+... reading and writing file
+
+## How would I clone correctly
+
+All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.laisiangtho.bible` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
+
+There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to [lidea repo][lidea] as a seperated package. But they will work the same as bundle scripts.
+
+In `pubspec.yaml` remove local package `lidea` and uncomment git
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  ...
+  # Local lidea package, only in development
+  # lidea:
+  #   path: ../lidea
+  # Github lidea package, uncomments lines below
+  lidea:
+    git:
+      url: git://github.com/laisiangtho/lidea.git
+      ref: main
+  ...
 ```
+
+...you will need your own configuration in the following files
+
+- `android/local.properties`
+
+  ```Shell
+  sdk.dir=pathOf-android-sdk
+  flutter.sdk=pathOf-flutter-sdk
+  ```
+
+- `android/key.properties`
+
+  ```Shell
+  storePassword = STORE-FIILE-PASSWORD
+  keyPassword = KEY-FIILE-PASSWORD
+  keyAlias = KEY-ALIAS-NAME
+  storeFile = PATH-OF-JKS
+  ```
+
+- `android/app/google-services.json`
+
+  This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN -> Service Accounts`
+
+### for iOS
+
+- ?
+
+[playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
+[playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
+[Home]: https://github.com/laisiangtho/development
+[lidea]: https://github.com/laisiangtho/lidea
+
+[logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"

@@ -1,7 +1,13 @@
-part of 'main.dart';
+import 'dart:async';
+
+import 'package:lidea/engine.dart';
+
+import 'package:sqflite/sqflite.dart';
+import 'package:dictionary/model.dart';
+import 'package:flutter/foundation.dart';
 
 class SQLite {
-  final Collection collection;
+  late Collection collection;
   // static final SQLite _instance = new SQLite.internal();
   // factory SQLite() => _instance;
   // SQLite.internal();
@@ -15,19 +21,19 @@ class SQLite {
   // List<String> get _secondaryDatabase => collection.env.secondary.map((e) => e.db);
 
   // APIType get _wordContext => collection.env.word;
-  APIType get _wordContext => collection.env!.primary;
+  APIType get _wordContext => collection.env.primary;
   String get _wordTable => _wordContext.tableName;
 
   // APIType get _deriveContext => collection.env.derive;
-  APIType get _deriveContext => collection.env!.children.first;
+  APIType get _deriveContext => collection.env.children.first;
   String get _deriveTable => _deriveContext.tableName;
 
   // APIType get _senseContext => collection.env.sense;
-  APIType get _senseContext => collection.env!.secondary.first;
+  APIType get _senseContext => collection.env.secondary.first;
   String get _senseTable => _senseContext.tableName;
 
   // APIType get _thesaurusContext => collection.env.thesaurus;
-  APIType get _thesaurusContext => collection.env!.secondary.last;
+  APIType get _thesaurusContext => collection.env.secondary.last;
   String get _thesaurusTable => _thesaurusContext.tableName;
 
   Future<Database?> get db async {
@@ -60,7 +66,7 @@ class SQLite {
   }
 
   FutureOr<void> onCreate(Database db, int v) async {
-    collection.notify.progress.value = null;
+    // collection.notify.progress.value = null;
     await db.transaction((txn) async {
       Batch batch = txn.batch();
       batch.execute(_wordContext.createIndex!);
@@ -70,7 +76,7 @@ class SQLite {
   }
 
   FutureOr<void> onUpgrade(Database db, int ov, int nv) async {
-    collection.notify.progress.value = null;
+    // collection.notify.progress.value = null;
     await db.transaction((txn) async {
       Batch batch = txn.batch();
       batch.execute(_wordContext.createIndex!);
@@ -80,7 +86,7 @@ class SQLite {
   }
 
   FutureOr<void> onDowngrade(Database db, int ov, int nv) async {
-    collection.notify.progress.value = null;
+    // collection.notify.progress.value = null;
     await db.transaction((txn) async {
       Batch batch = txn.batch();
       batch.execute(_wordContext.createIndex!);
@@ -90,7 +96,7 @@ class SQLite {
   }
 
   FutureOr<void> onOpen(Database db) async{
-    collection.notify.progress.value = 0.4;
+    // collection.notify.progress.value = 0.4;
     await attach(db);
   }
 
@@ -99,10 +105,10 @@ class SQLite {
     final ath = await db.rawQuery("PRAGMA database_list;");
     // {seq: 0, name: main, file: /}
     Batch batch = db.batch();
-    for (var item in collection.env!.secondary) {
+    for (var item in collection.env.secondary) {
       // final bool notAttached = ath.firstWhere((e) => e['name'] == item.uid, orElse:()=> null) == null;
-      final notAttached = ath.firstWhere((e) => e['name'] == item.uid).isEmpty;
-      if (notAttached) {
+      final notAttached = ath.firstWhere((e) => e['name'].toString() == item.uid, orElse: ()=>Map<String, dynamic>());
+      if (notAttached.isEmpty) {
         String _filePath = await UtilDocument.fileName(item.db);
         // await db.rawQuery("DETACH DATABASE ${item.uid};");
         await db.rawQuery("ATTACH DATABASE '$_filePath' AS ${item.uid};").then((value){
@@ -126,7 +132,7 @@ class SQLite {
   //     //   Batch batch = txn.batch();
   //     //   for (APIType item in collection.env.secondary) {
   //     //     if (item.createIndex != null && item.createIndex.isNotEmpty){
-  //     //       print('item.createIndex ${item.createIndex}');
+  //     //       debugPrint('item.createIndex ${item.createIndex}');
   //     //       batch.execute(item.createIndex);
   //     //     }
   //     //   }
@@ -159,7 +165,7 @@ class SQLite {
   //     //     debugPrint(v.toString());
   //     //   }
   //     // ).catchError((e){
-  //     //   print(e);
+  //     //   debugPrint(e);
   //     //   // debugPrint(e.toString());
   //     // });
   //     // await baseWord('loved').then(

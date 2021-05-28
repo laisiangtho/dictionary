@@ -4,16 +4,16 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter/scheduler.dart' show timeDilation;
 
-
 // import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
+import 'package:lidea/provider.dart';
 import 'package:lidea/idea.dart';
 // import 'package:lidea/connectivity.dart';
 
+import 'package:dictionary/core.dart';
 import 'package:dictionary/theme.dart';
-// import 'package:dictionary/view/app.dart';
-import 'package:dictionary/view/cart/main.dart';
+import 'package:dictionary/view/app.dart';
 
 const bool isProduction = bool.fromEnvironment('dart.vm.product');
 Future<void> main() async{
@@ -46,10 +46,47 @@ class Dictionary extends StatelessWidget {
         platform: defaultTargetPlatform,
         isTesting: true
       ),
-      child: app()
+      child: appProvider()
     );
   }
 
+  Widget appProvider(){
+    return MultiProvider(
+      providers: [
+        // Provider(create: (context) => TestCore),
+        // ChangeNotifierProxyProvider<TestCore, TestCoreNotifier>(
+        //   create: (context) => TestCoreNotifier(),
+        //   update: (context, data, form) {
+        //     if (form == null) throw ArgumentError.notNull('form');
+        //     // form.searchQuery = data.searchQuery;
+        //     // form.keyword = data.keyword;
+        //     // form.store = Store();
+        //     // form.initiator = data.init();
+        //     // initiator
+        //     return form;
+        //   },
+        // ),
+        // ChangeNotifierProvider<Core>(
+        //   create: (context) => Core(),
+        //   // child: MyHomePage(),
+        // ),
+        // ProxyProvider<TestCore, TestCoreNotifier>(
+        //   update: (context, data, form) => TestCoreNotifier()
+        // ),
+        // ProxyProvider<StoreNotifier, Store>(
+        //   update: (context, data, form) => Store()
+        // ),
+        // ChangeNotifierProvider<FormNotifier>(
+        //   create: (context) => FormNotifier(),
+        // ),
+        ChangeNotifierProvider<Core>(
+          create: (context) => Core(),
+          // child: MyHomePage(),
+        ),
+      ],
+      child:  app()
+    );
+  }
   Widget app(){
     return Builder(
       builder: (context) => uiOverlayStyle(

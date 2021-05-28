@@ -1,3 +1,6 @@
+# ?
+
+```dart
 part of 'main.dart';
 
 class ViewSuggestion extends StatelessWidget {
@@ -8,7 +11,7 @@ class ViewSuggestion extends StatelessWidget {
   }) : super(key: key);
 
   final String query;
-  final void Function(BuildContext context, String word) search;
+  final void Function(String word) search;
 
   final core = Core();
 
@@ -60,7 +63,7 @@ class _SuggestionList extends StatelessWidget {
     required this.index
   }): super(key: key);
   final String query;
-  final void Function(BuildContext context, String word) search;
+  final void Function( String word) search;
   final Map<String, Object?> data;
   final int index;
 
@@ -90,7 +93,7 @@ class _SuggestionList extends StatelessWidget {
   Widget container({required BuildContext context}){
     return CupertinoButton(
       padding: EdgeInsets.symmetric(horizontal:13,vertical:18),
-      onPressed: () => this.search(context, word),
+      onPressed: () => this.search( word),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

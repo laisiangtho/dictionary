@@ -1,3 +1,6 @@
+# ?
+
+```dart
 part of 'main.dart';
 
 class Bar extends StatefulWidget {
@@ -10,7 +13,7 @@ class Bar extends StatefulWidget {
 
   final FocusNode focusNode;
   final TextEditingController textController;
-  final void Function(BuildContext context, String word) search;
+  final void Function(String word) search;
 
   @override
   _BarState createState() => _BarState();
@@ -68,28 +71,16 @@ class _BarState extends State<Bar> {
               child: Builder(builder: (BuildContext context) => form(context,shrink,stretch))
             ),
           ),
-          LayoutBuilder(
-            builder: (context, constraints){
-              var hasFocus = context.watch<NodeNotifier>().focus;
-              return AnimatedContainer(
+          Selector<Core, bool>(
+            selector: (_, e) => e.nodeFocus,
+            builder: (BuildContext _, bool focus, Widget? child) => AnimatedContainer(
                 duration: Duration(milliseconds: 200),
-                width: hasFocus?70:0,
-                // child: hasFocus?new CupertinoButton(
-                //   onPressed: () => widget.search(context,widget.textController.text),
-                //   padding: EdgeInsets.zero,
-                //   minSize: 35.0,
-                //   child:Text(
-                //     'Cancel',
-                //     maxLines: 1,
-                //     semanticsLabel: "Cancel search",
-                //     style: TextStyle(fontSize: 14)
-                //   )
-                // ):Container()
-                child: hasFocus?Semantics(
+                width: focus?70:0,
+                child: focus?Semantics(
                   enabled: true,
                   label: "Cancel",
                   child: new CupertinoButton(
-                    onPressed: () => widget.search(context,core.collection.notify.searchQuery.value),
+                    onPressed: () => widget.search(core.collection.notify.searchQuery.value),
                     padding: EdgeInsets.zero,
                     minSize: 35.0,
                     child:Text(
@@ -98,9 +89,44 @@ class _BarState extends State<Bar> {
                       maxLines: 1
                     )
                   )
-                ):null
-              );
-          })
+                ):child,
+              ),
+            child:null
+          ),
+
+          // LayoutBuilder(
+          //   builder: (context, constraints){
+          //     // var hasFocus = context.watch<NodeNotifier>().focus;
+          //     return AnimatedContainer(
+          //       duration: Duration(milliseconds: 200),
+          //       width: true?70:0,
+          //       // child: hasFocus?new CupertinoButton(
+          //       //   onPressed: () => widget.search(context,widget.textController.text),
+          //       //   padding: EdgeInsets.zero,
+          //       //   minSize: 35.0,
+          //       //   child:Text(
+          //       //     'Cancel',
+          //       //     maxLines: 1,
+          //       //     semanticsLabel: "Cancel search",
+          //       //     style: TextStyle(fontSize: 14)
+          //       //   )
+          //       // ):Container()
+          //       child: hasFocus?Semantics(
+          //         enabled: true,
+          //         label: "Cancel",
+          //         child: new CupertinoButton(
+          //           onPressed: () => widget.search(context,core.collection.notify.searchQuery.value),
+          //           padding: EdgeInsets.zero,
+          //           minSize: 35.0,
+          //           child:Text(
+          //             'Cancel',
+          //             semanticsLabel: "search",
+          //             maxLines: 1
+          //           )
+          //         )
+          //       ):null
+          //     );
+          // })
         ]
       ),
     );
@@ -110,19 +136,19 @@ class _BarState extends State<Bar> {
     return Focus(
       canRequestFocus:true,
       onFocusChange: (hasFocus) {
-        context.read<NodeNotifier>().focus = hasFocus;
+        context.read<Core>().nodeFocus = hasFocus;
       },
       child: Semantics(
         label: "Search for definition",
         textField: true,
-        enabled: context.watch<NodeNotifier>().focus,
+        enabled: context.watch<Core>().nodeFocus,
         child: TextFormField(
           controller: widget.textController,
           focusNode: widget.focusNode,
           textInputAction: TextInputAction.search,
           keyboardType: TextInputType.text,
           // onChanged: (String word) => widget.textController.text = word.replaceAll(RegExp(' +'), ' ').trim(),
-          onFieldSubmitted: (String word) => widget.search(context,word.replaceAll(RegExp(' +'), ' ').trim()),
+          onFieldSubmitted: (String word) => widget.search(word.replaceAll(RegExp(' +'), ' ').trim()),
           // autofocus: true,
           enableInteractiveSelection: true,
           enabled: true,
@@ -146,7 +172,7 @@ class _BarState extends State<Bar> {
               child: SizedBox.shrink(
                 child: ValueListenableBuilder<String>(
                   valueListenable: core.collection.notify.suggestQuery,
-                  builder: (context, value, _) => (context.watch<NodeNotifier>().focus && value.isNotEmpty)?_!:Container(),
+                  builder: (context, value, _) => (context.watch<Core>().nodeFocus && value.isNotEmpty)?_!:Container(),
                   child: Semantics(
                     label: "Clear",
                     child: new CupertinoButton (
