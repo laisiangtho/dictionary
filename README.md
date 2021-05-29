@@ -22,15 +22,18 @@ As it is active in develpment, please feel free to rate/write yours review, so t
 
 ## Todo
 
+- [ ] Home view
 - [x] Definition makeup
 - [ ] none result lookup
-- [x] Cart
+- [x] Store
+  - [x] Restore purchase
 - [ ] analytics
 - [x] History (Recent searches)
+  - [ ] list is current limited 30 word statically
+  - [x] History navigator
+  - [ ] History view sort
 - [ ] Like
 - [x] Improve scroll for NestedScrollView
-- [ ] History navigator
-- [ ] History view sort
 - [ ] gist backup
 
 > Flutter SDK command line tools
@@ -66,7 +69,8 @@ flutter run -d chrome
 ### analytics (debug on windows)
 
 ```Shell
-cd C:\dev\android-sdk\platform-tools
+cd \dev\android-sdk\platform-tools
+cd /dev/android-sdk/platform-tools
 adb shell setprop debug.firebase.analytics.app "com.myordbok.app"
 ```
 
@@ -119,7 +123,6 @@ Rename `assets/env-mock.json` to **assets/env.json** and `assets/word-mock.db` t
 There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to [lidea repo][lidea] as a seperated package. But they will work the same as bundle scripts.
 
 In `pubspec.yaml` remove local package `lidea` and uncomment git
-
 
 ```yaml
 dependencies:
