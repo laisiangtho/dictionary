@@ -77,6 +77,15 @@ class IdeaData {
         cursorColor: colorScheme.primaryVariant,
         selectionColor: colorScheme.background,
         selectionHandleColor: colorScheme.background,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colorScheme.secondaryVariant,
+        shape: ContinuousRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            // top: Radius.elliptical(3, 2)
+            top: Radius.circular(7)
+          ),
+        ),
       )
     );
   }
