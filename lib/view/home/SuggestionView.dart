@@ -1,9 +1,16 @@
 part of 'main.dart';
 
 class SuggestionView extends StatefulWidget {
-  SuggestionView({Key? key, required this.search}) : super(key: key);
+  SuggestionView({
+    Key? key,
+    required this.search,
+    // required this.query,
+    // required this.result
+  }) : super(key: key);
 
   final void Function(String word) search;
+  // final String query;
+  // final List<Map<String, Object?>> result;
 
   @override
   _SuggestionViewState createState() => _SuggestionViewState();
@@ -13,6 +20,24 @@ class _SuggestionViewState extends State<SuggestionView> {
 
   @override
   Widget build(BuildContext context) {
+    // return Consumer<Core>(
+    //   key: widget.key,
+    //   builder: (BuildContext _, Core core, Widget? child){
+    //     if (core.nodeFocus){
+    //       return _resultPage(
+    //         core.suggestionQuery,
+    //         core.suggestionList
+    //       );
+    //     } else {
+    //       return child!;
+    //     }
+    //   },
+    //   child: new SliverList(
+    //     delegate: new SliverChildListDelegate(
+    //       <Widget>[]
+    //     )
+    //   )
+    // );
     return Consumer<Core>(
       key: widget.key,
       builder: (BuildContext _, Core core, Widget? child) => new SliverList(
@@ -21,19 +46,45 @@ class _SuggestionViewState extends State<SuggestionView> {
             final suggestion = core.suggestionList.elementAt(index);
             String word = suggestion.values.first.toString();
             int hightlight = core.suggestionQuery.length < word.length?core.suggestionQuery.length:word.length;
-
-            return _resultContainer(
-              word: word,
-              hightlight: hightlight
-            );
+            return _resultContainer(word, hightlight);
           },
           childCount: core.suggestionList.length
         )
-      )
+      ),
     );
+    // return new SliverList(
+    //   key: widget.key,
+    //   delegate: SliverChildBuilderDelegate(
+    //     (BuildContext context, int index) {
+    //       final suggestion = widget.result.elementAt(index);
+    //       String word = suggestion.values.first.toString();
+    //       int hightlight = widget.query.length < word.length?widget.query.length:word.length;
+    //       return _resultContainer(word, hightlight);
+    //     },
+    //     childCount: widget.result.length
+    //   )
+    // );
   }
 
-  Widget _resultContainer({required String word, required int hightlight}){
+
+  // Widget _resultPage(List<Map<String, Object?>> result) {
+  //   return new SliverList(
+  //     delegate: SliverChildBuilderDelegate(
+  //       (BuildContext context, int index) {
+  //         final suggestion = result.elementAt(index);
+  //         String word = suggestion.values.first.toString();
+  //         int hightlight = widget.query.length < word.length?widget.query.length:word.length;
+  //         return _resultContainer(
+  //           word: word,
+  //           hightlight: hightlight
+  //         );
+  //       },
+  //       childCount: result.length
+  //     )
+  //   );
+  // }
+
+  Widget _resultContainer(String word, int hightlight){
     return Padding(
       padding: const EdgeInsets.symmetric(vertical:1),
       child: ListTile(

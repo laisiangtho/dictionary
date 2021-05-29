@@ -1,9 +1,19 @@
 part of 'main.dart';
 
 class DefinitionView extends StatefulWidget {
-  DefinitionView({Key? key, required this.search}) : super(key: key);
+  // DefinitionView({Key? key, required this.search}) : super(key: key);
+  // final void Function(String word) search;
+
+  DefinitionView({
+    Key? key,
+    required this.search,
+    // required this.query,
+    // required this.result
+  }) : super(key: key);
 
   final void Function(String word) search;
+  // final String query;
+  // final List<Map<String, Object?>> result;
 
   @override
   State<StatefulWidget> createState() => _DefinitionViewState();
@@ -13,12 +23,12 @@ class _DefinitionViewState extends State<DefinitionView> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Core>(
-      key: widget.key,
-      builder: (BuildContext _, Core core, Widget? child) => new SliverList(
+    return Selector<Core,List<Map<String, dynamic>>>(
+      selector: (_, e) => e.definitionList,
+      builder: (BuildContext context, List<Map<String, dynamic>> result, Widget? child) => new SliverList(
         delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int i) => _resultContainer(core.definitionList.elementAt(i)),
-          childCount: core.definitionList.length
+          (BuildContext context, int i) => _resultContainer(result.elementAt(i)),
+          childCount: result.length
         )
       ),
     );

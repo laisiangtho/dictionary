@@ -15,10 +15,6 @@ import 'package:dictionary/core.dart';
 import 'package:dictionary/icon.dart';
 import 'package:dictionary/widget.dart';
 
-// import 'suggestion.dart';
-// import 'definition.dart';
-// import 'AnimateExpansion.dart';
-
 part 'bar.dart';
 
 class Main extends StatefulWidget {
@@ -40,9 +36,6 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
     super.initState();
 
     core = context.read<Core>();
-    // history = core.collection.boxOfHistory;
-    // historyTest = core.collection.boxOfHistory.values.toList();
-    // core.collection.boxOfHistory.listenable();
 
     // Future.microtask((){
     //   core.historyGenerate();
@@ -124,7 +117,7 @@ class _View extends _State with _Bar{
 
   Widget messageContainer(){
     return new SliverFillRemaining(
-      child: WidgetMsg(message: ':)',),
+      child: WidgetMsg(message: '',),
     );
   }
 
@@ -150,11 +143,12 @@ class _View extends _State with _Bar{
               fontSize: 20,
               // color: Theme.of(context).textTheme.caption!.color,
               color: Theme.of(context).primaryTextTheme.button!.color,
+
               fontWeight: FontWeight.w300
             ),
           ),
           minLeadingWidth : 10,
-          leading: Icon(Icons.history),
+          leading: Icon(Icons.manage_search_rounded),
           // leading: CircleAvatar(
           //   // radius:10.0,
           //   // backgroundColor: Colors.grey.shade800,

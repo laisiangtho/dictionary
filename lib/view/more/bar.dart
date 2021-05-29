@@ -10,7 +10,7 @@ mixin _Bar on _State {
       elevation: 0.7,
       forceElevated: innerBoxIsScrolled,
       title: barTitle(),
-      expandedHeight: 120,
+      // expandedHeight: 120,
       // backgroundColor: innerBoxIsScrolled?Theme.of(context).primaryColor:Theme.of(context).scaffoldBackgroundColor,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: ContinuousRectangleBorder(
@@ -31,28 +31,34 @@ mixin _Bar on _State {
             child: Icon(Icons.restore),
             onPressed: () async {
               // await InAppPurchase.instance.restorePurchases().whenComplete(() =>setState);
-              core.store.doRestore();
+              core.store.doRestore().whenComplete((){
+                 ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Restore purchase completed.'),
+                  ),
+                );
+              });
             }
           ),
         )
       ],
-      flexibleSpace: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          double top = constraints.biggest.height;
-          return FlexibleSpaceBar(
-            centerTitle: true,
-            title: AnimatedOpacity(
-              duration: Duration(milliseconds: 200),
-              // opacity: top > 71 && top < 91 ? 1.0 : 0.0,
-              opacity: top < 120 ? 0.0 : 1.0,
-              child: Text(
-                "...",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )
-            ),
-          );
-        }
-      ),
+      // flexibleSpace: LayoutBuilder(
+      //   builder: (BuildContext context, BoxConstraints constraints) {
+      //     double top = constraints.biggest.height;
+      //     return FlexibleSpaceBar(
+      //       centerTitle: true,
+      //       title: AnimatedOpacity(
+      //         duration: Duration(milliseconds: 200),
+      //         // opacity: top > 71 && top < 91 ? 1.0 : 0.0,
+      //         opacity: top < 120 ? 0.0 : 1.0,
+      //         child: Text(
+      //           "...",
+      //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      //         )
+      //       ),
+      //     );
+      //   }
+      // ),
     );
   }
 

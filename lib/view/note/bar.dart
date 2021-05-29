@@ -87,7 +87,7 @@ mixin _Bar on _State {
       child: Text(
         'History',
         semanticsLabel: 'History',
-        style: Theme.of(context).textTheme.headline3!.copyWith(fontWeight:FontWeight.w400),
+        // style: Theme.of(context).textTheme.headline3!.copyWith(fontWeight:FontWeight.w400),
         // style: TextStyle(
         //   // fontFamily: "sans-serif",
         //   // color: Color.lerp(Colors.white, Colors.white24, stretch),
