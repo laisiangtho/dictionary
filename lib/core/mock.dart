@@ -95,17 +95,17 @@ mixin _Mock on _Abstract {
   // see
   Future<void> definitionGenerate(String word) async {
     Stopwatch definitionWatch = new Stopwatch()..start();
-    this.definitionQuery = word;
-    this.definitionList = await _definitionGenerator(word);
+    if (this.definitionQuery != word){
+      this.definitionList = await _definitionGenerator(word);
+      // notifyListeners();
+      this.definitionQuery = word;
+    }
+    collection.searchQueryUpdate(word);
     debugPrint('definitionTest in ${definitionWatch.elapsedMilliseconds} Milliseconds');
-    notifyListeners();
+    analyticsSearch(word);
   }
 
   Future<List<Map<String, dynamic>>> _definitionGenerator(String word) async {
-    // if (word.isNotEmpty && collection.setting.searchQuery != word){
-    //   collection.settingUpdate(collection.setting.copyWith(searchQuery: word));
-    // }
-    collection.searchQueryUpdate(word);
 
     List<Map<String, Object?>> raw = [];
     List<Map<String, Object?>> root;
@@ -148,7 +148,6 @@ mixin _Mock on _Abstract {
 
   Future<List<Map<String, Object?>>> thesaurusGenerate(String word) async{
     await Future.delayed(Duration(milliseconds: 700));
-    print('thesaurusGenerate return now');
     final thes = await _sql.thesaurus(word);
     return thes;
   }
