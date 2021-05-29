@@ -140,7 +140,7 @@ class View extends _State with _Bar {
                     Icon(Icons.lightbulb,size:20),
                     Text('Switch theme',
                       style: TextStyle(
-                        fontSize: 18
+                        fontSize: 20
                       )
                     )
                   ],
@@ -161,7 +161,7 @@ class View extends _State with _Bar {
                     child: CupertinoButton(
                       borderRadius: new BorderRadius.circular(30.0),
                       padding: EdgeInsets.symmetric(vertical:5, horizontal:10),
-                      minSize: 20,
+                      // minSize: 20,
                       // color: Theme.of(context).primaryColorDark,
                       child: Text(
                         themeName[e.index],
