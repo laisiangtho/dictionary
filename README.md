@@ -49,22 +49,27 @@ flutter run -d chrome
 
 ## Android
 
-### minSdkVersion=16
+ ... minSdkVersion=16
 
-- [x] `flutter build appbundle --release`
-- [ ] `flutter build appbundle --target-platform android-arm,android-arm64`
-- [ ] `flutter build apk --release --target-platform=android-arm`
-- [ ] `flutter build appbundle --release --target-platform=android-arm`
-- [ ] `flutter run --release --target-platform=android-arm`
+```shell
+flutter build appbundle --release
 
-### minSdkVersion=21
+flutter build appbundle --target-platform android-arm,android-arm64
+flutter build apk --release --target-platform=android-arm
+flutter build appbundle --release --target-platform=android-arm
+flutter run --release --target-platform=android-arm
+```
 
-- [ ] `flutter build appbundle --release --target-platform=android-arm64`
-- [ ] `flutter build apk --release --target-platform=android-arm64`
-- [ ] `flutter run --target-platform=android-arm64`
-- [ ] `flutter run --enable-software-rendering --target-platform=android-arm64`
-- [ ] `flutter build appbundle --release --target-platform=android-arm64`
-- [ ] `flutter build apk --split-per-abi --release`
+... minSdkVersion=21
+
+```shell
+flutter build appbundle --release --target-platform=android-arm64
+flutter build apk --release --target-platform=android-arm64
+flutter run --target-platform=android-arm64
+flutter run --enable-software-rendering --target-platform=android-arm64
+flutter build appbundle --release --target-platform=android-arm64
+flutter build apk --split-per-abi --release
+```
 
 ### analytics (debug on windows)
 
