@@ -231,7 +231,7 @@ class _DefinitionViewState extends State<DefinitionView> {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical:6),
+                  padding: EdgeInsets.symmetric(vertical:8),
                   child: Icon(
                     Icons.circle,
                     size: 7,
@@ -247,9 +247,11 @@ class _DefinitionViewState extends State<DefinitionView> {
                   str:exam[index],
                   search: widget.search,
                   style:TextStyle(
-                    fontSize: 15,
                     fontWeight: FontWeight.w300,
-                    height: 1.3
+                    fontSize: 17,
+                    height: 1.5
+                    // fontSize: 15,
+                    // height: 1.3
                   )
                 )
               )
@@ -267,21 +269,21 @@ class _DefinitionViewState extends State<DefinitionView> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               child: Wrap(
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 textDirection: TextDirection.ltr,
                 children: snapshot.data!.map(
                   (e) => Padding(
-                    padding: const EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: CupertinoButton(
-                      child: Text(e['word'].toString(),style: TextStyle(fontSize:17),),
+                      child: Text(e['word'].toString(),style: TextStyle(fontSize:19),),
                       // color: Colors.blue,
                       color: Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.all(Radius.circular(100.0)),
                       padding: EdgeInsets.symmetric(vertical:5, horizontal:15),
-                      minSize:35,
+                      minSize:50,
                       onPressed: () => widget.search(e['word'].toString())
                     ),
                   )
