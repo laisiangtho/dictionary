@@ -93,7 +93,7 @@ class _View extends State<PurchaseView> {
       // NOTE: Connecting to store...
     } else if (core.store.isAvailable) {
       // NOTE: Purchase is ready, Purchase is available
-      msgWidget = Text('Ready to contribute!');
+      msgWidget = Text('Ready to contribute!', style: TextStyle(fontSize: 20),);
       msgIcon = Icon(CupertinoIcons.checkmark_shield,size: 50);
     } else {
       // NOTE: Connected to store, but purchase is not ready yet
@@ -116,7 +116,10 @@ class _View extends State<PurchaseView> {
           _buildConsumableStar(),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-            child: Text('Any contribution makes a huge difference for the future of MyOrdbok.',textAlign: TextAlign.center,)
+            child: Text('Any contribution makes a huge difference for the future of MyOrdbok.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18),
+            )
           )
         ]
       ),
@@ -218,7 +221,7 @@ class _View extends State<PurchaseView> {
             style: TextStyle(
               fontWeight: FontWeight.w400,
               color: Theme.of(context).colorScheme.primaryVariant,
-              fontSize: 18
+              fontSize: 20
             )
           ),
           subtitle: Padding(
