@@ -7,7 +7,6 @@ mixin _Configuration  {
   late SQLite _sql;
   late Store store;
 
-  // late String suggestionQuery = '';
   late List<Map<String, Object?>> suggestionList = [];
   late List<Map<String, Object?>> definitionList = [];
 }
