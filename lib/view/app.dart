@@ -74,7 +74,7 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
         // ViewNavigationModel(icon:MyOrdbokIcon.chapter_next, name:"Next", description: "Next search", action: onNextHistory()),
 
         ViewNavigationModel(icon:MyOrdbokIcon.layers, name:"History", description: "Recent searches", key: 1),
-        ViewNavigationModel(icon:CupertinoIcons.settings, name:"Setting", description: "Setting", key: 2),
+        ViewNavigationModel(icon:Icons.settings, name:"Setting", description: "Setting", key: 2),
         // ViewNavigationModel(icon:MyOrdbokIcon.dot_horiz, name:"More", description: "More information", key: 2),
       ]);
       _pageView.addAll([
@@ -89,8 +89,8 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
       final index = viewNotifyNavigation.value;
       // navigator.currentState.pushReplacementNamed(index.toString());
 
-      // ViewNavigationModel page = pageButton.firstWhere((e) => e.key == index, orElse: () => pageButton.first);
-      // core.analyticsScreen(page.name,'${page.name}State');
+      ViewNavigationModel page = _pageButton.firstWhere((e) => e.key == index, orElse: () => _pageButton.first);
+      core.analyticsScreen(page.name,'${page.name}State');
       // NOTE: check State isMounted
       // if(page.key.currentState != null){
       //   page.key.currentState.setState(() {});
