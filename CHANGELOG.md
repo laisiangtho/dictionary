@@ -1,6 +1,6 @@
 # Change log
 
-## 1.0.0+12
+## 1.0.0+12-13
 
 Improve
 
@@ -11,7 +11,7 @@ Improve
 
 Update
 
-- Null safety
+- Null safety with Flutter
 
 ## 1.0.0+1-11
 
