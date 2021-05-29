@@ -5,9 +5,10 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new SliverFillRemaining(
-      key: key,
-      child: WidgetMsg(message: 'Hi there!',),
+    return new SliverList(
+      delegate: new SliverChildListDelegate(
+        <Widget>[]
+      )
     );
   }
 }

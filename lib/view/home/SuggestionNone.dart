@@ -5,9 +5,10 @@ class SuggestionNone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new SliverFillRemaining(
-      key: key,
-      child: WidgetMsg(message: 'no suggestion :)',),
+    return new SliverList(
+      delegate: new SliverChildListDelegate(
+        <Widget>[]
+      )
     );
   }
 }
