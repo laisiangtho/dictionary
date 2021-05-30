@@ -1,7 +1,6 @@
 part of 'app.dart';
 
 class AppView extends _State {
-
   @override
   Widget build(BuildContext context) {
     print('app build');
@@ -11,7 +10,7 @@ class AppView extends _State {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return start();
-            // return ScreenLauncher();
+          // return ScreenLauncher();
           default:
             return ScreenLauncher();
         }
@@ -21,36 +20,33 @@ class AppView extends _State {
 
   Widget start() {
     return Scaffold(
-      key: scaffoldKey,
-      primary: true,
-      resizeToAvoidBottomInset: true,
-      // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown ),
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        maintainBottomViewPadding: true,
-        // onUnknownRoute: routeUnknown,
-        child: new PageView.builder(
-          controller: pageController,
-          // onPageChanged: _pageChanged,
-          allowImplicitScrolling:false,
-          physics:new NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) => _pageView[index],
-          itemCount: _pageView.length
-        )
-      ),
-      // extendBody: true,
-      bottomNavigationBar: bottom()
-    );
+        key: scaffoldKey,
+        primary: true,
+        resizeToAvoidBottomInset: true,
+        // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown ),
+        body: SafeArea(
+            top: false,
+            bottom: true,
+            maintainBottomViewPadding: false,
+            // onUnknownRoute: routeUnknown,
+            child: new PageView.builder(
+                controller: pageController,
+                // onPageChanged: _pageChanged,
+                allowImplicitScrolling: false,
+                physics: new NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) =>
+                    _pageView[index],
+                itemCount: _pageView.length)),
+        // extendBody: true,
+        bottomNavigationBar: bottom());
   }
 
   Widget bottom() {
     return ViewNavigation(
-      // controller: _controller,
-      items: _pageButton,
-      itemDecoration: bottomDecoration,
-      itemBuilder: buttonItem
-    );
+        // controller: _controller,
+        items: _pageButton,
+        itemDecoration: bottomDecoration,
+        itemBuilder: buttonItem);
   }
 
   Widget bottomDecoration({required BuildContext context, Widget? child}) {
@@ -73,46 +69,54 @@ class AppView extends _State {
           )
         ]
       ),
-      child: child
+      child: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        child: child
+      )
     );
   }
 
-  Widget buttonItem({required BuildContext context,required int index, required ViewNavigationModel item, required bool disabled, required bool route}) {
+  Widget buttonItem(
+      {required BuildContext context,
+      required int index,
+      required ViewNavigationModel item,
+      required bool disabled,
+      required bool route}) {
     return Semantics(
-      label: route?"Page navigation":"History navigation",
+      label: route ? "Page navigation" : "History navigation",
       namesRoute: route,
       enabled: route && !disabled,
       child: Tooltip(
         message: item.description,
-        excludeFromSemantics:true,
+        excludeFromSemantics: true,
         child: CupertinoButton(
-          minSize: 30,
-          padding: EdgeInsets.symmetric(horizontal:30, vertical: 1),
-          child: AnimatedContainer(
-            curve: Curves.easeIn,
-            duration: Duration(milliseconds: 300),
-            padding: EdgeInsets.symmetric(horizontal:0,vertical:10),
-            child: Icon(
-              item.icon,
-              size: route?26:18,
-              semanticLabel: item.name,
-            )
-          ),
-          disabledColor: route?CupertinoColors.quaternarySystemFill:Theme.of(context).hintColor,
-          // onPressed: current?null:()=>route?_navView(index):item.action(context)
-          onPressed: buttonPressed(context, item, disabled)
-        ),
+            minSize: 30,
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 1),
+            child: AnimatedContainer(
+                curve: Curves.easeIn,
+                duration: Duration(milliseconds: 300),
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                child: Icon(
+                  item.icon,
+                  size: route ? 26 : 18,
+                  semanticLabel: item.name,
+                )),
+            disabledColor: route
+                ? CupertinoColors.quaternarySystemFill
+                : Theme.of(context).hintColor,
+            // onPressed: current?null:()=>route?_navView(index):item.action(context)
+            onPressed: buttonPressed(context, item, disabled)),
       ),
     );
   }
 
-  void Function()? buttonPressed(BuildContext context, ViewNavigationModel item, bool disable) {
+  void Function()? buttonPressed(
+      BuildContext context, ViewNavigationModel item, bool disable) {
     if (disable) {
       return null;
     } else if (item.action == null && item.key != null) {
-      return ()=>_navView(item.key!);
+      return () => _navView(item.key!);
     } else {
-
       // print('abc');
       // final items = core.collection.boxOfHistory.toMap().values.toList();
       // items.sort((a, b) => b.date!.compareTo(a.date!));
