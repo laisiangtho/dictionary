@@ -17,6 +17,7 @@ part 'DefinitionView.dart';
 part 'DefinitionNone.dart';
 part 'SuggestionNone.dart';
 part 'HomeView.dart';
+part 'HomeNone.dart';
 
 part 'bar.dart';
 
@@ -29,7 +30,7 @@ class Main extends StatefulWidget {
 abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   // final _scaffoldKey = GlobalKey<ScaffoldState>();
   // final _formKey = GlobalKey<FormState>();
-  final _focusKey = GlobalKey<FormState>();
+  // final _focusKey = GlobalKey<FormState>();
 
   final _scaffoldSuggestion = UniqueKey();
   final _scaffoldDefinition = UniqueKey();
@@ -57,11 +58,12 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
     });
 
     // scrollController = ScrollController()..addListener(() {});
-    // focusNode.addListener(() {
-    //   if(focusNode.hasFocus) {
-    //     textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);
-    //   }
-    // });
+    focusNode.addListener(() {
+      // if(focusNode.hasFocus) {
+      //   textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);
+      // }
+      context.read<Core>().nodeFocus = focusNode.hasFocus;
+    });
 
     textController.addListener(() {
       final word = textController.text.replaceAll(RegExp(' +'), ' ').trim();
@@ -72,8 +74,8 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   @override
   dispose() {
     scrollController.dispose();
-    focusNode.dispose();
     textController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -127,7 +129,7 @@ class _View extends _State with _Bar{
     debugPrint('home build');
     return ViewPage(
       key: widget.key,
-      controller: scrollController,
+      // controller: scrollController,
       child: Selector<Core,bool>(
         selector: (_, e) => e.nodeFocus,
         builder: (BuildContext context, bool focus, Widget? child) => NestedScrollView(
@@ -172,7 +174,7 @@ class _View extends _State with _Bar{
               return child!;
             }
           },
-          child: new SliverToBoxAdapter(),
+          child: new HomeNone(),
         ),
 
         // new TaskView()
