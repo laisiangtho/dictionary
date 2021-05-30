@@ -59,22 +59,22 @@ class Core extends _Abstract with _Mock {
     Hive.registerAdapter(PurchaseAdapter());
     await initSetting();
 
-    progressPercentage = 0.2;
+    progressPercentage = 0.3;
 
     store = new Store(notify:notify,collection: collection);
 
     await store.init();
-    progressPercentage = 0.3;
+    progressPercentage = 0.5;
 
     _sql = new SQLite(collection: collection);
     await _sql.init();
 
-    progressPercentage = 0.5;
+    progressPercentage = 0.7;
 
     Hive.registerAdapter(HistoryAdapter());
     await initHistory();
 
-    progressPercentage = 0.8;
+    progressPercentage = 0.9;
 
     // // final helloClient = await mockTestingArchive().catchError((e){
     // //   debugPrint('mockTestingArchive: $e');
