@@ -17,7 +17,6 @@ class SuggestionView extends StatefulWidget {
 }
 
 class _SuggestionViewState extends State<SuggestionView> {
-
   @override
   Widget build(BuildContext context) {
     // return Consumer<Core>(
@@ -41,15 +40,17 @@ class _SuggestionViewState extends State<SuggestionView> {
     return Consumer<Core>(
       key: widget.key,
       builder: (BuildContext _, Core core, Widget? child) => new SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            final suggestion = core.suggestionList.elementAt(index);
-            String word = suggestion.values.first.toString();
-            int hightlight = core.suggestionQuery.length < word.length?core.suggestionQuery.length:word.length;
-            return _resultContainer(word, hightlight);
-          },
-          childCount: core.suggestionList.length
-        )
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              final suggestion = core.suggestionList.elementAt(index);
+              String word = suggestion.values.first.toString();
+              int hightlight = core.suggestionQuery.length < word.length
+                  ? core.suggestionQuery.length
+                  : word.length;
+              return _resultContainer(word, hightlight);
+            },
+            childCount: core.suggestionList.length
+          )
       ),
     );
     // return new SliverList(
@@ -65,7 +66,6 @@ class _SuggestionViewState extends State<SuggestionView> {
     //   )
     // );
   }
-
 
   // Widget _resultPage(List<Map<String, Object?>> result) {
   //   return new SliverList(
@@ -84,41 +84,36 @@ class _SuggestionViewState extends State<SuggestionView> {
   //   );
   // }
 
-  Widget _resultContainer(String word, int hightlight){
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical:1),
+  Widget _resultContainer(String word, int hightlight) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 1),
+      color: Theme.of(context).primaryColor,
       child: ListTile(
         // contentPadding: EdgeInsets.zero,
-        tileColor: Theme.of(context).primaryColor,
+        // tileColor: Theme.of(context).primaryColor,
         title: RichText(
-          strutStyle: StrutStyle(height: 1.0),
-          text: TextSpan(
-            text: word.substring(0, hightlight),
-            semanticsLabel: word,
-            style: TextStyle(
-              fontSize: 20,
-              color: Theme.of(context).textTheme.caption!.color,
-              fontWeight: FontWeight.w300
-            ),
-            children: <TextSpan>[
-              TextSpan(
-                text: word.substring(hightlight),
+            // strutStyle: StrutStyle(height: 1.0),
+            text: TextSpan(
+                text: word.substring(0, hightlight),
+                semanticsLabel: word,
                 style: TextStyle(
-                  // color: Theme.of(context).textTheme.caption.color,
-                  // color: Theme.of(context).colorScheme.primaryVariant,
-                  color: Theme.of(context).primaryTextTheme.button!.color
-                  // fontWeight: FontWeight.w400
-                )
-              )
-            ]
-          )
-        ),
+                    fontSize: 20,
+                    color: Theme.of(context).textTheme.caption!.color,
+                    fontWeight: FontWeight.w300),
+                children: <TextSpan>[
+              TextSpan(
+                  text: word.substring(hightlight),
+                  style: TextStyle(
+                      // color: Theme.of(context).textTheme.caption.color,
+                      // color: Theme.of(context).colorScheme.primaryVariant,
+                      color: Theme.of(context).primaryTextTheme.button!.color
+                      // fontWeight: FontWeight.w400
+                      ))
+            ])),
         minLeadingWidth: 10,
-        leading: Icon(
-          CupertinoIcons.arrow_turn_down_right,
-          // color: Theme.of(context).backgroundColor,
-          semanticLabel: 'Suggestion'
-        ),
+        leading: Icon(CupertinoIcons.arrow_turn_down_right,
+            // color: Theme.of(context).backgroundColor,
+            semanticLabel: 'Suggestion'),
         // leading: Icon(Icons.history),
         // leading: CircleAvatar(
         //   // radius:10.0,
@@ -127,7 +122,7 @@ class _SuggestionViewState extends State<SuggestionView> {
         //   child: Text(NumberFormat.compact().format(history.value.hit),textAlign: TextAlign.center,),
         // ),
 
-        onTap: ()=> widget.search(word),
+        onTap: () => widget.search(word),
       ),
     );
   }

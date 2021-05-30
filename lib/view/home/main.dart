@@ -53,7 +53,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
     // this.textController.text = core.collection.notify.searchQuery.value ;
     // this.textController.text = '';
     core = context.read<Core>();
-    Future.microtask((){
+    Future.microtask(() {
       textController.text = core.suggestionQuery;
     });
 
@@ -81,39 +81,36 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
 
   @override
   void setState(fn) {
-    if(mounted) super.setState(fn);
+    if (mounted) super.setState(fn);
   }
 
-  String keyWords(String words){
+  String keyWords(String words) {
     return words.replaceAll(RegExp(' +'), ' ').trim();
   }
 
-  void onCancel(){
+  void onCancel() {
     focusNode.unfocus();
   }
 
-  void onSuggest(String str){
-    Future.microtask((){
+  void onSuggest(String str) {
+    Future.microtask(() {
       // core.suggestionQuery = keyWords(str);
       core.suggestionGenerate(keyWords(str));
     });
   }
 
   // NOTE: used in bar, suggest & result
-  void onSearch(String str){
+  void onSearch(String str) {
     final word = keyWords(str);
     this.focusNode.unfocus();
 
-    Future.microtask((){
+    Future.microtask(() {
       // context.read<Core>().definitionQuery = word;
       // context.read<Core>().definitionGenerate(word);
       core.definitionGenerate(word);
     }).whenComplete(() {
-      scrollController.animateTo(
-        scrollController.position.minScrollExtent,
-        curve: Curves.fastOutSlowIn,
-        duration: Duration(milliseconds: 800)
-      );
+      scrollController.animateTo(scrollController.position.minScrollExtent,
+          curve: Curves.fastOutSlowIn, duration: Duration(milliseconds: 800));
     });
 
     Future.delayed(Duration.zero, () {
@@ -122,53 +119,56 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   }
 }
 
-class _View extends _State with _Bar{
-
+class _View extends _State with _Bar {
   @override
   Widget build(BuildContext context) {
     debugPrint('home build');
     return ViewPage(
       key: widget.key,
       // controller: scrollController,
-      child: Selector<Core,bool>(
+      child: Selector<Core, bool>(
         selector: (_, e) => e.nodeFocus,
-        builder: (BuildContext context, bool focus, Widget? child) => NestedScrollView(
-          floatHeaderSlivers: true,
-          controller: scrollController,
-          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          // dragStartBehavior: DragStartBehavior.start,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) => <Widget>[
-            bar(innerBoxIsScrolled)
-          ],
-          body:body()
-        ),
+        builder: (BuildContext context, bool focus, Widget? child) =>
+          NestedScrollView(
+            floatHeaderSlivers: true,
+            controller: scrollController,
+            // physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            // dragStartBehavior: DragStartBehavior.start,
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
+              <Widget>[bar(innerBoxIsScrolled)],
+            body: body()
+          ),
       )
     );
   }
 
-  Widget body(){
+  Widget body() {
     return CustomScrollView(
       primary: true,
       // controller: scrollController,
       physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       slivers: <Widget>[
-        if(focusNode.hasFocus) WidgetKeepAlive(
-          key: _scaffoldSuggestion,
-          child: new SuggestionView(search: onSearch)
-        ),
+        if (focusNode.hasFocus)
+          WidgetKeepAlive(
+            key: _scaffoldSuggestion,
+            child: new SuggestionView(search: onSearch)
+          ),
 
-        if(!focusNode.hasFocus) WidgetKeepAlive(
-          key: _scaffoldDefinition,
-          child: new DefinitionView(search: onSearch)
-        ),
+        if (!focusNode.hasFocus)
+          WidgetKeepAlive(
+            key: _scaffoldDefinition,
+            child: new DefinitionView(search: onSearch)
+          ),
 
         Consumer<Core>(
-          builder: (BuildContext _, Core core, Widget? child){
-            if (focusNode.hasFocus && core.suggestionList.length == 0){
+          builder: (BuildContext _, Core core, Widget? child) {
+            if (focusNode.hasFocus && core.suggestionList.length == 0) {
               return SuggestionNone();
-            } else if (!focusNode.hasFocus && core.definitionQuery.isNotEmpty && core.definitionList.length == 0){
+            } else if (!focusNode.hasFocus &&
+                core.definitionQuery.isNotEmpty &&
+                core.definitionList.length == 0) {
               return DefinitionNone();
-            } else if (!focusNode.hasFocus && core.definitionQuery.isEmpty){
+            } else if (!focusNode.hasFocus && core.definitionQuery.isEmpty) {
               return HomeView();
             } else {
               return child!;
@@ -176,7 +176,6 @@ class _View extends _State with _Bar{
           },
           child: new HomeNone(),
         ),
-
         // new TaskView()
       ]
     );
