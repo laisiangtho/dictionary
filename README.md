@@ -172,7 +172,33 @@ dependencies:
 
 ### for iOS
 
+v.12.4?
+
 - ?
+
+```Shell
+# flutter path
+nano .bash_profile
+export PATH="$PATH:/Users/Shared/Developer/flutter/bin"
+export GEM_HOME=$HOME/.gem
+export PATH=$GEM_HOME/bin:$PATH
+
+nano .$HOME/.zshrc
+export PATH="$PATH:/Users/Shared/Developer/flutter/bin"
+
+# Update
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# rm '/usr/local/bin/pod'
+brew reinstall cocoapods
+brew link --overwrite cocoapods
+# install pod
+
+# sudo gem update --system
+# sudo gem install cocoapods
+# pod setup
+```
 
 [playStore]: https://play.google.com/store/apps/details?id=com.myordbok.app
 [playStore Join]: https://play.google.com/apps/testing/com.myordbok.app/join
