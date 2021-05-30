@@ -1,5 +1,15 @@
 # Change log
 
+## 1.0.0+14
+
+Improve
+
+- Accessibility
+
+Update
+
+- dependencies (in_app_purchase)
+
 ## 1.0.0+12-13
 
 Improve
