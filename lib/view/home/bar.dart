@@ -158,113 +158,101 @@ mixin _Bar on _State {
 
   Widget barForm(bool innerBoxIsScrolled){
     // BuildContext context, double shrink, double stretch
-    return Focus(
-      key: _focusKey,
-      canRequestFocus:true,
-      onFocusChange: (hasFocus) {
-        context.read<Core>().nodeFocus = hasFocus;
-        // Provider.of<Core>(context,listen: false).nodeFocus = true;
-      },
-      child: Semantics(
-        label: "Search for definition",
-        textField: true,
-        // enabled: context.watch<Core>().nodeFocus,
-        child: TextFormField(
-          controller: textController,
-          focusNode: focusNode,
-          textInputAction: TextInputAction.search,
-          keyboardType: TextInputType.text,
-          // onChanged: (String word) => widget.textController.text = word.replaceAll(RegExp(' +'), ' ').trim(),
-          // onFieldSubmitted: (String word) => widget.search(context,word.replaceAll(RegExp(' +'), ' ').trim()),
-          onChanged: (String str) => onSuggest(str),
-          onFieldSubmitted: (String str) => onSearch(str),
-          // autofocus: true,
-          enableInteractiveSelection: true,
-          enabled: true,
-          enableSuggestions: true,
-          maxLines: 1,
-          style: TextStyle(
-            fontFamily: 'sans-serif',
-            // fontSize: (10+(15-10)*stretch),
-            fontWeight: FontWeight.w300,
-            // height: 1.1,
-            // fontSize: 17,
-            height: 1.1,
-            fontSize: 19,
-            // fontSize: 15 + (2*stretch),
-            // fontSize: 17 + (2*shrink),
-            // fontSize: 20 + (2*shrink),
+    return TextFormField(
+      controller: textController,
+      focusNode: focusNode,
+      textInputAction: TextInputAction.search,
+      keyboardType: TextInputType.text,
 
-            // color: Colors.black
-            color: Theme.of(context).colorScheme.primaryVariant
-          ),
+      // onChanged: (String word) => widget.textController.text = word.replaceAll(RegExp(' +'), ' ').trim(),
+      // onFieldSubmitted: (String word) => widget.search(context,word.replaceAll(RegExp(' +'), ' ').trim()),
+      onChanged: (String str) => onSuggest(str),
+      onFieldSubmitted: (String str) => onSearch(str),
+      // autofocus: true,
+      enableInteractiveSelection: true,
+      enabled: true,
+      enableSuggestions: true,
+      maxLines: 1,
+      style: TextStyle(
+        fontFamily: 'sans-serif',
+        // fontSize: (10+(15-10)*stretch),
+        fontWeight: FontWeight.w300,
+        // height: 1.1,
+        // fontSize: 17,
+        height: 1.1,
+        fontSize: 19,
+        // fontSize: 15 + (2*stretch),
+        // fontSize: 17 + (2*shrink),
+        // fontSize: 20 + (2*shrink),
 
-          decoration: InputDecoration(
-            // (focusNode.hasFocus && textController.text.isNotEmpty)?
-            // context.select((Core core) => focusNode.hasFocus && core.suggestionQuery.isNotEmpty)
-            // suffixIcon: SizedBox.shrink(
-            //   child: Semantics(
-            //     label: "Clear",
-            //     child: new CupertinoButton (
-            //       onPressed: () {
-            //         textController.clear();
-            //         context.read<Core>().suggestionQuery = '';
-            //       },
-            //       // minSize: 20,
-            //       // padding: EdgeInsets.zero,
-            //       padding: EdgeInsets.symmetric(horizontal: 0,vertical:0),
-            //       child:Icon(
-            //         CupertinoIcons.xmark_circle_fill,
-            //         color:Colors.grey,
-            //         size: 20,
-            //         semanticLabel: "input"
-            //       ),
-            //     )
-            //   )
-            // ),
-            suffixIcon: Selector<Core, bool>(
-              selector: (BuildContext _, Core core) => core.nodeFocus && core.suggestionQuery.isNotEmpty,
-              builder: (BuildContext _, bool word, Widget? child) {
-                return word?SizedBox.shrink(
-                  child: Semantics(
-                    label: "Clear",
-                    child: new CupertinoButton (
-                      onPressed: () {
-                        textController.clear();
-                        // textController.text ='';
-                        // context.read<Core>().suggestionQuery = '';
-                        // Provider.of<Core>(context,listen: true).suggestionQuery = '';
-                        // word = '';
-                      },
-                      // minSize: 20,
-                      // padding: EdgeInsets.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 0,vertical:0),
-                      child:Icon(
-                        CupertinoIcons.xmark_circle_fill,
-                        color:Colors.grey,
-                        size: 20,
-                        semanticLabel: "input"
-                      ),
-                    )
-                  )
-                ):child!;
-              },
-              child: SizedBox(),
-            ),
-            prefixIcon: Icon(
-              MyOrdbokIcon.find,
-              color:Theme.of(context).hintColor,
-              size: 17
-            ),
-            hintText: " ... a word or two",
-            hintStyle: TextStyle(color: Colors.grey),
-            // contentPadding: EdgeInsets.symmetric(horizontal: 2,vertical: (7*shrink)),
-            contentPadding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
-            // contentPadding: EdgeInsets.symmetric(horizontal: 2,vertical: (10*shrink)),
-            // fillColor: Theme.of(context).primaryColor.withOpacity(shrink),
-            fillColor: focusNode.hasFocus?Theme.of(context).scaffoldBackgroundColor:Theme.of(context).backgroundColor,
-          )
+        // color: Colors.black
+        color: Theme.of(context).colorScheme.primaryVariant
+      ),
+
+      decoration: InputDecoration(
+        // (focusNode.hasFocus && textController.text.isNotEmpty)?
+        // context.select((Core core) => focusNode.hasFocus && core.suggestionQuery.isNotEmpty)
+        // suffixIcon: SizedBox.shrink(
+        //   child: Semantics(
+        //     label: "Clear",
+        //     child: new CupertinoButton (
+        //       onPressed: () {
+        //         textController.clear();
+        //         context.read<Core>().suggestionQuery = '';
+        //       },
+        //       // minSize: 20,
+        //       // padding: EdgeInsets.zero,
+        //       padding: EdgeInsets.symmetric(horizontal: 0,vertical:0),
+        //       child:Icon(
+        //         CupertinoIcons.xmark_circle_fill,
+        //         color:Colors.grey,
+        //         size: 20,
+        //         semanticLabel: "input"
+        //       ),
+        //     )
+        //   )
+        // ),
+        suffixIcon: Selector<Core, bool>(
+          selector: (BuildContext _, Core core) => core.nodeFocus && core.suggestionQuery.isNotEmpty,
+          builder: (BuildContext _, bool word, Widget? child) {
+            return word?SizedBox.shrink(
+              child: Semantics(
+                label: "Clear",
+                child: new CupertinoButton (
+                  onPressed: () {
+                    textController.clear();
+                    // textController.text ='';
+                    // context.read<Core>().suggestionQuery = '';
+                    // Provider.of<Core>(context,listen: true).suggestionQuery = '';
+                    // word = '';
+                  },
+                  // minSize: 20,
+                  // padding: EdgeInsets.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 0,vertical:0),
+                  child:Icon(
+                    CupertinoIcons.xmark_circle_fill,
+                    color:Colors.grey,
+                    size: 20,
+                    semanticLabel: "input"
+                  ),
+                )
+              )
+            ):child!;
+          },
+          child: SizedBox(),
         ),
+        prefixIcon: Icon(
+          MyOrdbokIcon.find,
+          color:Theme.of(context).hintColor,
+          size: 17
+        ),
+        hintText: " ... a word or two",
+        hintStyle: TextStyle(color: Colors.grey),
+        // contentPadding: EdgeInsets.symmetric(horizontal: 2,vertical: (7*shrink)),
+        contentPadding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
+        // contentPadding: EdgeInsets.symmetric(horizontal: 2,vertical: (10*shrink)),
+        // fillColor: Theme.of(context).primaryColor.withOpacity(shrink),
+        fillColor: focusNode.hasFocus?Theme.of(context).scaffoldBackgroundColor:Theme.of(context).backgroundColor,
       )
     );
   }
