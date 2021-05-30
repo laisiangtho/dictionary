@@ -45,6 +45,9 @@ flutter config --enable-web
 cd into project directory
 flutter create .
 flutter run -d chrome
+
+# Update dependencies
+flutter pub upgrade
 ```
 
 ## Android
