@@ -10,6 +10,10 @@ Update
 
 - dependencies (in_app_purchase)
 
+Change
+
+- Logo
+
 ## 1.0.0+12-13
 
 Improve
