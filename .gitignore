@@ -13,6 +13,7 @@ assets/**
 android/key.properties
 android/app/google-services.json
 
+ios/Runner/GoogleService-Info.plist
 # Miscellaneous
 *.class
 *.log
