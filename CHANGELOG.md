@@ -1,6 +1,6 @@
 # Change log
 
-## 1.0.0+14
+## 1.0.0+14-16 (ready for release)
 
 Improve
 
