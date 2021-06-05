@@ -1,10 +1,10 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '10.0'
+platform :ios, '12.0'
+
+# pod 'Firebase/Analytics'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
-
-pod 'Firebase/Analytics'
 
 project 'Runner', {
   'Debug' => :debug,
@@ -30,6 +30,9 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
+  pod 'Firebase/Core'
+  pod 'Firebase/Analytics'
+  # pod "Firebase/MLVisionBarcodeModel"
   use_frameworks!
   use_modular_headers!
 
