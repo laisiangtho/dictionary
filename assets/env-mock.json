@@ -14,19 +14,25 @@
   },
   "products":[
     {
-      "cart":"offlineaccess", "name":"offline", "type":"unlimited"
+      "cart":"offlineaccess", "name":"offline", "type":"unlimited",
+      "title":"Offline access",
+      "description":"Definition available anywhere, a lifetime and unlimited."
+    },
+    {
+      "cart":"upgrade", "name":"upgrade", "type":"unlimited",
+      "title":"Thesaurus",
+      "description":"Thesaurus, synonyms and related words."
+    },
+    {
+      "cart":"subscription_silver", "name":"silver", "type":"unlimited",
+      "title":"Parts of speech",
+      "description":"Parts of speech in definition result."
     },
     {
       "cart":"consumable", "name":"donate", "type":"consumable"
     },
     {
       "cart":"consumable_testing", "name":"donates", "type":"consumable"
-    },
-    {
-      "cart":"upgrade", "name":"upgrade", "type":"unlimited"
-    },
-    {
-      "cart":"subscription_silver", "name":"silver", "type":"unlimited"
     },
     {
       "cart":"subscription_gold", "name":"gold", "type":"unlimited"
