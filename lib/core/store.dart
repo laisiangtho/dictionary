@@ -36,6 +36,11 @@ class Store {
   bool isAvailable = false;
   String? messageResponseError;
 
+  ProductsType productbyCart (String id) => _cluster.env.products.firstWhere((e) => e.cart == id);
+  // ProductsType get offlineAccessItem => _cluster.env.products.firstWhere((e) => e.name == "offline");
+  // ProductsType get thesaurusItem => _cluster.env.products.firstWhere((e) => e.name == "upgrade");
+  // ProductsType get partOfSpeechItem => _cluster.env.products.firstWhere((e) => e.name == "silver");
+
   String get offlineAccessId => _cluster.env.products.firstWhere((e) => e.name == "offline").cart;
   String get consumableId => _cluster.env.products.firstWhere((e) => e.name == "donate").cart;
   String get upgradeId => _cluster.env.products.firstWhere((e) => e.name == "upgrade").cart;
@@ -90,7 +95,7 @@ class Store {
       return;
     }
 
-    await _inAppPurchase.restorePurchases();
+    // await _inAppPurchase.restorePurchases();
 
     // await _kOfConsumable.list;
     this._notify();
