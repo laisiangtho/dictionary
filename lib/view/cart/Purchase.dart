@@ -202,6 +202,13 @@ class _View extends State<PurchaseView> {
   Widget _buildProductItem(ProductDetails item, Map<String, PurchaseDetails> purs) {
     PurchaseDetails? previousPurchase = purs[item.id];
     bool hasPurchased = previousPurchase != null;
+    String title = item.title;
+    String description = item.description;
+    if (title.isEmpty){
+      final ev = core.store.productbyCart(item.id);
+      title = ev.title;
+      description = ev.description;
+    }
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(7.0))
@@ -216,7 +223,7 @@ class _View extends State<PurchaseView> {
             size: 35
           ):null,
           title: Text(
-            item.title.replaceAll(RegExp(r'\(.+?\)$'), ""),
+            title.replaceAll(RegExp(r'\(.+?\)$'), ""),
             // semanticsLabel: item.title,
             style: TextStyle(
               fontWeight: FontWeight.w400,
@@ -227,8 +234,8 @@ class _View extends State<PurchaseView> {
           subtitle: Padding(
             padding: EdgeInsets.only(top:10),
             child: Text(
-              item.description,
-              semanticsLabel: item.description,
+              description,
+              semanticsLabel: description,
               // textScaleFactor:0.9,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primaryVariant,
