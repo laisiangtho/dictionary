@@ -28,7 +28,8 @@ mixin _Bar on _State {
           label: "Shop",
           message: "Restore purchase",
           child: CupertinoButton(
-            child: Icon(Icons.restore),
+            // child: Icon(Icons.restore),
+            child: Icon(MyOrdbokIcon.history),
             onPressed: () async {
               // await InAppPurchase.instance.restorePurchases().whenComplete(() =>setState);
               core.store.doRestore().whenComplete((){
