@@ -141,7 +141,7 @@ class _View extends State<PurchaseView> {
 
     String storeName = Platform.isAndroid?'Play Store':'App Store';
 
-    if (core.store.listOfPurchaseItem.length == 0) {
+    if (Platform.isAndroid && core.store.listOfPurchaseItem.length == 0) {
       itemsWidget.add(
         Card(
           shape: RoundedRectangleBorder(
