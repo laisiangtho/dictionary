@@ -284,17 +284,11 @@ class _View extends State<PurchaseView> {
           //   ),
           //   onPressed: hasPurchased?null:() => core.store.doPurchase(item, purs)
           // )
-          trailing: hasPurchased?null:TextButton(
-            style: TextButton.styleFrom(
-              minimumSize: Size(110, 50),
-              padding: EdgeInsets.symmetric(vertical:3, horizontal:7),
-              backgroundColor: Theme.of(context).primaryColorDark,
-              // backgroundColor: hasPurchased?null:Colors.red,
-              // primary: Theme.of(context).primaryColorLight,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100)
-              )
-            ),
+          trailing: hasPurchased?null:CupertinoButton(
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 15),
+            minSize: 45,
+            color: Theme.of(context).primaryColorDark,
+            borderRadius: BorderRadius.all(Radius.circular(100.0)),
             child: Text(
               item.price,
               semanticsLabel: item.price,
@@ -305,6 +299,28 @@ class _View extends State<PurchaseView> {
             ),
             onPressed: hasPurchased?null:() => core.store.doPurchase(item, purs)
           )
+          // trailing: hasPurchased?null:TextButton(
+          //   style: TextButton.styleFrom(
+          //     minimumSize: Size(110, 50),
+          //     padding: EdgeInsets.symmetric(vertical:3, horizontal:7),
+          //     // backgroundColor: Theme.of(context).primaryColorDark,
+          //     backgroundColor: Theme.of(context).backgroundColor,
+          //     // backgroundColor: hasPurchased?null:Colors.red,
+          //     // primary: Theme.of(context).primaryColorLight,
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(100)
+          //     )
+          //   ),
+          //   child: Text(
+          //     item.price,
+          //     semanticsLabel: item.price,
+          //     style: TextStyle(
+          //       // color: Theme.of(context).primaryColorLight,
+          //       fontSize: 17
+          //     )
+          //   ),
+          //   onPressed: hasPurchased?null:() => core.store.doPurchase(item, purs)
+          // )
         ),
       ),
     );
