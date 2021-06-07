@@ -11,6 +11,7 @@ import 'package:lidea/idea.dart';
 
 import 'package:dictionary/core.dart';
 import 'package:dictionary/widget.dart';
+import 'package:dictionary/icon.dart';
 // import 'package:dictionary/model.dart';
 
 import 'package:dictionary/view/cart/Purchase.dart';
