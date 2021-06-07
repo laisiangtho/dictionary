@@ -88,7 +88,10 @@ class _View extends State<PurchaseView> {
 
   Widget _buildDescription() {
     Widget msgWidget = Text('Getting products...');
-    Widget msgIcon = CircularProgressIndicator();
+    Widget msgIcon = CircularProgressIndicator(
+      backgroundColor: Theme.of(context).primaryColorDark,
+    );
+
     if (core.store.isLoading) {
       // NOTE: Connecting to store...
     } else if (core.store.isAvailable) {
@@ -105,9 +108,15 @@ class _View extends State<PurchaseView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
+          if(!core.store.isLoading) Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: msgIcon
+          ),
+          if(core.store.isLoading) Padding(
+            padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+            child: CircularProgressIndicator(
+              backgroundColor: Theme.of(context).primaryColorDark,
+            )
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 4),
@@ -133,15 +142,15 @@ class _View extends State<PurchaseView> {
       );
     }
 
-    if (!core.store.isAvailable) {
-      return Card();
-    }
+    // if (!core.store.isAvailable) {
+    //   return Card();
+    // }
 
     List<Widget> itemsWidget = <Widget>[];
 
     String storeName = Platform.isAndroid?'Play Store':'App Store';
 
-    if (Platform.isAndroid && core.store.listOfPurchaseItem.length == 0) {
+    if (core.store.listOfPurchaseItem.length == 0 && !core.store.isAvailable) {
       itemsWidget.add(
         Card(
           shape: RoundedRectangleBorder(
@@ -201,7 +210,7 @@ class _View extends State<PurchaseView> {
 
   Widget _buildProductItem(ProductDetails item, Map<String, PurchaseDetails> purs) {
     PurchaseDetails? previousPurchase = purs[item.id];
-    bool hasPurchased = previousPurchase != null;
+    bool hasPurchasedPreviously = previousPurchase != null;
     String title = item.title;
     String description = item.description;
     if (title.isEmpty){
@@ -209,6 +218,8 @@ class _View extends State<PurchaseView> {
       title = ev.title;
       description = ev.description;
     }
+
+    final hasPurchased = hasPurchasedPreviously || core.collection.boxOfPurchase.values.where((o) => o.productId == item.id).length > 0;
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(7.0))
@@ -239,6 +250,7 @@ class _View extends State<PurchaseView> {
               // textScaleFactor:0.9,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primaryVariant,
+                fontSize: 17,
                 fontWeight: FontWeight.w300
               )
             ),
@@ -274,9 +286,9 @@ class _View extends State<PurchaseView> {
           // )
           trailing: hasPurchased?null:TextButton(
             style: TextButton.styleFrom(
-              minimumSize: Size(90, 30),
+              minimumSize: Size(110, 50),
               padding: EdgeInsets.symmetric(vertical:3, horizontal:7),
-              backgroundColor: hasPurchased?null:Theme.of(context).primaryColorDark,
+              backgroundColor: Theme.of(context).primaryColorDark,
               // backgroundColor: hasPurchased?null:Colors.red,
               // primary: Theme.of(context).primaryColorLight,
               shape: RoundedRectangleBorder(
@@ -287,7 +299,8 @@ class _View extends State<PurchaseView> {
               item.price,
               semanticsLabel: item.price,
               style: TextStyle(
-                color: Theme.of(context).primaryColorLight
+                color: Theme.of(context).primaryColorLight,
+                fontSize: 17
               )
             ),
             onPressed: hasPurchased?null:() => core.store.doPurchase(item, purs)
