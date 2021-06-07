@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -98,25 +100,46 @@ Future<bool?> doConfirmWithDialog({
   String? cancel:'Cancel',
   String? confirm:'Confirm'
   }) async {
-  return await showDialog<bool?>(
+  if (!Platform.isIOS) {
+    return await showDialog<bool?>(
+      context: context,
+      useSafeArea: false,
+      builder: (BuildContext context) => AlertDialog(
+        content: Text(message),
+        contentPadding: EdgeInsets.symmetric(horizontal:20, vertical:20),
+        actionsPadding: EdgeInsets.symmetric(horizontal:20, vertical:10),
+        actions: <Widget>[
+          CupertinoButton(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: EdgeInsets.symmetric(horizontal:12, vertical:7),
+            minSize: 10,
+            child: Text(cancel!),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          CupertinoButton(
+            color: Theme.of(context).splashColor,
+            padding: EdgeInsets.symmetric(horizontal:12, vertical:7),
+            minSize: 10,
+            child: Text(confirm!),
+            // Navigator.of(context, rootNavigator: true).pop(false)
+            onPressed: () => Navigator.of(context).pop(true)
+          ),
+        ],
+      )
+    );
+  }
+  return await showCupertinoDialog<bool?>(
     context: context,
-    useSafeArea: false,
-    builder: (BuildContext context) => AlertDialog(
+    builder: (BuildContext context) => CupertinoAlertDialog(
       content: Text(message),
-      contentPadding: EdgeInsets.symmetric(horizontal:20, vertical:20),
-      actionsPadding: EdgeInsets.symmetric(horizontal:20, vertical:10),
       actions: <Widget>[
-        CupertinoButton(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          padding: EdgeInsets.symmetric(horizontal:12, vertical:7),
-          minSize: 10,
+        CupertinoDialogAction(
+          // isDefaultAction: true,
           child: Text(cancel!),
           onPressed: () => Navigator.of(context).pop(false),
         ),
-        CupertinoButton(
-          color: Theme.of(context).splashColor,
-          padding: EdgeInsets.symmetric(horizontal:12, vertical:7),
-          minSize: 10,
+        CupertinoDialogAction(
+          isDefaultAction: true,
           child: Text(confirm!),
           // Navigator.of(context, rootNavigator: true).pop(false)
           onPressed: () => Navigator.of(context).pop(true)
