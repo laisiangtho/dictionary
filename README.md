@@ -1,5 +1,7 @@
 # Dictionary (MyOrdbok)
 
+![alt text][logo]
+
 MyOrdbok is 'A comprehensive Myanmar online dictionary', and providing parts of speech, thesaurus and synonyms. It is aimed to help learning english, as well as burmese vocabularies and expressions. We have 57223 primary words with over 103787 definitions which can be used to lookup with over 200000 words. Our web app supports 24 languages.
 
 Feature:
@@ -19,6 +21,9 @@ Feature:
 - Free
 
 As it is active in develpment, please feel free to rate/write yours review, so that we can bring a better Dictionary app.
+
+... on [App Store][appStore] / [Google play][playStore], [join testing program][playStore Join],
+or [readme][Home]!
 
 ## Todo
 
@@ -172,11 +177,9 @@ dependencies:
 
 ### for iOS
 
-v.12.4?
-
 - ?
 
-```Shell
+```bash
 # flutter path
 nano .bash_profile
 export PATH="$PATH:/Users/Shared/Developer/flutter/bin"
@@ -198,11 +201,19 @@ brew link --overwrite cocoapods
 # sudo gem update --system
 # sudo gem install cocoapods
 # pod setup
+
+cd ios
+pod init
+pod install
+pod update
+# if packages were not updated
+rm Podfile.lock && pod install
 ```
 
+[appStore]: https://apps.apple.com/us/app/myordbok/id1570959654
 [playStore]: https://play.google.com/store/apps/details?id=com.myordbok.app
 [playStore Join]: https://play.google.com/apps/testing/com.myordbok.app/join
-[Home]: https://github.com/laisiangtho/development
+[Home]: https://github.com/laisiangtho/dictionary
 [lidea]: https://github.com/laisiangtho/lidea
 
-[logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"
+[logo]: https://raw.githubusercontent.com/laisiangtho/dictionary/master/myordbok.png "MyOrdbok"
