@@ -42,9 +42,9 @@ class _View extends State<PurchaseView> {
   }
 
   Widget buildContainer() {
-    List<Widget> _lst = [];
+    List<Widget> sliverChildren = [];
     if (core.store.messageResponseError == null) {
-      _lst.add(
+      sliverChildren.add(
         Column(
           children: [
             // Container(
@@ -67,21 +67,34 @@ class _View extends State<PurchaseView> {
         ),
       );
     } else {
-      _lst.add(
-        Center(
-          child: Text(core.store.messageResponseError!),
-        )
-      );
+      if (core.store.isPending) {
+        sliverChildren.add(
+          Center(child: CircularProgressIndicator())
+        );
+      } else {
+        sliverChildren.add(
+          Center(
+            child: Text(core.store.messageResponseError!),
+          )
+        );
+      }
     }
 
-    if (core.store.isPending) {
-      _lst.add(
-        CircularProgressIndicator()
-      );
-    }
+    // if (core.store.isPending) {
+    //   _lst.add(
+    //     CircularProgressIndicator()
+    //   );
+    // }
+    // sliverChildren.add(
+    //   Center(
+    //     child: CircularProgressIndicator(
+    //       value: 0.7,
+    //     ),
+    //   )
+    // );
 
     return new SliverList(
-      delegate: new SliverChildListDelegate(_lst)
+      delegate: new SliverChildListDelegate(sliverChildren)
     );
 
   }
@@ -94,6 +107,8 @@ class _View extends State<PurchaseView> {
 
     if (core.store.isLoading) {
       // NOTE: Connecting to store...
+    } else if (core.store.isPending) {
+      msgWidget = Text('A moment please');
     } else if (core.store.isAvailable) {
       // NOTE: Purchase is ready, Purchase is available
       msgWidget = Text('Ready to contribute!', style: TextStyle(fontSize: 20),);
@@ -108,15 +123,9 @@ class _View extends State<PurchaseView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if(!core.store.isLoading) Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: msgIcon
-          ),
-          if(core.store.isLoading) Padding(
-            padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-            child: CircularProgressIndicator(
-              backgroundColor: Theme.of(context).primaryColorDark,
-            )
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 4),

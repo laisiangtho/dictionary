@@ -145,6 +145,7 @@ class Store {
   }
 
   Future<void> doRestore() async {
+    // await Future.delayed(Duration(milliseconds: 1500));
     await _inAppPurchase.restorePurchases();
     // debugPrint('total listOfPurchaseItem $listOfPurchaseItem');
     // _kOfPurchase.data = listOfPurchaseItem.map((e) => e.productID).toList();
