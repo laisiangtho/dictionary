@@ -14,6 +14,7 @@ import 'package:lidea/idea.dart';
 import 'package:dictionary/core.dart';
 import 'package:dictionary/theme.dart';
 import 'package:dictionary/view/app.dart';
+import 'package:lidea/view/notify.dart';
 
 const bool isProduction = bool.fromEnvironment('dart.vm.product');
 Future<void> main() async{
@@ -79,6 +80,12 @@ class Dictionary extends StatelessWidget {
         // ChangeNotifierProvider<FormNotifier>(
         //   create: (context) => FormNotifier(),
         // ),
+        ChangeNotifierProvider<NotifyViewScroll>(
+          create: (context) => NotifyViewScroll(),
+        ),
+        ChangeNotifierProvider<NotifyNavigationScroll>(
+          create: (context) => NotifyNavigationScroll(),
+        ),
         ChangeNotifierProvider<Core>(
           create: (context) => Core(),
           // child: MyHomePage(),
@@ -94,6 +101,7 @@ class Dictionary extends StatelessWidget {
         brightness: IdeaTheme.of(context).resolvedSystemBrightness,
         child: MaterialApp(
           title: "MyOrdbok",
+          // title: Core.instance.collection.env.name,
           showSemanticsDebugger: false,
           debugShowCheckedModeBanner: false,
           darkTheme: IdeaData.dark.copyWith(
