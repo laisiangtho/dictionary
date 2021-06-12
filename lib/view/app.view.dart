@@ -20,33 +20,44 @@ class AppView extends _State {
 
   Widget start() {
     return Scaffold(
-        key: scaffoldKey,
-        primary: true,
-        resizeToAvoidBottomInset: true,
-        // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown ),
-        body: SafeArea(
-            top: false,
-            bottom: true,
-            maintainBottomViewPadding: false,
-            // onUnknownRoute: routeUnknown,
-            child: new PageView.builder(
-                controller: pageController,
-                // onPageChanged: _pageChanged,
-                allowImplicitScrolling: false,
-                physics: new NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) =>
-                    _pageView[index],
-                itemCount: _pageView.length)),
-        // extendBody: true,
-        bottomNavigationBar: bottom());
+      key: scaffoldKey,
+      primary: true,
+      resizeToAvoidBottomInset: true,
+      // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown ),
+      body: SafeArea(
+        top: false,
+        bottom: true,
+        maintainBottomViewPadding: false,
+        // onUnknownRoute: routeUnknown,
+        child: new PageView.builder(
+          controller: pageController,
+          // onPageChanged: _pageChanged,
+          allowImplicitScrolling: false,
+          physics: new NeverScrollableScrollPhysics(),
+          itemBuilder: (BuildContext context, int index) => _pageView[index],
+          itemCount: _pageView.length
+        )
+      ),
+      // extendBody: true,
+      bottomNavigationBar: bottom()
+    );
   }
 
   Widget bottom() {
-    return ViewNavigation(
-        // controller: _controller,
+    return Consumer<NotifyNavigationScroll>(
+      builder: (context, scrollNavigation, child) {
+        return AnimatedContainer(
+          duration: Duration(milliseconds:scrollNavigation.milliseconds),
+          height: scrollNavigation.height,
+          child: child
+        );
+      },
+      child: ViewNavigation(
         items: _pageButton,
         itemDecoration: bottomDecoration,
-        itemBuilder: buttonItem);
+        itemBuilder: buttonItem
+      ),
+    );
   }
 
   Widget bottomDecoration({required BuildContext context, Widget? child}) {
@@ -76,12 +87,7 @@ class AppView extends _State {
     );
   }
 
-  Widget buttonItem(
-      {required BuildContext context,
-      required int index,
-      required ViewNavigationModel item,
-      required bool disabled,
-      required bool route}) {
+  Widget buttonItem({required BuildContext context, required int index, required ViewNavigationModel item, required bool disabled, required bool route}) {
     return Semantics(
       label: route ? "Page navigation" : "History navigation",
       namesRoute: route,
@@ -110,8 +116,7 @@ class AppView extends _State {
     );
   }
 
-  void Function()? buttonPressed(
-      BuildContext context, ViewNavigationModel item, bool disable) {
+  void Function()? buttonPressed(BuildContext context, ViewNavigationModel item, bool disable) {
     if (disable) {
       return null;
     } else if (item.action == null && item.key != null) {
