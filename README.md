@@ -40,6 +40,7 @@ or [readme][Home]!
 - [ ] Like
 - [x] Improve scroll for NestedScrollView
 - [ ] gist backup
+- [ ] Dark mode color
 
 > Flutter SDK command line tools
 

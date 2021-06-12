@@ -1,5 +1,15 @@
 # Change log
 
+## 1.0.1+19
+
+Improve
+
+- Navigation
+
+Update
+
+- dependencies (in_app_purchase)
+
 ## 1.0.0+14-16 (ready for release)
 
 Improve
