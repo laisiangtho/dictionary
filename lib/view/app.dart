@@ -33,7 +33,7 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
   final pageController = PageController(keepPage: true);
   final _controller = ScrollController();
   // final core = Core();
-  final viewNotifyNavigation = ViewNotify.navigation;
+  final viewNotifyNavigation = NotifyNavigationButton.navigation;
 
   // final GlobalKey<Home.View> _home = GlobalKey<Home.View>();
   // final GlobalKey<Note.View> _note = GlobalKey<Note.View>();
@@ -158,7 +158,7 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
   }
 
   void onSearch(String word){
-    ViewNotify.navigation.value = 0;
+    NotifyNavigationButton.navigation.value = 0;
     Future.delayed(const Duration(milliseconds: 200), () {
       core.definitionGenerate(word);
     });

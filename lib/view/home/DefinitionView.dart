@@ -283,7 +283,7 @@ class _DefinitionViewState extends State<DefinitionView> {
                       color: Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.all(Radius.circular(100.0)),
                       padding: EdgeInsets.symmetric(vertical:5, horizontal:15),
-                      minSize:50,
+                      minSize:42,
                       onPressed: () => widget.search(e['word'].toString())
                     ),
                   )

@@ -60,7 +60,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   }
 
   void onSearch(String word){
-    ViewNotify.navigation.value = 0;
+    NotifyNavigationButton.navigation.value = 0;
     Future.delayed(const Duration(milliseconds: 200), () {
       core.definitionGenerate(word);
     });
@@ -84,7 +84,7 @@ class _View extends _State with _Bar{
   Widget build(BuildContext context) {
     return ViewPage(
       key: widget.key,
-      controller: scrollController,
+      // controller: scrollController,
       child: Selector<Core,List<MapEntry<dynamic, HistoryType>>>(
         selector: (_, e) => e.collection.boxOfHistory.toMap().entries.toList(),
         builder: (BuildContext context, List<MapEntry<dynamic, HistoryType>> items, Widget? child) => NestedScrollView(
@@ -221,6 +221,7 @@ class _View extends _State with _Bar{
             Text(
               "Delete",
               textAlign: TextAlign.right,
+              style: TextStyle(fontSize: 18),
             ),
             SizedBox(
               width: 20,
