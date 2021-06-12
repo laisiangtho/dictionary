@@ -125,29 +125,33 @@ class _View extends _State with _Bar {
     debugPrint('home build');
     return ViewPage(
       key: widget.key,
-      // controller: scrollController,
+      controller: scrollController,
       child: Selector<Core, bool>(
         selector: (_, e) => e.nodeFocus,
-        builder: (BuildContext context, bool focus, Widget? child) =>
-          NestedScrollView(
-            floatHeaderSlivers: true,
-            controller: scrollController,
-            // physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            // dragStartBehavior: DragStartBehavior.start,
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
-              <Widget>[bar(innerBoxIsScrolled)],
-            body: body()
-          ),
+        builder: (BuildContext context, bool focus, Widget? child) => body(),
+        // builder: (BuildContext context, bool focus, Widget? child) =>
+        //   NestedScrollView(
+        //     floatHeaderSlivers: true,
+        //     controller: scrollController,
+        //     // physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        //     // dragStartBehavior: DragStartBehavior.start,
+        //     headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
+        //       <Widget>[_barContext(innerBoxIsScrolled)],
+        //     body: body()
+        //   ),
       )
     );
   }
 
   Widget body() {
     return CustomScrollView(
-      primary: true,
-      // controller: scrollController,
-      physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      // primary: true,
+      controller: scrollController,
+      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      semanticChildCount: 2,
       slivers: <Widget>[
+        bar(),
+        // _barContext(true),
         if (focusNode.hasFocus)
           WidgetKeepAlive(
             key: _scaffoldSuggestion,
