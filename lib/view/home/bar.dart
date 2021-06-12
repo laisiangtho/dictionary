@@ -1,52 +1,146 @@
 part of 'main.dart';
 
 mixin _Bar on _State {
-  Widget bar( bool innerBoxIsScrolled){
-    return SliverAppBar(
+  Widget bar() {
+    return new SliverPersistentHeader(
       pinned: true,
-      floating: true,
-      // snap: false,
-      // centerTitle: true,
-      elevation: 0.7,
-      forceElevated: focusNode.hasFocus|innerBoxIsScrolled,
-      title: barTitle(),
-      expandedHeight: !focusNode.hasFocus?120:50,
-      // backgroundColor: innerBoxIsScrolled?Theme.of(context).primaryColor:Theme.of(context).scaffoldBackgroundColor,
-      backgroundColor: focusNode.hasFocus?Theme.of(context).primaryColor:Theme.of(context).scaffoldBackgroundColor,
-      shape: ContinuousRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.elliptical(3, 2)
-        ),
-      ),
-      automaticallyImplyLeading: false,
-      leading: Navigator.canPop(context)?IconButton(
-        icon: Icon(CupertinoIcons.back, color: Colors.black),
-        onPressed: () => Navigator.of(context).pop(),
-      ):null,
-      // actions: [
-      //   CupertinoButton(
-      //     child: Icon(
-      //       CupertinoIcons.checkmark_shield_fill
-      //     ),
-      //     onPressed: null
-      //   )
-      // ],
-      // flexibleSpace: LayoutBuilder(
-      //   builder: (BuildContext context, BoxConstraints constraints) => FlexibleSpaceBar()
-      // ),
-      bottom: PreferredSize(
-        preferredSize: Size.fromHeight(56.0),
-        child: Container(
-          // width: double.infinity,
-          height: 37.0,
-          margin: EdgeInsets.fromLTRB(16.0, 6.0, 5.0, 9.0),
-          // height: 35.0,
-          // margin: EdgeInsets.fromLTRB(16.0, 7.0, 5.0, 10.0),
-          child: barSearch(innerBoxIsScrolled),
-        ),
-      ),
+      floating:false,
+      delegate: new ViewHeaderDelegate(
+        _barBuilder,
+        maxHeight: focusNode.hasFocus?70:120,
+        minHeight: 70
+      )
+      // delegate: new ScrollHeaderDelegate(
+      //   Navigator.canPop(context)?_barPopup:_barMain,
+      //   maxHeight: widget.barMaxHeight
+      // )
     );
   }
+  // Widget bar() {
+  //   return new SliverPersistentHeader(
+  //     pinned: true,
+  //     // floating:false,
+  //     // delegate: new ScrollHeaderDelegate(
+  //     //   Navigator.canPop(context)?_barPopup:_barMain,
+  //     //   maxHeight: widget.barMaxHeight
+  //     // )
+  //   );
+  // }
+
+  Widget _barBuilder(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      decoration: BoxDecoration(
+        // color: this.backgroundColor??Theme.of(context).primaryColor,
+        // color: Theme.of(context).scaffoldBackgroundColor,
+        color:focusNode.hasFocus?Theme.of(context).primaryColor:Theme.of(context).scaffoldBackgroundColor,
+        // color: Colors.blue,
+        // borderRadius: new BorderRadius.vertical(
+        //   bottom: Radius.elliptical(3, 2)
+        // ),
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).backgroundColor.withOpacity(focusNode.hasFocus?1.0:stretch >= 0.5?stretch:0.0),
+            width: 0.9,
+          ),
+        ),
+        // boxShadow: [
+        //   BoxShadow(
+        //     blurRadius: 0.2,
+        //     // color: Colors.black38,
+        //     color: Theme.of(context).backgroundColor.withOpacity(stretch >= 0.5?stretch:0.0),
+        //     spreadRadius: 0.2,
+        //     offset: Offset(0.5, .7),
+        //   )
+        // ]
+      ),
+      child: Stack(
+        // crossAxisAlignment: CrossAxisAlignment.end,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // Text('abc'),
+          Align(
+            // alignment: Alignment.topCenter,
+            // alignment: Alignment(0.0,-.7),
+            alignment: Alignment.lerp(Alignment(0.0,-.7),Alignment.center, shrink>0.8?0.0:shrink)!,
+            // child: Text('Top'),
+            child: AnimatedOpacity(
+              opacity: shrink<0.8?0.0:shrink,
+              duration: const Duration(milliseconds: 100),
+              child: Text('MyOrdbok', style: TextStyle(fontSize: 18),),
+              // child: barTitle(),
+            ),
+          ),
+          Align(
+            // alignment: Alignment.center,
+            // alignment: Alignment.lerp(Alignment.bottomCenter,Alignment.center, stretch>0.8?1.0:stretch)!,
+            alignment: Alignment.lerp(Alignment(0.0,0.8),Alignment.center, (focusNode.hasFocus || stretch>0.2)?1.0:stretch)!,
+            // alignment: Alignment.lerp(Alignment(-0.5,0.5), Alignment(-0.5,0.5), 0.5)!,
+            // alignment: Alignment(0.0,0.5),
+            // child: Text('bottom $stretch'),
+            // child: barSearch(overlaps)
+            child: Container(
+              width: double.infinity,
+              height: 35.0,
+              margin: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+              child: barSearch(overlaps),
+            ),
+          )
+
+        ],
+      )
+    );
+    // return Text('abc');
+  }
+
+  // Widget _barContext(bool innerBoxIsScrolled){
+  //   return SliverAppBar(
+  //     pinned: true,
+  //     floating: true,
+  //     // snap: false,
+  //     // centerTitle: true,
+  //     elevation: 0.7,
+  //     forceElevated: focusNode.hasFocus|innerBoxIsScrolled,
+  //     title: barTitle(),
+  //     expandedHeight: !focusNode.hasFocus?120:50,
+  //     // backgroundColor: innerBoxIsScrolled?Theme.of(context).primaryColor:Theme.of(context).scaffoldBackgroundColor,
+  //     backgroundColor: focusNode.hasFocus?Theme.of(context).primaryColor:Theme.of(context).scaffoldBackgroundColor,
+  //     shape: ContinuousRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(
+  //         bottom: Radius.elliptical(3, 2)
+  //       ),
+  //     ),
+  //     automaticallyImplyLeading: false,
+  //     leading: Navigator.canPop(context)?IconButton(
+  //       icon: Icon(CupertinoIcons.back, color: Colors.black),
+  //       onPressed: () => Navigator.of(context).pop(),
+  //     ):null,
+  //     // actions: [
+  //     //   CupertinoButton(
+  //     //     child: Icon(
+  //     //       CupertinoIcons.checkmark_shield_fill
+  //     //     ),
+  //     //     onPressed: null
+  //     //   )
+  //     // ],
+  //     // flexibleSpace: LayoutBuilder(
+  //     //   builder: (BuildContext context, BoxConstraints constraints) => FlexibleSpaceBar()
+  //     // ),
+  //     bottom: PreferredSize(
+  //       preferredSize: Size.fromHeight(56.0),
+  //       child: Container(
+  //         // width: double.infinity,
+  //         height: 37.0,
+  //         margin: EdgeInsets.fromLTRB(16.0, 6.0, 5.0, 9.0),
+  //         // height: 35.0,
+  //         // margin: EdgeInsets.fromLTRB(16.0, 7.0, 5.0, 10.0),
+  //         child: barSearch(innerBoxIsScrolled),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget barTitle() {
     // final focus = !context.watch<Core>().nodeFocus;
@@ -54,6 +148,7 @@ mixin _Bar on _State {
       duration: Duration(milliseconds: 200),
       width: focusNode.hasFocus?0:null,
       height: focusNode.hasFocus?0:null,
+
       child: Semantics(
         label: "Setting",
         child: Text(
@@ -122,14 +217,16 @@ mixin _Bar on _State {
   Widget barSearch(bool innerBoxIsScrolled){
     // BuildContext context,double offset,bool overlaps, double shrink, double stretch
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.start,
-      // crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         Expanded(
           child: AnimatedContainer(
             duration: Duration(milliseconds: 400),
-            // margin: EdgeInsets.only(left:12,right:widget.focusNode.hasFocus?0:12, top: 7, bottom: 7),
-            margin: EdgeInsets.only(left:0,right:focusNode.hasFocus?0:12,),
+            // margin: EdgeInsets.only(left:12,right:focusNode.hasFocus?0:12, top: 5, bottom: 5),
+            // margin: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+            // margin: EdgeInsets.only(left:0,right:focusNode.hasFocus?0:12,),
+            // margin: EdgeInsets.only(left:0,right:focusNode.hasFocus?0:12,),
             child: Builder(builder: (BuildContext context) => barForm(innerBoxIsScrolled))
           ),
         ),
