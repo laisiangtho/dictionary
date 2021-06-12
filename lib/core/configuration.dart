@@ -2,7 +2,6 @@ part of 'main.dart';
 
 mixin _Configuration  {
   final Collection collection = Collection.internal();
-  final listKeyHistory = GlobalKey<SliverAnimatedListState>();
 
   late SQLite _sql;
   late Store store;
