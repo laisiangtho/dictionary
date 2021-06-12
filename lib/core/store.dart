@@ -2,10 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dictionary/model.dart';
-// import 'package:flutter/cupertino.dart';
-
-// import 'package:dictionary/model.dart';
-// import 'package:flutter/foundation.dart';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/billing_client_wrappers.dart';
@@ -14,8 +10,6 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 class Store {
 
   late Collection _cluster;
-  // late VoidCallback _notify;
-  // late VoidCallback _notify;
   late void Function() _notify;
 
   String message = 'working';
