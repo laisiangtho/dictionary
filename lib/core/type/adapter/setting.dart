@@ -21,6 +21,7 @@ class SettingAdapter extends TypeAdapter<SettingType> {
   void write(BinaryWriter writer, SettingType obj) {
     writer
       ..writeByte(4)
+
       ..writeByte(0)
       ..write(obj.version)
       ..writeByte(1)

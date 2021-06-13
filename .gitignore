@@ -2,10 +2,7 @@
 **/*v[0-9]*.md
 **/*v[0-9].rar
 **/*v[0-9].json
-# assets/**/delete
 assets/**
-# assets/*.*
-# assets/word.db
 !assets/fonts
 !assets/psd
 !assets/*-mock.*
@@ -14,6 +11,7 @@ android/key.properties
 android/app/google-services.json
 
 ios/Runner/GoogleService-Info.plist
+
 # Miscellaneous
 *.class
 *.log

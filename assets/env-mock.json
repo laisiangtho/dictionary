@@ -12,6 +12,10 @@
     "fontSize":24.0,
     "searchQuery":""
   },
+  "token":{
+    "key":"",
+    "id":""
+  },
   "products":[
     {
       "cart":"offlineaccess", "name":"offline", "type":"unlimited",
@@ -38,46 +42,6 @@
       "cart":"subscription_gold", "name":"gold", "type":"unlimited"
     }
   ],
-  "synset":[
-    { "id": 0, "name": "Noun", "shortname": "n" },
-    { "id": 1, "name": "Verb", "shortname": "v" },
-    { "id": 2, "name": "Adjective", "shortname": "adj" },
-    { "id": 3, "name": "Adverb", "shortname": "adv" },
-    { "id": 4, "name": "Preposition", "shortname": "prep" },
-    { "id": 5, "name": "Conjunction", "shortname": "conj" },
-    { "id": 6, "name": "Pronoun", "shortname": "pron" },
-    { "id": 7, "name": "Interjection", "shortname": "int" },
-    { "id": 8, "name": "Abbreviation", "shortname": "abb" },
-    { "id": 9, "name": "Prefix", "shortname": null },
-    { "id": 10, "name": "Combining form", "shortname": null },
-    { "id": 11, "name": "Phrase", "shortname": "phra" },
-    { "id": 12, "name": "Contraction", "shortname": null },
-    { "id": 13, "name": "Punctuation", "shortname": "punc" },
-    { "id": 14, "name": "Particle", "shortname": "part" },
-    { "id": 15, "name": "Post-positional Marker", "shortname": "ppm" },
-    { "id": 16, "name": "Suffix", "shortname": null },
-    { "id": 17, "name": "Acronym", "shortname": null },
-    { "id": 18, "name": "Article", "shortname": null },
-    { "id": 19, "name": "Number", "shortname": "tn" }
-  ],
-  "synmap":[
-    { "id": 0, "type": 1, "name": "past and past participle"},
-    { "id": 1, "type": 0, "name": "plural"},
-    { "id": 2, "type": 1, "name": "3rd person"},
-    { "id": 3, "type": 1, "name": "past tense" },
-    { "id": 4, "type": 1, "name": "past participle"},
-    { "id": 5, "type": 1, "name": "present participle"},
-    { "id": 6, "type": 2, "name": "comparative"},
-    { "id": 7, "type": 2, "name": "superlative"},
-    { "id": 8, "type": 1, "name": "1st person"},
-    { "id": 9, "type": 1, "name": "2nd person"},
-    { "id": 10, "type": 1, "name": "plural past"}
-  ],
-
-  "token":{
-    "key":"",
-    "id":""
-  },
   "api":[
     {
       "uid":"word",
@@ -122,5 +86,40 @@
         "createIndex":"CREATE INDEX IF NOT EXISTS #.tidIndex ON ?? (wrid,wlid)"
       }
     }
+  ],
+  "synset":[
+    { "id": 0, "name": "Noun", "shortname": "n" },
+    { "id": 1, "name": "Verb", "shortname": "v" },
+    { "id": 2, "name": "Adjective", "shortname": "adj" },
+    { "id": 3, "name": "Adverb", "shortname": "adv" },
+    { "id": 4, "name": "Preposition", "shortname": "prep" },
+    { "id": 5, "name": "Conjunction", "shortname": "conj" },
+    { "id": 6, "name": "Pronoun", "shortname": "pron" },
+    { "id": 7, "name": "Interjection", "shortname": "int" },
+    { "id": 8, "name": "Abbreviation", "shortname": "abb" },
+    { "id": 9, "name": "Prefix", "shortname": null },
+    { "id": 10, "name": "Combining form", "shortname": null },
+    { "id": 11, "name": "Phrase", "shortname": "phra" },
+    { "id": 12, "name": "Contraction", "shortname": null },
+    { "id": 13, "name": "Punctuation", "shortname": "punc" },
+    { "id": 14, "name": "Particle", "shortname": "part" },
+    { "id": 15, "name": "Post-positional Marker", "shortname": "ppm" },
+    { "id": 16, "name": "Suffix", "shortname": null },
+    { "id": 17, "name": "Acronym", "shortname": null },
+    { "id": 18, "name": "Article", "shortname": null },
+    { "id": 19, "name": "Number", "shortname": "tn" }
+  ],
+  "synmap":[
+    { "id": 0, "type": 1, "name": "past and past participle"},
+    { "id": 1, "type": 0, "name": "plural"},
+    { "id": 2, "type": 1, "name": "3rd person"},
+    { "id": 3, "type": 1, "name": "past tense" },
+    { "id": 4, "type": 1, "name": "past participle"},
+    { "id": 5, "type": 1, "name": "present participle"},
+    { "id": 6, "type": 2, "name": "comparative"},
+    { "id": 7, "type": 2, "name": "superlative"},
+    { "id": 8, "type": 1, "name": "1st person"},
+    { "id": 9, "type": 1, "name": "2nd person"},
+    { "id": 10, "type": 1, "name": "plural past"}
   ]
 }
