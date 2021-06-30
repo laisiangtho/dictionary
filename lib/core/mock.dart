@@ -39,7 +39,7 @@ mixin _Mock on _Abstract {
   Future<bool> initArchive() async{
     bool toChecks = false;
     for (var item in collection.env.listOfDatabase) {
-      toChecks = await UtilDocument.exists(item.db).then(
+      toChecks = await UtilDocument.exists(item.file).then(
         (e) => e.isEmpty
       ).catchError((_)=>true);
       if (toChecks){

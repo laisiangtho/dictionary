@@ -159,7 +159,7 @@ class APIType {
     };
   }
 
-  String get db => '$uid.db';
+  String get file => '$uid.db';
 
   // isMain == true is also built-in as bundle
   bool get isMain => kind == 1 && src.length > 0;

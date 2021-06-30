@@ -45,7 +45,7 @@ class SQLite {
 
   FutureOr<Database> init() async {
     // send primary db, attach except db
-    final String file = await UtilDocument.fileName(_wordContext.db);
+    final String file = await UtilDocument.fileName(_wordContext.file);
     // debugPrint('load start');
     // await this.load(_wordContext);
     // debugPrint('load end');
@@ -109,7 +109,7 @@ class SQLite {
       // final bool notAttached = ath.firstWhere((e) => e['name'] == item.uid, orElse:()=> null) == null;
       final notAttached = ath.firstWhere((e) => e['name'].toString() == item.uid, orElse: ()=>Map<String, dynamic>());
       if (notAttached.isEmpty) {
-        String _filePath = await UtilDocument.fileName(item.db);
+        String _filePath = await UtilDocument.fileName(item.file);
         // await db.rawQuery("DETACH DATABASE ${item.uid};");
         await db.rawQuery("ATTACH DATABASE '$_filePath' AS ${item.uid};").then((value){
           if (item.createIndex != null && item.createIndex!.isNotEmpty){
@@ -119,7 +119,7 @@ class SQLite {
           debugPrint(e.toString());
         });
       } else {
-        debugPrint('attached ${item.db}');
+        debugPrint('attached ${item.file}');
       }
     }
     await batch.commit(noResult: true);
