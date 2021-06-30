@@ -11,8 +11,8 @@ import 'package:lidea/intl.dart' as intl;
 // import 'package:dictionary/icon.dart';
 // import 'package:dictionary/widget.dart';
 
-class TaskView extends StatelessWidget {
-  TaskView({Key? key}) : super(key: key);
+class DemoView extends StatelessWidget {
+  DemoView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
