@@ -9,7 +9,7 @@ class AppView extends _State {
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            return start();
+            return launched();
           // return ScreenLauncher();
           default:
             return ScreenLauncher();
@@ -18,7 +18,7 @@ class AppView extends _State {
     );
   }
 
-  Widget start() {
+  Widget launched() {
     return Scaffold(
       key: scaffoldKey,
       primary: true,
