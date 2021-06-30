@@ -180,7 +180,7 @@ class _View extends _State with _Bar {
           },
           child: new HomeNone(),
         ),
-        // new TaskView()
+        // new DemoView()
       ]
     );
   }
