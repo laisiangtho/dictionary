@@ -14,7 +14,7 @@ class SettingType {
   double? fontSize;
 
   @HiveField(3)
-  String? searchQuery;
+  String searchQuery;
 
   SettingType({
     this.version:0,
@@ -43,10 +43,10 @@ class SettingType {
 
   SettingType merge(SettingType o) {
     return SettingType(
-      version: o.version??this.version,
-      mode: o.mode??this.mode,
-      fontSize: o.fontSize??this.fontSize,
-      searchQuery: o.searchQuery??this.searchQuery
+      version: o.version,
+      mode: o.mode,
+      fontSize: o.fontSize,
+      searchQuery: o.searchQuery
     );
   }
 
