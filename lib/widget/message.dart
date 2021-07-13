@@ -104,6 +104,7 @@ Future<bool?> doConfirmWithDialog({
     return await showDialog<bool?>(
       context: context,
       useSafeArea: false,
+      barrierColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
       builder: (BuildContext context) => AlertDialog(
         content: Text(message),
         contentPadding: EdgeInsets.symmetric(horizontal:20, vertical:20),
