@@ -1,36 +1,40 @@
 part of 'main.dart';
 
-class DefinitionView extends StatefulWidget {
-  // DefinitionView({Key? key, required this.search}) : super(key: key);
-  // final void Function(String word) search;
+mixin _Result on _State {
 
-  DefinitionView({
-    Key? key,
-    required this.search,
-    // required this.query,
-    // required this.result
-  }) : super(key: key);
+  Widget result(){
+    return Selector<Core,DefinitionType>(
+      selector: (_, e) => e.collection.cacheDefinition,
+      builder: (BuildContext context, DefinitionType o, Widget? child) {
+        if (o.query.isEmpty){
+          return _resultNoQuery();
+        } else if (o.raw.length > 0){
+          return _resultBlock(o);
+        } else {
+          return _resultNoMatch();
+        }
+      }
+    );
+  }
 
-  final void Function(String word) search;
-  // final String query;
-  // final List<Map<String, Object?>> result;
+  Widget _resultNoQuery(){
+    return WidgetMessage(
+      message: 'result: no query',
+    );
+  }
 
-  @override
-  State<StatefulWidget> createState() => _DefinitionViewState();
-}
+  Widget _resultNoMatch(){
+    return WidgetMessage(
+      message: 'result: not found',
+    );
+  }
 
-class _DefinitionViewState extends State<DefinitionView> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Selector<Core,List<Map<String, dynamic>>>(
-      selector: (_, e) => e.definitionList,
-      builder: (BuildContext context, List<Map<String, dynamic>> result, Widget? child) => new SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int i) => _resultContainer(result.elementAt(i)),
-          childCount: result.length
-        )
-      ),
+  Widget _resultBlock(DefinitionType o){
+    return new SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int i) => _resultContainer(o.raw.elementAt(i)),
+        childCount: o.raw.length
+      )
     );
   }
 
@@ -96,21 +100,35 @@ class _DefinitionViewState extends State<DefinitionView> {
   }
 
   Widget _senseContainer(Map<String, dynamic> sense){
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+    // return Container(
+    //   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+    //   clipBehavior: Clip.hardEdge,
+    //   decoration: BoxDecoration(
+    //     color: Theme.of(context).primaryColor,
+    //     borderRadius: BorderRadius.all(Radius.circular(7)),
+    //     boxShadow: [
+    //       BoxShadow(
+    //         blurRadius: 0.0,
+    //         color: Theme.of(context).backgroundColor,
+    //         spreadRadius: 0.7,
+    //         offset: Offset(0.2, .1),
+    //       )
+    //     ]
+    //   ),
+    //   child: new Column(
+    //     mainAxisSize: MainAxisSize.max,
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     children: <Widget>[
+    //       _posContainer(sense['pos']),
+    //       _clueContainer(sense['clue'])
+    //     ]
+    //   ),
+    // );
+    return Card(
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.all(Radius.circular(7)),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 0.0,
-            color: Theme.of(context).backgroundColor,
-            spreadRadius: 0.7,
-            offset: Offset(0.5, .1),
-          )
-        ]
-      ),
+      shadowColor: Theme.of(context).backgroundColor,
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+      elevation: 10,
       child: new Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,14 +144,14 @@ class _DefinitionViewState extends State<DefinitionView> {
     return Container(
       padding: EdgeInsets.only(top:10, bottom:10, left:25, right:35),
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
         borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(100)
         ),
         boxShadow: [
           BoxShadow(
             blurRadius: 0.0,
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).backgroundColor.withOpacity(0.3),
             spreadRadius: 0.7,
             offset: Offset(0.2, .2),
           )
@@ -192,7 +210,7 @@ class _DefinitionViewState extends State<DefinitionView> {
           flex: 10,
           child: Highlight(
             str: mean,
-            search: widget.search,
+            search: onSearch,
             style: TextStyle(
               fontSize: 17,
               height: 1.9
@@ -245,7 +263,7 @@ class _DefinitionViewState extends State<DefinitionView> {
                 // child: Text(exam[index]),
                 child: Highlight(
                   str:exam[index],
-                  search: widget.search,
+                  search: onSearch,
                   style:TextStyle(
                     fontWeight: FontWeight.w300,
                     fontSize: 17,
@@ -284,7 +302,7 @@ class _DefinitionViewState extends State<DefinitionView> {
                       borderRadius: BorderRadius.all(Radius.circular(100.0)),
                       padding: EdgeInsets.symmetric(vertical:5, horizontal:15),
                       minSize:42,
-                      onPressed: () => widget.search(e['word'].toString())
+                      onPressed: () => onSearch(e['word'].toString())
                     ),
                   )
                 ).toList()
@@ -296,4 +314,5 @@ class _DefinitionViewState extends State<DefinitionView> {
       }
     );
   }
+
 }

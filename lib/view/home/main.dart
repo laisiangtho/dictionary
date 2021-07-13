@@ -1,5 +1,6 @@
+import 'package:dictionary/core/type/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
+// import 'package:flutter/gestures.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 
@@ -10,16 +11,11 @@ import 'package:dictionary/core.dart';
 import 'package:dictionary/icon.dart';
 import 'package:dictionary/widget.dart';
 
-// import 'TaskView.dart';
-
-part 'SuggestionView.dart';
-part 'DefinitionView.dart';
-part 'DefinitionNone.dart';
-part 'SuggestionNone.dart';
-part 'HomeView.dart';
-part 'HomeNone.dart';
+// import 'demo.dart';
 
 part 'bar.dart';
+part 'suggest.dart';
+part 'result.dart';
 
 class Main extends StatefulWidget {
   Main({Key? key}) : super(key: key);
@@ -28,19 +24,21 @@ class Main extends StatefulWidget {
 }
 
 abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
+  late Core core;
+
   // final _scaffoldKey = GlobalKey<ScaffoldState>();
   // final _formKey = GlobalKey<FormState>();
   // final _focusKey = GlobalKey<FormState>();
 
-  final _scaffoldSuggestion = UniqueKey();
-  final _scaffoldDefinition = UniqueKey();
+  // final _scaffoldSuggestion = UniqueKey();
+  // final _scaffoldDefinition = UniqueKey();
 
   final scrollController = ScrollController();
   final textController = new TextEditingController();
   final focusNode = new FocusNode();
   // late ScrollController scrollController;
 
-  late Core core;
+  String previousQuery ='';
 
   // late TextEditingController textController;
   // late FocusNode focusNode;
@@ -50,25 +48,30 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    core = context.read<Core>();
+    previousQuery = searchQuery;
+    Future.microtask(() {
+      textController.text = previousQuery;
+    });
     // this.textController.text = core.collection.notify.searchQuery.value ;
     // this.textController.text = '';
-    core = context.read<Core>();
-    Future.microtask(() {
-      textController.text = core.suggestionQuery;
-    });
 
     // scrollController = ScrollController()..addListener(() {});
     focusNode.addListener(() {
       // if(focusNode.hasFocus) {
       //   textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);
       // }
-      context.read<Core>().nodeFocus = focusNode.hasFocus;
+      // context.read<Core>().nodeFocus = focusNode.hasFocus;
+      core.nodeFocus = focusNode.hasFocus;
     });
 
-    textController.addListener(() {
-      final word = textController.text.replaceAll(RegExp(' +'), ' ').trim();
-      core.suggestionQuery = word;
-    });
+    // textController.addListener(() {
+    //   // suggestionQuery = textController.text.replaceAll(RegExp(' +'), ' ').trim();
+    //   // core.collection.searchQuery = suggestionQuery;
+    //   // core.suggestionQuery = suggestionQuery;
+    //   core.notify();
+    //   // debugPrint('textupdate $suggestionQuery');
+    // });
   }
 
   @override
@@ -84,66 +87,69 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
     if (mounted) super.setState(fn);
   }
 
-  String keyWords(String words) {
-    return words.replaceAll(RegExp(' +'), ' ').trim();
+  String get searchQuery => core.collection.searchQuery;
+  set searchQuery(String str) {
+    core.collection.searchQuery = str.replaceAll(RegExp(' +'), ' ').trim();
+    core.notify();
+  }
+
+  void onClear() {
+    textController.clear();
+    searchQuery = '';
   }
 
   void onCancel() {
+    searchQuery = previousQuery;
+    textController.text = searchQuery;
     focusNode.unfocus();
   }
 
+
   void onSuggest(String str) {
+    searchQuery = str;
     Future.microtask(() {
+      // searchQuery = str;
       // core.suggestionQuery = keyWords(str);
-      core.suggestionGenerate(keyWords(str));
+      core.suggestionGenerate();
     });
   }
 
   // NOTE: used in bar, suggest & result
   void onSearch(String str) {
-    final word = keyWords(str);
+    searchQuery = str;
+    previousQuery = str;
     this.focusNode.unfocus();
+    if (textController.text != str) {
+      textController.text = str;
+    }
 
     Future.microtask(() {
-      // context.read<Core>().definitionQuery = word;
-      // context.read<Core>().definitionGenerate(word);
-      core.definitionGenerate(word);
+      core.definitionGenerate();
     }).whenComplete(() {
       scrollController.animateTo(scrollController.position.minScrollExtent,
           curve: Curves.fastOutSlowIn, duration: Duration(milliseconds: 800));
     });
 
     Future.delayed(Duration.zero, () {
-      core.historyAdd(word);
+      core.collection.historyUpdate(searchQuery);
     });
   }
 }
 
-class _View extends _State with _Bar {
+class _View extends _State with _Bar, _Suggest, _Result {
   @override
   Widget build(BuildContext context) {
-    debugPrint('home build');
     return ViewPage(
       key: widget.key,
       controller: scrollController,
       child: Selector<Core, bool>(
         selector: (_, e) => e.nodeFocus,
-        builder: (BuildContext context, bool focus, Widget? child) => body(),
-        // builder: (BuildContext context, bool focus, Widget? child) =>
-        //   NestedScrollView(
-        //     floatHeaderSlivers: true,
-        //     controller: scrollController,
-        //     // physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        //     // dragStartBehavior: DragStartBehavior.start,
-        //     headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
-        //       <Widget>[_barContext(innerBoxIsScrolled)],
-        //     body: body()
-        //   ),
+        builder: (BuildContext context, bool focus, Widget? child) => scroll()
       )
     );
   }
 
-  Widget body() {
+  Widget scroll() {
     return CustomScrollView(
       // primary: true,
       controller: scrollController,
@@ -151,37 +157,13 @@ class _View extends _State with _Bar {
       semanticChildCount: 2,
       slivers: <Widget>[
         bar(),
-        // _barContext(true),
-        if (focusNode.hasFocus)
-          WidgetKeepAlive(
-            key: _scaffoldSuggestion,
-            child: new SuggestionView(search: onSearch)
-          ),
-
-        if (!focusNode.hasFocus)
-          WidgetKeepAlive(
-            key: _scaffoldDefinition,
-            child: new DefinitionView(search: onSearch)
-          ),
-
-        Consumer<Core>(
-          builder: (BuildContext _, Core core, Widget? child) {
-            if (focusNode.hasFocus && core.suggestionList.length == 0) {
-              return SuggestionNone();
-            } else if (!focusNode.hasFocus &&
-                core.definitionQuery.isNotEmpty &&
-                core.definitionList.length == 0) {
-              return DefinitionNone();
-            } else if (!focusNode.hasFocus && core.definitionQuery.isEmpty) {
-              return HomeView();
-            } else {
-              return child!;
-            }
-          },
-          child: new HomeNone(),
-        ),
-        // new DemoView()
+        body(),
+        // DemoView()
       ]
     );
+  }
+
+  Widget body(){
+    return focusNode.hasFocus?suggest():result();
   }
 }
