@@ -24,21 +24,21 @@ class DemoView extends StatelessWidget {
             child: Text("DateTime.now"),
             onPressed: () {
               final abc = DateTime.now();
-              print(abc);
+              debugPrint('$abc');
             },
           ),
           ElevatedButton(
             child: Text("wordHistory.test"),
             onPressed: () {
               // final abc = core.collection.wordHistory.values.where((e) => core.collection.stringCompare(e.word,'ord'));
-              // print('total  ${abc.length}');
+              // debugPrint('total  ${abc.length}');
             },
           ),
           ElevatedButton(
             child: Text("wordHistory.test"),
             onPressed: () {
               var _formattedNumber = intl.NumberFormat.compact().format(1500);
-              print('Formatted Number is $_formattedNumber');
+              debugPrint('Formatted Number is $_formattedNumber');
             },
           ),
         ]

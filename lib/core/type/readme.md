@@ -266,7 +266,7 @@ void main() {
       return nonMatch;
     }
   );
-  print(span);
+  debugPrint(span);
 }
 
 

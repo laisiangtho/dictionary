@@ -54,38 +54,11 @@ class Dictionary extends StatelessWidget {
   Widget appProvider(){
     return MultiProvider(
       providers: [
-        // Provider(create: (context) => TestCore),
-        // ChangeNotifierProxyProvider<TestCore, TestCoreNotifier>(
-        //   create: (context) => TestCoreNotifier(),
-        //   update: (context, data, form) {
-        //     if (form == null) throw ArgumentError.notNull('form');
-        //     // form.searchQuery = data.searchQuery;
-        //     // form.keyword = data.keyword;
-        //     // form.store = Store();
-        //     // form.initiator = data.init();
-        //     // initiator
-        //     return form;
-        //   },
-        // ),
-        // ChangeNotifierProvider<Core>(
-        //   create: (context) => Core(),
-        //   // child: MyHomePage(),
-        // ),
-        // ProxyProvider<TestCore, TestCoreNotifier>(
-        //   update: (context, data, form) => TestCoreNotifier()
-        // ),
-        // ProxyProvider<StoreNotifier, Store>(
-        //   update: (context, data, form) => Store()
-        // ),
-        // ChangeNotifierProvider<FormNotifier>(
-        //   create: (context) => FormNotifier(),
-        // ),
         ChangeNotifierProvider<NotifyViewScroll>(
           create: (context) => NotifyViewScroll(),
         ),
         ChangeNotifierProvider<Core>(
           create: (context) => Core(),
-          // child: MyHomePage(),
         ),
       ],
       child:  app()

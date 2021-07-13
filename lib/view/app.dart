@@ -65,7 +65,6 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
       // ConnectivityResult.mobile
       // ConnectivityResult.wifi
       // ConnectivityResult.none
-      print(result);
     });
     if (_pageView.length == 0){
       _pageButton.addAll([
@@ -132,18 +131,18 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
 
   void Function()? onPreviousHistory(){
     // _controller.master.bottom.pageChange(index);
-    print('onPreviousHistory');
+    debugPrint('onPreviousHistory');
 
     // final items = core.collection.boxOfHistory;
     // var abc = items.valuesBetween(startKey:1, endKey: 10);
-    // print(abc.map((e) => e.word));
+    // debugPrint(abc.map((e) => e.word));
     //   final items = core.collection.boxOfHistory.toMap().values.toList();
     //   items.sort((a, b) => b.date!.compareTo(a.date!));
 
     // if (items.length > history) {
     //   return (){
-    //     // print(items.first.word);
-    //     print(items.map((e) => e.word));
+    //     // debugPrint(items.first.word);
+    //     debugPrint(items.map((e) => e.word));
     //     onSearch(items.elementAt(1).word);
     //   };
     // }
@@ -153,7 +152,7 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
 
   void Function()? onNextHistory(){
     // _controller.master.bottom.pageChange(index);
-    print('onNextHistory');
+    debugPrint('onNextHistory');
     return null;
   }
 

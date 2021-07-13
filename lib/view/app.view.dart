@@ -130,10 +130,9 @@ class AppView extends _State {
     } else if (item.action == null && item.key != null) {
       return () => _navView(item.key!);
     } else {
-      // print('abc');
       // final items = core.collection.boxOfHistory.toMap().values.toList();
       // items.sort((a, b) => b.date!.compareTo(a.date!));
-      // print(items.map((e) => e.word));
+      // debugPrint(items.map((e) => e.word));
       // return ()=>item.action!(context);
       // return () {
       //   history
@@ -141,9 +140,9 @@ class AppView extends _State {
       // _controller.master.bottom.pageChange(0);
       // return ()=>item.action(context);
       // core.collection.history.length;
-      // print(core.collection.history.length);
-      // print(asdfasdfasd.toString());
-      // print(core.counter.toString());
+      // debugPrint(core.collection.history.length);
+      // debugPrint(asdfasdfasd.toString());
+      // debugPrint(core.counter.toString());
       // int total = asdfasdfasd;
       // // int currentPosition=0;
       // // int nextButton = 1;

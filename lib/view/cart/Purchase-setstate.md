@@ -128,8 +128,8 @@ class _View extends State<CartMain> {
                 child: Text('Consume all'),
                 onPressed: (){
 
-                  print(_kOfPurchase.data.toString());
-                  print(listOfPurchaseItem.map((e) => e.productID).toList());
+                  debugPrint(_kOfPurchase.data.toString());
+                  debugPrint(listOfPurchaseItem.map((e) => e.productID).toList());
                   setState((){});
                 }
               ),
@@ -146,7 +146,6 @@ class _View extends State<CartMain> {
             //       context.read<Store>().message = _diceface.toString();
             //       // Provider.of<StoreNotifier>(context, listen: false).message= _diceface.toString();
             //       // StoreNotifier().message = _diceface.toString();
-            //       print( Core.instance.store.message);
             //     }
             //   ),
             // ),
@@ -517,11 +516,6 @@ class _View extends State<CartMain> {
     } else {
       param = PurchaseParam(productDetails: item, applicationUserName: null);
     }
-
-    // print(param);
-    // final abc = this.isConsumableById(item.id);
-    // print('? ${item.id} is Consumable $abc!');
-    // print(purs);
 
     // item.id == consumableId
     if (this.isConsumableById(item.id)) {
