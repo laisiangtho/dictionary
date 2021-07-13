@@ -95,8 +95,8 @@ class IdeaData {
     primaryVariant: Colors.black,
     secondary: Colors.white,
     secondaryVariant: Colors.black45,
-    background: Color(0xFFe0e1e6),
-    // background: Color(0xFFD6D6D6),
+    background: Colors.black38,
+    // background: Color(0xFFe0e1e6),
     surface: Color(0xFFFAFBFB),
     // scaffoldBackgroundColor
     // onBackground: Color(0xFFf2f2f2),
