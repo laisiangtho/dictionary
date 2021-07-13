@@ -3,11 +3,6 @@ part of 'main.dart';
 
 abstract class _Abstract extends CoreNotifier with _Configuration, _Utility {
   Future<void> initEnvironment() async {
-    // type 'Null' is not a subtype of type 'String'
-    // collection.env = await UtilDocument.loadBundleAsString('env.json').then(
-    //   (e) => EnvironmentType.fromJSON(UtilDocument.decodeJSON(e))
-    // );
-
     collection.env = EnvironmentType.fromJSON(UtilDocument.decodeJSON(await UtilDocument.loadBundleAsString('env.json')));
   }
 
@@ -24,43 +19,13 @@ abstract class _Abstract extends CoreNotifier with _Configuration, _Utility {
     }
 
     collection.boxOfPurchase = await Hive.openBox<PurchaseType>('purchase-tmp');
-    // collection.setting = active;
     // collection.boxOfSetting.clear();
-  }
-
-  Future<void> initHistory() async {
-    // collection.boxOfHistory = await Hive.openBox<String>('history');
-    // await collection.boxOfHistory.clear();
-    // collection.boxOfHistory = await Hive.openBox<String>('history');
-    // boxOfHistoryWorking
 
     collection.boxOfHistory = await Hive.openBox<HistoryType>('history-tmp');
-
     // await collection.boxOfHistory.clear();
-    historyGenerate();
   }
 
-  FutureOr<void> historyGenerate() async {
-    notifyListeners();
-  }
-
-  FutureOr<void> historyClear() async {
-    await collection.boxOfHistory.clear();
-    notifyListeners();
-  }
-
-  // boxOfHistoryAdd
-  FutureOr<void> historyAdd(String ord) async {
-    if (collection.boxOfHistoryAdd(ord)){
-      notifyListeners();
-    }
-  }
-
-  FutureOr<void> historyDelete(String ord) async {
-    if (collection.boxOfHistoryDeleteByWord(ord)){
-      notifyListeners();
-    }
-  }
+  void historyClearNotify() => collection.boxOfHistory.clear().whenComplete(notify);
 
   // ignore: todo
   // TODO: analytics
