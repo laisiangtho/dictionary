@@ -57,6 +57,7 @@ class Core extends _Abstract with _Mock {
     await Hive.initFlutter();
     Hive.registerAdapter(SettingAdapter());
     Hive.registerAdapter(PurchaseAdapter());
+    Hive.registerAdapter(HistoryAdapter());
     await initSetting();
 
     progressPercentage = 0.3;
@@ -69,11 +70,6 @@ class Core extends _Abstract with _Mock {
     _sql = new SQLite(collection: collection);
     await _sql.init();
 
-    progressPercentage = 0.7;
-
-    Hive.registerAdapter(HistoryAdapter());
-    await initHistory();
-
     progressPercentage = 0.9;
 
     // // final helloClient = await mockTestingArchive().catchError((e){
@@ -81,7 +77,8 @@ class Core extends _Abstract with _Mock {
     // // });
     // // debugPrint('helloClient $helloClient');
 
-    await mockTest();
+    await definitionGenerate();
+    // await mockTest();
 
     debugPrint('Initiated in ${initWatch.elapsedMilliseconds} Milliseconds');
     progressPercentage = 1.0;
