@@ -5,35 +5,7 @@ mixin _Mock on _Abstract {
 
   Future<dynamic> mockTest() async {
     Stopwatch mockWatch = new Stopwatch()..start();
-    // check db are in place
-    // load db and create index
-    // check network
-    // await mockCheckDatabaseFiles();
-    // await archivePassageMock();
-    // debugPrint('abc');
-
-    // final toLoads = collection.env.primary;
-    // await loadArchiveMock(toLoads).catchError((e){
-    //   debugPrint('asdf $e');
-    // });
-
-    // final result = await initArchive();
-    // debugPrint('result $result');
-    // await _definitionGenerator('love');
-    debugPrint(collection.setting.fontSize.toString());
-    // collection.setting.purchase.add(WorkingStoreType(productId: 'a',purchaseId: 'b',completePurchase: false,transactionDate: 'c'));
-    // collection.setting.purchase.add({"productId":"a","purchaseId":"b","completePurchase":false,"transactionDate":"c"});
-    // collection.settingUpdate(collection.setting);
-    // debugPrint(collection.setting.purchase.toString());
     debugPrint('mockTest in ${mockWatch.elapsedMilliseconds} Milliseconds');
-
-  }
-
-  Future<dynamic> mockCheckDatabaseFiles() async {
-    // final abc = new GistData(token:collection.env.token.key,id:collection.env.token.id);
-    // return await abc.test();
-    debugPrint('token: ${collection.env.token.key}, id: ${collection.env.token.id}');
-    // debugPrint(collection.env.listOfDBfile.map((e) => e.toJSON()).toList());
   }
 
   Future<bool> initArchive() async{
@@ -84,36 +56,44 @@ mixin _Mock on _Abstract {
     return Future.error("Failed to load");
   }
 
-  Future<void> suggestionGenerate(String word) async {
-    this.suggestionQuery = word;
-    this.suggestionList = await _sql.suggestion(word);
-    notifyListeners();
+  Future<void> suggestionGenerate() async {
+    // this.suggestionList = await _sql.suggestion(collection.searchQuery);
+    if (collection.cacheSuggestion.query != collection.searchQuery){
+      collection.cacheSuggestion = SuggestionType(
+        query: collection.searchQuery,
+        raw: await _sql.suggestion()
+      );
+      notify();
+    }
   }
 
   // ignore: todo
   // TODO: definition on multi words
   // see
-  Future<void> definitionGenerate(String word) async {
+  Future<void> definitionGenerate() async {
     Stopwatch definitionWatch = new Stopwatch()..start();
-    if (this.definitionQuery != word){
-      this.definitionList = await _definitionGenerator(word);
-      // notifyListeners();
-      this.definitionQuery = word;
+    if (collection.cacheDefinition.query != collection.searchQuery){
+      collection.cacheDefinition = DefinitionType(
+        query: collection.searchQuery,
+        raw: await _definitionGenerator()
+      );
+      notify();
     }
-    collection.searchQueryUpdate(word);
+    // collection.searchQueryUpdate(word);
+    // collection.searchQuery = word;
     debugPrint('definitionTest in ${definitionWatch.elapsedMilliseconds} Milliseconds');
-    analyticsSearch(word);
+    analyticsSearch(collection.searchQuery);
   }
 
-  Future<List<Map<String, dynamic>>> _definitionGenerator(String word) async {
+  Future<List<Map<String, dynamic>>> _definitionGenerator() async {
 
     List<Map<String, Object?>> raw = [];
     List<Map<String, Object?>> root;
     List<Map<String, Object?>> rawSense;
 
-    rawSense = await _sql.search(word);
+    rawSense = await _sql.search(collection.searchQuery);
     if (rawSense.isEmpty){
-      root = await _sql.rootWord(word);
+      root = await _sql.rootWord(collection.searchQuery);
       if (root.isNotEmpty){
         final i = root.map((e) => e['word'].toString()).toSet().toList();
         for (String e in i){
@@ -124,7 +104,7 @@ mixin _Mock on _Abstract {
         }
       }
     } else {
-      root = await _sql.baseWord(word);
+      root = await _sql.baseWord(collection.searchQuery);
       raw.addAll(rawSense);
     }
     if (root.isNotEmpty){
