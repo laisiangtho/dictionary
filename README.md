@@ -22,7 +22,7 @@ Feature:
 
 As it is active in develpment, please feel free to rate/write yours review, so that we can bring a better Dictionary app.
 
-... on [App Store][appStore] / [Google play][playStore], [join testing program][playStore Join],
+... on [App Store][appStore] / [Google play][playStore]
 or [readme][Home]!
 
 ## Todo
