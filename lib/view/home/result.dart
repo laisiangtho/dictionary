@@ -294,14 +294,15 @@ mixin _Result on _State {
                 textDirection: TextDirection.ltr,
                 children: snapshot.data!.map(
                   (e) => Padding(
-                    padding: const EdgeInsets.all(3.0),
+                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 3),
                     child: CupertinoButton(
                       child: Text(e['word'].toString(),style: TextStyle(fontSize:19),),
                       // color: Colors.blue,
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).backgroundColor.withOpacity(0.2),
                       borderRadius: BorderRadius.all(Radius.circular(100.0)),
-                      padding: EdgeInsets.symmetric(vertical:5, horizontal:15),
-                      minSize:42,
+                      padding: EdgeInsets.symmetric(vertical:3, horizontal:15),
+                      // minSize:42,
+                      minSize:35,
                       onPressed: () => onSearch(e['word'].toString())
                     ),
                   )
