@@ -157,15 +157,16 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
     return null;
   }
 
-  void onSearch(String word){
-    NotifyNavigationButton.navigation.value = 0;
-    Future.delayed(const Duration(milliseconds: 200), () {
-      core.definitionGenerate(word);
-    });
-    Future.delayed(Duration.zero, () {
-      core.historyAdd(word);
-    });
-  }
+  // void onSearch(String word){
+  //   NotifyNavigationButton.navigation.value = 0;
+  //   core.collection.searchQuery = word;
+  //   Future.delayed(const Duration(milliseconds: 200), () {
+  //     core.definitionGenerate();
+  //   });
+  //   Future.delayed(Duration.zero, () {
+  //     core.collection.historyUpdate(word);
+  //   });
+  // }
 
   // void _pageChanged(int index){
   //   _controller.master.bottom.pageChange(index);
