@@ -36,6 +36,8 @@ class SQLite {
   APIType get _thesaurusContext => collection.env.secondary.last;
   String get _thesaurusTable => _thesaurusContext.tableName;
 
+  String get searchQuery => collection.searchQuery;
+
   Future<Database?> get db async {
     if (_instance == null) {
       _instance = await init();
@@ -197,11 +199,11 @@ class SQLite {
   // }
 
   /// get suggestion
-  Future<List<Map<String, Object?>>> suggestion(String keyword) async {
+  Future<List<Map<String, Object?>>> suggestion() async {
     // return await _instance.query(_senseTable, columns:['word'],where: 'word LIKE ?',whereArgs: [keyword+'%'] ,orderBy: 'word',limit: 10);
     // return await _instance.rawQuery("SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word LIMIT 10;",[keyword+'%']);
     return await this.db.then(
-      (e) => e!.rawQuery("SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word LIMIT 30;",['$keyword%'])
+      (e) => e!.rawQuery("SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word LIMIT 30;",['$searchQuery%'])
     );
   }
 
