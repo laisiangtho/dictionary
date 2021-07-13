@@ -103,6 +103,7 @@ class _View extends State<PurchaseView> {
     Widget msgWidget = Text('Getting products...');
     Widget msgIcon = CircularProgressIndicator(
       backgroundColor: Theme.of(context).primaryColorDark,
+      strokeWidth: 2,
     );
 
     if (core.store.isLoading) {
