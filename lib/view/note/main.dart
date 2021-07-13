@@ -34,9 +34,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     core = context.read<Core>();
-
     // Future.microtask((){
     //   core.historyGenerate();
     // });
@@ -55,24 +53,25 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
 
   void onClearAll(){
     Future.microtask((){
-      core.historyClear();
+      core.historyClearNotify();
     });
   }
 
   void onSearch(String word){
     NotifyNavigationButton.navigation.value = 0;
+    core.collection.searchQuery = word;
     Future.delayed(const Duration(milliseconds: 200), () {
-      core.definitionGenerate(word);
+      core.definitionGenerate();
     });
     Future.delayed(Duration.zero, () {
-      core.historyAdd(word);
+      // core.historyAdd(word);
+      core.collection.historyUpdate(core.collection.searchQuery);
     });
   }
 
   void onDelete(String word){
-    // Future.microtask((){});
     Future.delayed(Duration.zero, () {
-      core.historyDelete(word);
+      core.collection.historyDeleteByWord(word);
     });
   }
 
@@ -133,7 +132,7 @@ class _View extends _State with _Bar{
   Dismissible itemContainer(int index,MapEntry<dynamic, HistoryType> history){
     return Dismissible(
       // key: Key(index.toString()),
-      key: Key(history.value.word),
+      key: Key(history.value.date.toString()),
       direction: DismissDirection.endToStart,
       child: decoration(
         child: ListTile(
@@ -190,7 +189,7 @@ class _View extends _State with _Bar{
 
   Widget decoration({required Widget child}){
     return Container(
-      margin: EdgeInsets.symmetric(horizontal:0,vertical:0.6),
+      margin: EdgeInsets.symmetric(horizontal:0,vertical:0.2),
       // margin: EdgeInsets.symmetric(horizontal:0,vertical:0.2),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
@@ -198,7 +197,7 @@ class _View extends _State with _Bar{
           BoxShadow(
             blurRadius: 0.0,
             color: Theme.of(context).backgroundColor,
-            spreadRadius: 0.6,
+            spreadRadius: 0.1,
             offset: Offset(0.0, .0)
           )
         ]
