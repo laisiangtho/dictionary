@@ -3,7 +3,6 @@ part of 'app.dart';
 class AppView extends _State {
   @override
   Widget build(BuildContext context) {
-    print('app build');
     return FutureBuilder(
       future: initiator,
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
@@ -27,7 +26,7 @@ class AppView extends _State {
       body: SafeArea(
         top: false,
         bottom: true,
-        maintainBottomViewPadding: false,
+        maintainBottomViewPadding: true,
         // onUnknownRoute: routeUnknown,
         child: new PageView.builder(
           controller: pageController,
@@ -44,46 +43,55 @@ class AppView extends _State {
   }
 
   Widget bottom() {
-    return Consumer<NotifyNavigationScroll>(
+    return Consumer<NotifyViewScroll>(
       builder: (context, scrollNavigation, child) {
+        scrollNavigation.bottomPadding = MediaQuery.of(context).padding.bottom;
         return AnimatedContainer(
-          duration: Duration(milliseconds:scrollNavigation.milliseconds),
+          duration: Duration(milliseconds: scrollNavigation.milliseconds),
           height: scrollNavigation.height,
-          child: child
+          child: ViewNavigation(
+            items: _pageButton,
+            itemDecoration: ({required BuildContext context, Widget? child}){
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  // color: Theme.of(context).scaffoldBackgroundColor,
+                  color: Theme.of(context).primaryColor,
+                  // color: Theme.of(context).backgroundColor,
+                  // border: Border(
+                  //   top: BorderSide(
+                  //     color: Theme.of(context).backgroundColor.withOpacity(0.2),
+                  //     width: 0.5,
+                  //   ),
+                  // ),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.elliptical(3, 2),
+                    // bottom: Radius.elliptical(3, 2)
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 0.0,
+                      color: Theme.of(context).backgroundColor.withOpacity(0.3),
+                      // color: Colors.black38,
+                      spreadRadius: 0.1,
+                      offset: Offset(0, -.1),
+                    )
+                  ]
+                ),
+                child: Padding(
+                  padding:EdgeInsets.only(bottom: scrollNavigation.bottomPadding),
+                  // padding: EdgeInsets.only(bottom:0),
+                  child: AnimatedOpacity(
+                    opacity: scrollNavigation.heightFactor,
+                    duration: Duration.zero,
+                    child: child
+                  )
+                )
+              );
+            },
+            itemBuilder: buttonItem
+          )
         );
       },
-      child: ViewNavigation(
-        items: _pageButton,
-        itemDecoration: bottomDecoration,
-        itemBuilder: buttonItem
-      ),
-    );
-  }
-
-  Widget bottomDecoration({required BuildContext context, Widget? child}) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        // color: Theme.of(context).scaffoldBackgroundColor,
-        color: Theme.of(context).primaryColor,
-        // color: Theme.of(context).backgroundColor,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.elliptical(3, 2),
-          // bottom: Radius.elliptical(3, 2)
-        ),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 0.0,
-            color: Theme.of(context).backgroundColor,
-            // color: Colors.black38,
-            spreadRadius: 0.7,
-            offset: Offset(-0.1, -0.5),
-          )
-        ]
-      ),
-      child: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-        child: child
-      )
     );
   }
 
