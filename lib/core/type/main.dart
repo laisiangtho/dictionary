@@ -316,3 +316,23 @@ class SynmapType {
     };
   }
 }
+
+// NOTE: readonly
+class SuggestionType {
+  final String query;
+  final List<Map<String, Object?>> raw;
+  SuggestionType({
+    this.query:'',
+    this.raw: const []
+  });
+}
+
+// NOTE: readonly
+class DefinitionType {
+  final String query;
+  final List<Map<String, dynamic>> raw;
+  DefinitionType({
+    this.query:'',
+    this.raw: const []
+  });
+}
