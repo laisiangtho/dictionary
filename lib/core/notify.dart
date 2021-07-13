@@ -14,13 +14,13 @@ class CoreNotifier extends _NodeNotifier with _CoreNotifiable {
   bool get nodeFocus => _nodeFocus;
   set nodeFocus(bool value) => notifyIf<bool>(_nodeFocus, _nodeFocus = value);
 
-  String _suggestionQuery = '';
-  String get suggestionQuery => _suggestionQuery;
-  set suggestionQuery(String value) => notifyIf<String>(_suggestionQuery, _suggestionQuery = value);
+  // String _suggestionQuery = '';
+  // String get suggestionQuery => _suggestionQuery;
+  // set suggestionQuery(String value) => notifyIf<String>(_suggestionQuery, _suggestionQuery = value);
 
-  String _definitionQuery = '';
-  String get definitionQuery => _definitionQuery;
-  set definitionQuery(String value) => notifyIf<String>(_definitionQuery, _definitionQuery = value);
+  // String _definitionQuery = '';
+  // String get definitionQuery => _definitionQuery;
+  // set definitionQuery(String value) => notifyIf<String>(_definitionQuery, _definitionQuery = value);
 }
 
 abstract class _NodeNotifier with ChangeNotifier {
