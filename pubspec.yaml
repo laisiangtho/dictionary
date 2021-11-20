@@ -14,17 +14,16 @@ dependencies:
 
   # Local lidea package, development only
   lidea:
-    # path: ../lidea
-  # Github lidea package
-    git:
-      url: git://github.com/laisiangtho/lidea.git
-      ref: main
+    path: ../lidea
+    # git:
+    #   url: git://github.com/laisiangtho/lidea.git
+    #   ref: main
 
   # Custom
   hive_flutter: ^1.0.0
-  sqflite: ^2.0.0+3
-  share: ^2.0.4
-  in_app_purchase: ^1.0.5
+  sqflite: ^2.0.0+4
+  share_plus: ^2.1.4
+  in_app_purchase: ^1.0.8
   # flutter_tts: ^1.2.7
 
 dev_dependencies:

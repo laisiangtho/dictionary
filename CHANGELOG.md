@@ -1,6 +1,6 @@
 # Change log
 
-## 1.0.1+19
+## 1.0.1+19-21
 
 Improve
 
@@ -8,7 +8,7 @@ Improve
 
 Update
 
-- dependencies (in_app_purchase)
+- dependencies (in_app_purchase, sqflite)
 
 ## 1.0.0+14-16 (ready for release)
 

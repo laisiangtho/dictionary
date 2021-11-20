@@ -7,10 +7,11 @@ import 'package:lidea/provider.dart';
 import 'package:lidea/connectivity.dart';
 // import 'package:lidea/scroll.dart';
 import 'package:lidea/view.dart';
+import 'package:lidea/keepAlive.dart';
 
 // import 'package:dictionary/notifier.dart';
 import 'package:dictionary/core.dart';
-import 'package:dictionary/widget.dart';
+// import 'package:dictionary/widget.dart';
 import 'package:dictionary/icon.dart';
 
 import 'package:dictionary/view/home/main.dart' as Home;
