@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.4
 
   # Local lidea package, development only
   lidea:
@@ -23,7 +23,7 @@ dependencies:
   hive_flutter: ^1.0.0
   sqflite: ^2.0.0+4
   share_plus: ^2.1.4
-  in_app_purchase: ^1.0.8
+  in_app_purchase: ^1.0.9
   # flutter_tts: ^1.2.7
 
 dev_dependencies:
