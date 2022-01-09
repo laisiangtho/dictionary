@@ -1,96 +1,69 @@
 import 'dart:async';
-// import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+// NOTE: Preference
+// import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:lidea/intl.dart';
+import 'package:lidea/unit/controller.dart';
 
-import 'package:lidea/notify.dart';
-import 'package:lidea/engine.dart';
-import 'package:lidea/analytics.dart';
+// NOTE: Authentication
+import 'package:lidea/firebase_auth.dart';
+import 'package:lidea/unit/authentication.dart';
 
-import 'package:dictionary/model.dart';
-// import 'package:dictionary/notifier.dart';
+// NOTE: Navigation
+import 'package:lidea/unit/navigation.dart';
 
-import 'store.dart';
-import 'sqlite.dart';
+// NOTE: Analytics
+import 'package:lidea/unit/analytics.dart';
 
-part 'configuration.dart';
-part 'notify.dart';
+// NOTE: Store
+import 'package:lidea/unit/store.dart';
+// NOTE: SQLite
+import 'package:lidea/unit/sqlite.dart';
+// NOTE: Audio
+// import 'package:audio_session/audio_session.dart';
+// import 'package:just_audio/just_audio.dart';
+
+// NOTE: Core notify and Initializing properties
+import 'package:lidea/unit/engine.dart';
+// NOTE: Core API manager
+import 'package:lidea/util/main.dart';
+
+import '/type/main.dart';
+
+part 'store.dart';
+part 'sqlite.dart';
+part 'audio.dart';
+
+part 'preference.dart';
+part 'authentication.dart';
+part 'navigation.dart';
+part 'analytics.dart';
+
 part 'abstract.dart';
-// part 'store.dart';
-// part 'sqlite.dart';
 part 'utility.dart';
 part 'mock.dart';
 
-// class Core extends _Abstract with _Bible, _Bookmark, _Speech, _Mock
-// abstract class _Abstract with _Configuration, _Utility
-// mixin _Configuration
-// mixin _Bible on _Abstract
-// mixin _Bookmark on _Bible
-// mixin _Speech
-// mixin _Mock
-// mixin _Utility
-
 class Core extends _Abstract with _Mock {
-  // Creates instance through `_internal` constructor
-  static final Core _instance = new Core.internal();
-  Core.internal();
-  factory Core() => _instance;
-  // retrieve the instance through the app
-  static Core get instance => _instance;
+  // Core() : super();
 
-  Future<void> init() async {
-    Stopwatch initWatch = new Stopwatch()..start();
+  Future<void> init(BuildContext context) async {
+    Stopwatch initWatch = Stopwatch()..start();
+    collection.locale = Localizations.localeOf(context).languageCode;
+    preference.context = context;
 
-    // Collection collectionabc = Collection.internal();
-    if (progressPercentage == 1.0) return;
+    // await Future.microtask(() => null);
 
-    // progressPercentage = 0.6;
-    await initEnvironment();
-    progressPercentage = 0.1;
-
-    await initArchive();
-
-    await Hive.initFlutter();
-    Hive.registerAdapter(SettingAdapter());
-    Hive.registerAdapter(PurchaseAdapter());
-    Hive.registerAdapter(HistoryAdapter());
-    await initSetting();
-
-    progressPercentage = 0.3;
-
-    store = new Store(notify:notify,collection: collection);
+    await initData();
 
     await store.init();
-    progressPercentage = 0.5;
 
-    _sql = new SQLite(collection: collection);
     await _sql.init();
 
-    progressPercentage = 0.9;
-
-    // // final helloClient = await mockTestingArchive().catchError((e){
-    // //   debugPrint('mockTestingArchive: $e');
-    // // });
-    // // debugPrint('helloClient $helloClient');
-
-    await definitionGenerate();
     // await mockTest();
 
-    debugPrint('Initiated in ${initWatch.elapsedMilliseconds} Milliseconds');
-    progressPercentage = 1.0;
-    _message = 'Done';
-    // suggestionQuery = 'god';
-    // suggestionQuery = collection.setting.searchQuery!;
-    // suggestionQuery = collection.setting.searchQuery!;
+    debugPrint('Initiated in ${initWatch.elapsedMilliseconds} ms');
   }
-
-  Future<void> analyticsReading() async{
-    this.analyticsSearch('keyword goes here');
-  }
-
 }
