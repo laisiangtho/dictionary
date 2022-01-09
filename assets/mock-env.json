@@ -1,0 +1,174 @@
+{
+  "name":"MyOrdbok",
+  "description":"A comprehensive Myanmar online dictionary",
+  "package":"",
+  "version": "1.0.2",
+  "buildNumber": "30",
+  "settingName": "",
+  "settingKey": "",
+  "setting":{
+    "version": 0,
+    "mode": 0,
+    "locale": "",
+    "fontSize": 24.0,
+    "searchQuery": "",
+
+    "identify": "",
+    "bookId": 1,
+    "chapterId": 1,
+    "verseId": 1,
+    "parallel": ""
+  },
+  "products":[
+    {
+      "cart":"offlineaccess", "name":"offline", "type":"unlimited",
+      "title":"Offline access",
+      "description":"Definition available anywhere, a lifetime and unlimited."
+    },
+    {
+      "cart":"upgrade", "name":"upgrade", "type":"unlimited",
+      "title":"Thesaurus",
+      "description":"Thesaurus, synonyms and related words."
+    },
+    {
+      "cart":"subscription_silver", "name":"silver", "type":"unlimited",
+      "title":"Parts of speech",
+      "description":"Parts of speech in definition result."
+    }
+  ],
+  "language":{
+    "en":{
+      "ready-to-contribute":"Ready to contribute!",
+      "any-contribute-make":"Any contribution makes a huge difference for the future of MyOrdbok.",
+      "consumable-title":"Charity",
+      "consumable-description":"The future of MyOrdbok is depending on your contribution.",
+      "offlineaccess-title":"Offline access",
+      "offlineaccess-description":"Definition available anywhere, a lifetime and unlimited access.",
+      "upgrade-title":"Thesaurus",
+      "upgrade-description":"Thesaurus, synonyms and related words",
+      "subscription_silver-title":"Parts of speech",
+      "subscription_silver-description":"Parts of speech in definition result."
+    },
+    "no":{
+      "ready-to-contribute":"Klar til å bidra!",
+      "any-contribute-make":"Ethvert bidrag utgjør en stor forskjell for fremtiden til MyOrdbok.",
+      "consumable-title":"Veldedighet",
+      "consumable-description":"Fremtiden til MyOrdbok er avhengig av ditt bidrag.",
+      "offlineaccess-title":"Frakoblet tilgang",
+      "offlineaccess-description":"Definisjon tilgjengelig hvor som helst, hele livet og ubegrenset tilgang.",
+      "upgrade-title":"Tesaurus",
+      "upgrade-description":"Tesaurus, synonymer og relaterte ord",
+      "subscription_silver-title":"Deler av tale",
+      "subscription_silver-description":"Orddeler i definisjon resultat."
+    },
+    "my":{
+      "ready-to-contribute":"ပါဝင်ကူညီရန် အဆင်သင့်ဖြစ်ပြီလား",
+      "any-contribute-make":"မည်သည့်ပံ့ပိုးကူညီမှုသည် MyOrdbok ၏အနာဂတ်အတွက် ကြီးမားသောခြားနားချက်ဖြစ်စေသည်။",
+      "consumable-title":"ပရဟိတ",
+      "consumable-description":"MyOrdbok ၏အနာဂတ်သည် သင်၏ပံ့ပိုးကူညီမှုအပေါ် မူတည်ပါသည်။",
+      "offlineaccess-title":"အော့ဖ်လိုင်းအသုံးပြုခွင့်",
+      "offlineaccess-description":"အဓိပ္ပာယ်ဖွင့်ဆိုချက်များကို အကန့်အသတ်မရှိ၊ မည်သည့်နေရာတွင်မဆို ဝင်ရောက် အသုံးပြုနိုင်ခြင်း။",
+      "upgrade-title":"ဝေါဟာရ",
+      "upgrade-description":"အဓိပ္ပါယ်တူနှင့် ဆက်စပ်စကားလုံးများကို ပြသနိုင်ခြင်း။",
+      "subscription_silver-title":"စကားစု",
+      "subscription_silver-description":"သဒ္ဒါနည်းကျကျ အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ ပြသနိုင်ခြင်း။"
+    }
+  },
+  "token": [
+    {
+      "id": "configure",
+      "type": "gist",
+      "tag": "0",
+      "owns": "<?>",
+      "name": "<?>"
+    },
+    {
+      "id": "repo",
+      "type": "repo",
+      "tag": "0",
+      "owns": "<ohtgnaisial>",
+      "name": "<elbib>"
+    },
+    {
+      "id": "com",
+      "type": "url",
+      "tag": "0",
+      "owns": "<moc.hiediaz.www>",
+      "name": "</ipa>"
+    }
+  ],
+  "api": [
+    {
+      "uid": "word",
+      "asset": "<bd.?>",
+      "local": "<bd.?>",
+      "src": [],
+      "name":"list",
+      "query":{
+        "primary":"ALTER TABLE ?? ADD PRIMARY KEY ('id')",
+        "createIndex":"CREATE UNIQUE INDEX IF NOT EXISTS wordIdIndex ON ?? (id, word)"
+      }
+    },
+    {
+      "uid": "derive",
+      "name":"map",
+      "query":{
+        "createIndex":"CREATE INDEX IF NOT EXISTS deriveIdIndex ON ?? (id,wrte)"
+      }
+    },
+    {
+      "uid": "sense",
+      "local": "<bd.?>",
+      "name":"list",
+      "query":{
+        "import":"INSERT OR REPLACE INTO ?? (id,word,wrte,sense,exam,wseq) VALUES(?,?,?,?,?,?)",
+        "createIndex":"CREATE INDEX IF NOT EXISTS #.sidIndex ON ?? (word)"
+      }
+    },
+    {
+      "uid": "thesaurus",
+      "local": "<bd.?>",
+      "name":"map",
+      "query":{
+        "createIndex":"CREATE INDEX IF NOT EXISTS #.tidIndex ON ?? (wrid,wlid)"
+      }
+    }
+  ],
+  "attach":{
+    "synset":[
+      { "id": 0, "name": "Noun", "shortname": "n" },
+      { "id": 1, "name": "Verb", "shortname": "v" },
+      { "id": 2, "name": "Adjective", "shortname": "adj" },
+      { "id": 3, "name": "Adverb", "shortname": "adv" },
+      { "id": 4, "name": "Preposition", "shortname": "prep" },
+      { "id": 5, "name": "Conjunction", "shortname": "conj" },
+      { "id": 6, "name": "Pronoun", "shortname": "pron" },
+      { "id": 7, "name": "Interjection", "shortname": "int" },
+      { "id": 8, "name": "Abbreviation", "shortname": "abb" },
+      { "id": 9, "name": "Prefix", "shortname": null },
+      { "id": 10, "name": "Combining form", "shortname": null },
+      { "id": 11, "name": "Phrase", "shortname": "phra" },
+      { "id": 12, "name": "Contraction", "shortname": null },
+      { "id": 13, "name": "Punctuation", "shortname": "punc" },
+      { "id": 14, "name": "Particle", "shortname": "part" },
+      { "id": 15, "name": "Post-positional Marker", "shortname": "ppm" },
+      { "id": 16, "name": "Suffix", "shortname": null },
+      { "id": 17, "name": "Acronym", "shortname": null },
+      { "id": 18, "name": "Article", "shortname": null },
+      { "id": 19, "name": "Number", "shortname": "tn" }
+    ],
+    "synmap":[
+      { "id": 0, "type": 1, "name": "past and past participle"},
+      { "id": 1, "type": 0, "name": "plural"},
+      { "id": 2, "type": 1, "name": "3rd person"},
+      { "id": 3, "type": 1, "name": "past tense" },
+      { "id": 4, "type": 1, "name": "past participle"},
+      { "id": 5, "type": 1, "name": "present participle"},
+      { "id": 6, "type": 2, "name": "comparative"},
+      { "id": 7, "type": 2, "name": "superlative"},
+      { "id": 8, "type": 1, "name": "1st person"},
+      { "id": 9, "type": 1, "name": "2nd person"},
+      { "id": 10, "type": 1, "name": "plural past"}
+    ]
+  }
+}
