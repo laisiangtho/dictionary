@@ -9,7 +9,7 @@ import 'package:lidea/intl.dart';
 import 'package:lidea/unit/controller.dart';
 
 // NOTE: Authentication
-import 'package:lidea/firebase_auth.dart';
+// import 'package:lidea/firebase_auth.dart';
 import 'package:lidea/unit/authentication.dart';
 
 // NOTE: Navigation
@@ -47,8 +47,6 @@ part 'utility.dart';
 part 'mock.dart';
 
 class Core extends _Abstract with _Mock {
-  // Core() : super();
-
   Future<void> init(BuildContext context) async {
     Stopwatch initWatch = Stopwatch()..start();
     collection.locale = Localizations.localeOf(context).languageCode;
@@ -60,7 +58,7 @@ class Core extends _Abstract with _Mock {
 
     await store.init();
 
-    await _sql.init();
+    await sql.init();
 
     // await mockTest();
 

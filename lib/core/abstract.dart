@@ -9,7 +9,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
   late final Analytics analytics = Analytics();
 
   late final store = Store(notify: notify, collection: collection);
-  late final _sql = SQLite(collection: collection);
+  late final sql = SQLite(collection: collection);
 
   /// Initiate collection, preference, authentication
   Future<void> ensureInitialized() async {
@@ -28,6 +28,17 @@ abstract class _Abstract extends UnitEngine with _Utility {
     debugPrint('ensureInitialized in ${initWatch.elapsedMilliseconds} ms');
   }
 
+  String get searchQuery => collection.searchQuery;
+  set searchQuery(String ord) {
+    notifyIf<String>(searchQuery, collection.searchQuery = ord);
+  }
+
+  String get suggestQuery => collection.suggestQuery;
+  set suggestQuery(String ord) {
+    final word = ord.replaceAll(RegExp(' +'), ' ').trim();
+    notifyIf<String>(suggestQuery, collection.suggestQuery = word);
+  }
+
   Future<void> initData() async {
     await initDictionary();
   }
@@ -41,37 +52,6 @@ abstract class _Abstract extends UnitEngine with _Utility {
     }
     // debugPrint('initDictionary->done');
   }
-
-  // Future<void> deleteOldLocalData(Iterable<APIType> localData) async {
-  //   if (requireInitialized) {
-  //     for (APIType api in localData) {
-  //       await UtilDocument.exists(api.localName).then((String e) {
-  //         if (e.isNotEmpty) {
-  //           UtilDocument.delete(e);
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
-
-  String get searchQuery => collection.searchQuery;
-  set searchQuery(String ord) {
-    notifyIf<String>(searchQuery, collection.searchQuery = ord);
-  }
-
-  String get suggestQuery => collection.suggestQuery;
-  set suggestQuery(String ord) {
-    final word = ord.replaceAll(RegExp(' +'), ' ').trim();
-    notifyIf<String>(suggestQuery, collection.suggestQuery = word);
-  }
-
-  void userObserver(User? user) {
-    debugPrint('userObserver begin');
-  }
-
-  // Future<void> analyticsFromCollection() async {
-  //   analytics.search('keyword goes here');
-  // }
 
   bool get searchQueryFavorited {
     // return collection.favoriteIndex(searchQuery) >= 0;
