@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 // import 'dart:convert';
 // import 'dart:io';
@@ -5,12 +6,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 // import 'package:flutter/services.dart';
 // import 'package:dictionary/core.dart';
-import 'package:lidea/engine.dart';
+import 'package:lidea/util/main.dart';
 
-void main() async{
-
+void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-
 
   // testWidgets('Example', (tester) async {
   //   // BinaryMessages.setMockMessageHandler
@@ -30,11 +29,11 @@ void main() async{
   //   });
   // });
 
-  test('Core', () async{
+  test('Core', () async {
     // final core = Core();
     // await core.init();
     final env = await UtilDocument.loadBundleAsString('env.json');
-    print(env);
+    debugPrint(env);
     // await core.mockCheckDatabaseFiles();
     expect("ab", "ab");
   });
@@ -42,7 +41,7 @@ void main() async{
   //   // final core = Core();
   //   // await core.init();
   //   final env = await UtilDocument.loadBundleAsString('env.json');
-  //   print(env);
+  //   debugPrint(env);
   //   // await core.mockCheckDatabaseFiles();
   //   expect("ab", "ab");
   // });

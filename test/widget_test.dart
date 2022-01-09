@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:dictionary/main.dart';
+// import 'package:dictionary/main.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   testWidgets('Widget', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(Dictionary());
+    // await tester.pumpWidget(MyOrdbok());
 
     // Verify that our counter starts at 0.
     // expect(find.text('0'), findsOneWidget);
@@ -20,5 +20,4 @@ void main() {
     // expect(find.text('0'), findsNothing);
     // expect(find.text('1'), findsOneWidget);
   });
-
 }
