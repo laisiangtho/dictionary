@@ -35,17 +35,33 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 30
+    // compileSdkVersion flutter.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.myordbok.app"
-        minSdkVersion 16
+
+        minSdkVersion 19
         targetSdkVersion 30
+        // minSdkVersion flutter.minSdkVersion
+        // targetSdkVersion flutter.targetSdkVersion
+
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -59,13 +75,15 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
+            // Signing with the debug keys for now, so `flutter run --debug` works.
             signingConfig signingConfigs.debug
         }
         release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
-            useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // useProguard true
+            // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             shrinkResources true
             zipAlignEnabled true
@@ -79,7 +97,14 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:26.8.0')
+    // implementation platform('com.google.firebase:firebase-bom:28.4.1')
+    implementation platform('com.google.firebase:firebase-bom:29.0.3')
+
+    // Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'com.google.firebase:firebase-auth'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.3'
 }
