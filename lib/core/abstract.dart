@@ -8,7 +8,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
   late final NavigationNotify navigation = NavigationNotify();
   late final Analytics analytics = Analytics();
 
-  late final store = Store(notify: notify, collection: collection);
+  late final store = Store(collection: collection, notify: notify);
   late final sql = SQLite(collection: collection);
 
   /// Initiate collection, preference, authentication
