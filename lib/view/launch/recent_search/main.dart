@@ -159,6 +159,7 @@ class _View extends _State with _Bar {
             return false;
           }
         }
+        return false;
       },
       // Show a red background as the item is swiped away.
       background: Container(

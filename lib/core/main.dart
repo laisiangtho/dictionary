@@ -54,7 +54,7 @@ class Core extends _Abstract with _Mock {
 
     // await Future.microtask(() => null);
 
-    await initData();
+    await dataInitialized();
 
     await store.init();
 

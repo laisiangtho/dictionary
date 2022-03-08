@@ -8,7 +8,7 @@ mixin _Bar on _State {
         return ViewHeaderSliverSnap(
           pinned: true,
           floating: false,
-          reservedPadding: MediaQuery.of(context).padding.top,
+          padding: MediaQuery.of(context).viewPadding,
           heights: const [kBottomNavigationBarHeight],
           overlapsBackgroundColor: Theme.of(context).primaryColor,
           overlapsBorderColor: Theme.of(context).shadowColor,
@@ -95,45 +95,9 @@ mixin _Bar on _State {
       // textInputAction: TextInputAction.search,
       // keyboardType: TextInputType.text,
       controller: textController,
-      strutStyle: const StrutStyle(height: 1.4),
       decoration: InputDecoration(
         hintText: preference.text.aWordOrTwo,
-        // hintStyle: const TextStyle(height: 1.3),
-        prefixIcon: const Icon(LideaIcon.find, size: 19),
-        // prefixIcon: Container(
-        //   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
-        //   margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        //   decoration: BoxDecoration(
-        //     color: Theme.of(context).scaffoldBackgroundColor,
-        //     borderRadius: const BorderRadius.all(
-        //       Radius.circular(10),
-        //     ),
-        //     boxShadow: [
-        //       BoxShadow(
-        //         blurRadius: 0.1,
-        //         color: Theme.of(context).shadowColor,
-        //         // spreadRadius: 0.1,
-        //         offset: const Offset(0, 0),
-        //       )
-        //     ],
-        //   ),
-        //   child: Selector<Core, String>(
-        //     selector: (BuildContext _, Core e) {
-        //       return e.scripturePrimary.bible.info.langCode;
-        //     },
-        //     builder: (BuildContext _, String langCode, Widget? child) {
-        //       return Text(
-        //         langCode.toUpperCase(),
-        //         textAlign: TextAlign.center,
-        //         style: TextStyle(
-        //           fontSize: 12,
-        //           // fontWeight: FontWeight.bold,
-        //           color: Theme.of(context).hintColor,
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // ),
+        prefixIcon: const Icon(LideaIcon.find),
         fillColor: Theme.of(context).inputDecorationTheme.fillColor!.withOpacity(0.4),
       ),
     );

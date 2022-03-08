@@ -149,7 +149,7 @@ class _View extends _State with _Bar, _Refresh {
                   children: [
                     Text(
                       preference.text.recentSearch(true),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     CupertinoButton(
                       padding: EdgeInsets.zero,
@@ -166,7 +166,6 @@ class _View extends _State with _Bar, _Refresh {
                   ],
                 ),
                 Card(
-                  clipBehavior: Clip.hardEdge,
                   // margin: const EdgeInsets.fromLTRB(0, 17, 0, 0),
                   margin: const EdgeInsets.only(top: 17),
                   child: Padding(
@@ -188,7 +187,7 @@ class _View extends _State with _Bar, _Refresh {
                   children: [
                     Text(
                       preference.text.favorite(true),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     CupertinoButton(
                       padding: EdgeInsets.zero,
@@ -205,7 +204,6 @@ class _View extends _State with _Bar, _Refresh {
                   ],
                 ),
                 Card(
-                  clipBehavior: Clip.hardEdge,
                   // margin: const EdgeInsets.fromLTRB(0, 17, 0, 0),
                   margin: const EdgeInsets.only(top: 17),
                   child: Padding(
@@ -423,7 +421,7 @@ class _View extends _State with _Bar, _Refresh {
               return CupertinoButton(
                 child: Text(
                   e.value.word,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 onPressed: () => onSearch(e.value.word),
               );
@@ -451,7 +449,7 @@ class _View extends _State with _Bar, _Refresh {
               return CupertinoButton(
                 child: Text(
                   e.value.word,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 onPressed: () => onSearch(e.value.word),
               );

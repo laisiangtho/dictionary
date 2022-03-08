@@ -8,6 +8,9 @@ class Collection extends ClusterDocket {
   // retrieve the instance through the app
   Collection.internal();
 
+  SuggestionType<Map<String, Object?>> cacheSuggestion = const SuggestionType();
+  ConclusionType<Map<String, dynamic>> cacheConclusion = const ConclusionType();
+
   // late Iterable<APIType> listOfDatabase;
   // late APIType wordContext;
   // late APIType deriveContext;

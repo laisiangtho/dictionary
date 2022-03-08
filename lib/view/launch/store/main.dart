@@ -70,8 +70,6 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   void setState(fn) {
     if (mounted) super.setState(fn);
   }
-
-  void onSort() {}
 }
 
 class _View extends _State with _Bar {
@@ -287,7 +285,7 @@ class _View extends _State with _Bar {
                   : null,
               title: Text(
                 title.replaceAll(RegExp(r'\(.+?\)$'), ""),
-                style: Theme.of(context).textTheme.headline4!.copyWith(fontSize: 25),
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 25),
               ),
             ),
             Builder(
@@ -342,7 +340,7 @@ class _View extends _State with _Bar {
                 semanticsLabel: description,
                 // textScaleFactor:0.9,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           ],

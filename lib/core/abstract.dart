@@ -39,11 +39,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
     notifyIf<String>(suggestQuery, collection.suggestQuery = word);
   }
 
-  Future<void> initData() async {
-    await initDictionary();
-  }
-
-  Future<void> initDictionary() async {
+  Future<void> dataInitialized() async {
     if (collection.requireInitialized) {
       APIType api = collection.env.api.firstWhere(
         (e) => e.asset.isNotEmpty,

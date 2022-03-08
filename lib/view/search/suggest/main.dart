@@ -318,34 +318,6 @@ class _View extends _State with _Bar {
     );
   }
 
-  // Widget _listItem(String word, int hightlight) {
-  //   return ListTile(
-  //     title: RichText(
-  //       // strutStyle: StrutStyle(height: 1.0),
-  //       text: TextSpan(
-  //         text: word.substring(0, hightlight),
-  //         semanticsLabel: word,
-  //         style: TextStyle(
-  //           fontSize: 20,
-  //           color: Theme.of(context).textTheme.caption!.color,
-  //           // fontWeight: FontWeight.w500
-  //         ),
-  //         children: <TextSpan>[
-  //           TextSpan(
-  //             text: word.substring(hightlight),
-  //             style: TextStyle(
-  //               color: Theme.of(context).primaryTextTheme.button!.color,
-  //               // fontWeight: FontWeight.w300
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //     minLeadingWidth: 10,
-  //     leading: const Icon(CupertinoIcons.arrow_turn_down_right, semanticLabel: 'Suggestion'),
-  //     onTap: () => true,
-  //   );
-  // }
   Widget _suggestItem(String word, int hightlight) {
     return Container(
       // margin: const EdgeInsets.symmetric(vertical: 1),
@@ -364,13 +336,12 @@ class _View extends _State with _Bar {
       ),
       child: ListTile(
         title: RichText(
-          // strutStyle: StrutStyle(height: 1.0),
           text: TextSpan(
             text: word.substring(0, hightlight),
             semanticsLabel: word,
             style: TextStyle(
               fontSize: 22,
-              // color: Theme.of(context).textTheme.caption!.color,
+              // color: Theme.of(context).textTheme.bodySmall!.color,
               // color: Theme.of(context).highlightColor,
               color: Theme.of(context).primaryColorDark,
               // fontWeight: FontWeight.w500
@@ -378,10 +349,10 @@ class _View extends _State with _Bar {
             children: <TextSpan>[
               TextSpan(
                 text: word.substring(hightlight),
-                // style: Theme.of(context).primaryTextTheme.bodyText2,
+                // style: Theme.of(context).primaryTextTheme.bodyMedium,
                 style: TextStyle(
-                  // color: Theme.of(context).primaryTextTheme.button!.color,
-                  color: Theme.of(context).primaryTextTheme.bodyText1!.color,
+                  // color: Theme.of(context).primaryTextTheme.labelLarge!.color,
+                  color: Theme.of(context).primaryTextTheme.bodyLarge!.color,
                   // color: Theme.of(context).primaryColor,
                   // fontWeight: FontWeight.w300
                 ),
@@ -413,7 +384,6 @@ class _View extends _State with _Bar {
           child: Text(preference.text.recentSearch(false)),
         ),
         Card(
-          clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0),
           ),
@@ -486,6 +456,7 @@ class _View extends _State with _Bar {
         if (direction == DismissDirection.endToStart) {
           return onDelete(item.value.word);
         }
+        return null;
       },
     );
   }
@@ -501,16 +472,16 @@ class _View extends _State with _Bar {
           fontSize: 22,
           // color: Theme.of(context).highlightColor,
           color: Theme.of(context).primaryColorDark,
-          // color: Theme.of(context).textTheme.caption!.color,
-          // color: Theme.of(context).primaryTextTheme.button!.color,
+          // color: Theme.of(context).textTheme.bodySmall!.color,
+          // color: Theme.of(context).primaryTextTheme.labelLarge!.color,
           fontWeight: FontWeight.w300,
         ),
         children: <TextSpan>[
           TextSpan(
             text: word.substring(hightlight),
             style: TextStyle(
-              // color: Theme.of(context).primaryTextTheme.button!.color,
-              color: Theme.of(context).primaryTextTheme.bodyText1!.color,
+              // color: Theme.of(context).primaryTextTheme.labelLarge!.color,
+              color: Theme.of(context).primaryTextTheme.bodyLarge!.color,
             ),
           )
         ],
@@ -531,7 +502,7 @@ class _View extends _State with _Bar {
             child: Text(
               preference.text.delete,
               textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Theme.of(context).primaryColor,
                   ),
             ),

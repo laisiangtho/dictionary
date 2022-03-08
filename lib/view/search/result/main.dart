@@ -266,7 +266,6 @@ class _View extends _State with _Bar {
     //   ),
     // );
     return Card(
-      clipBehavior: Clip.hardEdge,
       // shadowColor: Theme.of(context).backgroundColor,
       // margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
       // elevation: 3,
@@ -357,8 +356,7 @@ class _View extends _State with _Bar {
           child: Highlight(
             str: mean,
             search: onSearch,
-            // style: const TextStyle(fontSize: 17, height: 1.9),
-            style: Theme.of(context).textTheme.bodyText2!,
+            style: Theme.of(context).textTheme.bodyMedium!,
           ),
         ),
       ],
@@ -370,7 +368,6 @@ class _View extends _State with _Bar {
       return Container();
     }
     return Container(
-      // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       margin: const EdgeInsets.symmetric(vertical: 7, horizontal: 16),
       decoration: BoxDecoration(
         border: Border(
@@ -396,7 +393,7 @@ class _View extends _State with _Bar {
                     Icons.circle,
                     size: 7,
                     color: Theme.of(context).backgroundColor,
-                    // color: Theme.of(context).primaryTextTheme.button.color
+                    // color: Theme.of(context).primaryTextTheme.labelLarge.color
                   ),
                 ),
               ),
@@ -441,7 +438,7 @@ class _View extends _State with _Bar {
                         child: Text(
                           e['word'].toString(),
                           // style: const TextStyle(fontSize: 19),
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         // color: Colors.blue,
                         color: Theme.of(context).backgroundColor,

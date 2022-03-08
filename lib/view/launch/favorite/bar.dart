@@ -5,7 +5,7 @@ mixin _Bar on _State {
     return ViewHeaderSliverSnap(
       pinned: true,
       floating: false,
-      reservedPadding: MediaQuery.of(context).padding.top,
+      padding: MediaQuery.of(context).viewPadding,
       heights: const [kBottomNavigationBarHeight, 50],
       overlapsBackgroundColor: Theme.of(context).primaryColor,
       overlapsBorderColor: Theme.of(context).shadowColor,
@@ -92,7 +92,7 @@ mixin _Bar on _State {
                     preference.text.favorite(false),
                     style: Theme.of(context)
                         .textTheme
-                        .headline5!
+                        .headlineSmall!
                         .copyWith(fontSize: (30 * org.shrink).clamp(22, 30).toDouble()),
                     maxLines: 1,
                     softWrap: false,

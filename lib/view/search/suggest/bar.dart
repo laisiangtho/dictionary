@@ -8,7 +8,7 @@ mixin _Bar on _State {
         return ViewHeaderSliverSnap(
           pinned: true,
           floating: false,
-          reservedPadding: MediaQuery.of(context).padding.top,
+          padding: MediaQuery.of(context).viewPadding,
           heights: const [kBottomNavigationBarHeight],
           overlapsBackgroundColor: Theme.of(context).primaryColor,
           overlapsBorderColor: Theme.of(context).shadowColor,
@@ -68,55 +68,9 @@ mixin _Bar on _State {
       // enableInteractiveSelection: true,
       // enableSuggestions: true,
       maxLines: 1,
-      strutStyle: const StrutStyle(height: 1.4),
       decoration: InputDecoration(
-        prefixIcon: const Icon(LideaIcon.find, size: 19),
-        /*
-        suffixIcon: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FadeTransition(
-              opacity: clearAnimation,
-              // axis: Axis.horizontal,
-              // axisAlignment: 1,
-              child: Semantics(
-                enabled: true,
-                label: translate.clear,
-                child: CupertinoButton(
-                  onPressed: onClear,
-                  padding: const EdgeInsets.all(0),
-                  child: Icon(
-                    CupertinoIcons.xmark_circle_fill,
-                    color: Theme.of(context).iconTheme.color!.withOpacity(0.4),
-                    size: 17,
-                    semanticLabel: "input",
-                  ),
-                ),
-              ),
-            ),
-            // SizeTransition(
-            //   sizeFactor: clearAnimation,
-            //   axis: Axis.horizontal,
-            //   // axisAlignment: 1,
-            //   child: Semantics(
-            //     enabled: true,
-            //     label: translate.clear,
-            //     child: CupertinoButton(
-            //       onPressed: onClear,
-            //       padding: const EdgeInsets.all(0),
-            //       child: Icon(
-            //         CupertinoIcons.xmark_circle_fill,
-            //         color: Theme.of(context).iconTheme.color!.withOpacity(0.4),
-            //         size: 17,
-            //         semanticLabel: "input",
-            //       ),
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
-        */
+        prefixIcon: const Icon(LideaIcon.find),
+
         suffixIcon: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
