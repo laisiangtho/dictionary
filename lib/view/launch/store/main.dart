@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // import 'package:flutter/rendering.dart';
 // import 'package:flutter/gestures.dart';
 // import 'package:flutter/services.dart';
@@ -17,6 +16,7 @@ import '/type/main.dart';
 import '/widget/main.dart';
 
 part 'bar.dart';
+part 'state.dart';
 
 class Main extends StatefulWidget {
   const Main({Key? key, this.arguments}) : super(key: key);
@@ -24,74 +24,42 @@ class Main extends StatefulWidget {
   final Object? arguments;
 
   static const route = '/store';
-  // static const icon = Icons.assistant;
   static const icon = Icons.shopping_bag;
   static const name = 'Store';
   static const description = '...';
   static final uniqueKey = UniqueKey();
-  // static final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   State<StatefulWidget> createState() => _View();
-}
-
-abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
-  final scrollController = ScrollController();
-
-  // late Core core;
-  late final Core core = context.read<Core>();
-  late final store = core.store;
-
-  // ViewNavigationArguments get arguments => widget.arguments as ViewNavigationArguments;
-  late final ViewNavigationArguments arguments = widget.arguments as ViewNavigationArguments;
-  late final bool canPop = widget.arguments != null;
-  // AudioAlbumType get album => arguments.meta as AudioAlbumType;
-
-  // SettingsController get settings => context.read<SettingsController>();
-  // AppLocalizations get translate => AppLocalizations.of(context)!;
-  Preference get preference => core.preference;
-  // Authentication get authenticate => context.read<Authentication>();
-
-  @override
-  void initState() {
-    store.init();
-    super.initState();
-    // core = context.read<Core>();
-  }
-
-  @override
-  void dispose() {
-    store.dispose();
-    super.dispose();
-    scrollController.dispose();
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) super.setState(fn);
-  }
 }
 
 class _View extends _State with _Bar {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: widget.key,
       body: ViewPage(
         // controller: scrollController,
-        child: body(),
+        child: CustomScrollView(
+          controller: scrollController,
+          slivers: sliverWidgets(),
+        ),
       ),
     );
   }
 
-  CustomScrollView body() {
-    return CustomScrollView(
-      controller: scrollController,
-      slivers: <Widget>[
-        bar(),
-        cartWidget(),
-      ],
-    );
+  List<Widget> sliverWidgets() {
+    return [
+      ViewHeaderSliverSnap(
+        pinned: true,
+        floating: false,
+        padding: MediaQuery.of(context).viewPadding,
+        heights: const [kToolbarHeight, 50],
+        // overlapsBackgroundColor: Theme.of(context).primaryColor,
+        overlapsBorderColor: Theme.of(context).shadowColor,
+        builder: bar,
+      ),
+      cartWidget(),
+    ];
   }
 
   Widget cartWidget() {
@@ -158,7 +126,7 @@ class _View extends _State with _Bar {
         core.collection.language('ready-to-contribute'),
         style: const TextStyle(fontSize: 20),
       );
-      msgIcon = const Icon(CupertinoIcons.checkmark_shield, size: 50);
+      msgIcon = const Icon(Icons.local_police_outlined, size: 50);
     } else {
       // NOTE: Connected to store, but purchase is not ready yet
       msgWidget = const Text('Purchase unavailable');
@@ -201,11 +169,6 @@ class _View extends _State with _Bar {
     if (store.listOfPurchaseDetail.isEmpty && !store.isAvailable) {
       itemsWidget.add(
         Card(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(7.0)),
-          ),
-          elevation: 2,
-          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
             child: Text('Unable to connect with $storeName!'),
@@ -278,7 +241,7 @@ class _View extends _State with _Bar {
               // contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
               leading: hasPurchased
                   ? Icon(
-                      CupertinoIcons.checkmark_seal_fill,
+                      Icons.verified_rounded,
                       color: Theme.of(context).highlightColor,
                       size: 35,
                     )
@@ -293,12 +256,10 @@ class _View extends _State with _Bar {
                 if (hasPurchased) {
                   return const SizedBox();
                 }
-                return CupertinoButton(
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  // minSize: 25,
+                return WidgetButton(
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                   color: Theme.of(context).highlightColor,
                   borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -311,9 +272,8 @@ class _View extends _State with _Bar {
                                 strokeWidth: 2,
                               )
                             : Icon(
-                                CupertinoIcons.cart_badge_plus,
+                                Icons.add_shopping_cart_rounded,
                                 color: Theme.of(context).primaryColor,
-                                // size: 50,
                               ),
                       ),
                       const Divider(
@@ -359,17 +319,17 @@ class _View extends _State with _Bar {
       return const Text('not Available: star');
     }
 
-    return Selector<Core, Iterable<PurchaseType>>(
-      selector: (BuildContext _, Core core) => core.collection.boxOfPurchase.values
-          .toList()
-          .where((e) => e.consumable == true && !store.listOfNotFoundId.contains(e.productId)),
-      builder: (BuildContext _, Iterable<PurchaseType> data, Widget? child) {
+    return Selector<Core, Iterable<PurchasesType>>(
+      selector: (BuildContext _, Core core) => core.collection.boxOfPurchases.valuesWhere((e) {
+        return e.consumable == true && !store.listOfNotFoundId.contains(e.productId);
+      }),
+      builder: (BuildContext _, Iterable<PurchasesType> data, Widget? child) {
         return Card(
           child: Wrap(
             // _kOfConsumable.data
             children: data
                 .map(
-                  (PurchaseType e) => IconButton(
+                  (PurchasesType e) => IconButton(
                     icon: const Icon(Icons.star),
                     iconSize: 35,
                     color: Theme.of(context).primaryColorDark,
@@ -403,17 +363,17 @@ class _View extends _State with _Bar {
   //     return const Text('not Available box');
   //   }
 
-  //   return Selector<Core, Iterable<PurchaseType>>(
+  //   return Selector<Core, Iterable<PurchasesType>>(
   //     selector: (BuildContext _, Core core) => core.collection.boxOfPurchase.values
   //         .toList()
   //         .where((e) => e.consumable == false && !store.listOfNotFoundId.contains(e.productId)),
-  //     builder: (BuildContext _, Iterable<PurchaseType> data, Widget? child) {
+  //     builder: (BuildContext _, Iterable<PurchasesType> data, Widget? child) {
   //       return Card(
   //         child: Wrap(
   //           // _kOfPurchase.data
   //           children: data
   //               .map(
-  //                 (PurchaseType e) => ListTile(
+  //                 (PurchasesType e) => ListTile(
   //                   title: Text(e.productId),
   //                   // subtitle: Text(e.value.type +': press to consume it'),
   //                   onTap: () {

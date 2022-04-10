@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of data.core;
 // import 'dart:async';
 // import 'package:flutter/foundation.dart';
 // import 'package:lidea/util/main.dart';
@@ -33,8 +33,8 @@ class SQLite extends UnitSQLite {
   APIType get _thesaurusContext => collection.secondary.last;
   String get _thesaurusTable => _thesaurusContext.tableName;
 
-  String get suggestQuery => collection.suggestQuery;
-  String get searchQuery => collection.searchQuery;
+  String get suggestQuery => collection.suggestQuery.asString;
+  String get searchQuery => collection.searchQuery.asString;
 
   @override
   Future<String> get file async => await UtilDocument.fileName(_wordContext.local);
@@ -43,8 +43,8 @@ class SQLite extends UnitSQLite {
   Future<int> get version async => 1;
 
   @override
-  FutureOr<void> onCreate(db, int v) async {
-    await db.transaction((txn) async {
+  FutureOr<void> onCreate(e, int v) async {
+    await e.transaction((txn) async {
       final batch = txn.batch();
       batch.execute(_wordContext.createIndex!);
       batch.execute(_deriveContext.createIndex!);
@@ -54,8 +54,8 @@ class SQLite extends UnitSQLite {
   }
 
   @override
-  FutureOr<void> onUpgrade(db, int ov, int nv) async {
-    await db.transaction((txn) async {
+  FutureOr<void> onUpgrade(e, int ov, int nv) async {
+    await e.transaction((txn) async {
       final batch = txn.batch();
       batch.execute(_wordContext.createIndex!);
       batch.execute(_deriveContext.createIndex!);
@@ -65,8 +65,8 @@ class SQLite extends UnitSQLite {
   }
 
   @override
-  FutureOr<void> onDowngrade(db, int ov, int nv) async {
-    await db.transaction((txn) async {
+  FutureOr<void> onDowngrade(e, int ov, int nv) async {
+    await e.transaction((txn) async {
       final batch = txn.batch();
       batch.execute(_wordContext.createIndex!);
       batch.execute(_deriveContext.createIndex!);
@@ -76,9 +76,9 @@ class SQLite extends UnitSQLite {
   }
 
   @override
-  FutureOr<void> onOpen(db) async {
-    final ath = await db.rawQuery(queryDatabaseList);
-    final batch = db.batch();
+  FutureOr<void> onOpen(e) async {
+    final ath = await e.rawQuery(queryDatabaseList);
+    final batch = e.batch();
     for (var item in collection.secondary) {
       // final bool notAttached = ath.firstWhere((e) => e['name'] == item.uid, orElse:()=> null) == null;
       final notAttached = ath.firstWhere(
@@ -88,7 +88,7 @@ class SQLite extends UnitSQLite {
       if (notAttached.isEmpty) {
         String _filePath = await UtilDocument.fileName(item.local);
         // await db.rawQuery("DETACH DATABASE ${item.uid};");
-        await db.rawQuery("ATTACH DATABASE '$_filePath' AS ${item.uid};").then((_) {
+        await e.rawQuery("ATTACH DATABASE '$_filePath' AS ${item.uid};").then((_) {
           if (item.createIndex != null && item.createIndex!.isNotEmpty) {
             // PRAGMA INDEX_LIST('table_name');
             // final ath = await db.rawQuery("PRAGMA INDEX_LIST('${item.uid}');");
@@ -106,31 +106,44 @@ class SQLite extends UnitSQLite {
   }
 
   /// get suggestion
-  Future<List<Map<String, Object?>>> suggestion() async {
+  // Future<List<Map<String, Object?>>> suggestion() async {
+  //   // return await _instance.query(_senseTable, columns:['word'],where: 'word LIKE ?',whereArgs: [keyword+'%'] ,orderBy: 'word',limit: 10);
+  //   // return await _instance.rawQuery("SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word LIMIT 10;",[keyword+'%']);
+  //   // SuggestionType<OfRawType>();
+  //   return await db.then(
+  //     (e) => e.rawQuery(
+  //       "SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word ORDER BY word ASC LIMIT 30;",
+  //       ['$suggestQuery%'],
+  //     ),
+  //   );
+  // }
+  Future<List<OfRawType>> suggestion() async {
     // return await _instance.query(_senseTable, columns:['word'],where: 'word LIKE ?',whereArgs: [keyword+'%'] ,orderBy: 'word',limit: 10);
     // return await _instance.rawQuery("SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word LIMIT 10;",[keyword+'%']);
-    return await db.then(
-      (e) => e.rawQuery(
-        "SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word ORDER BY word ASC LIMIT 30;",
-        ['$suggestQuery%'],
-      ),
-    );
+    // SuggestionType<OfRawType>();
+    await db;
+
+    return client.rawQuery(
+      "SELECT word FROM $_senseTable WHERE word LIKE ? GROUP BY word ORDER BY word ASC LIMIT 30;",
+      ['$suggestQuery%'],
+    ).then((raw) {
+      return raw.map((e) => OfRawType(term: e['word'].toString())).toList();
+    });
   }
 
   /// get definition
   Future<List<Map<String, Object?>>> search(String keyword) async {
-    return await db.then(
-      (e) => e.rawQuery(
-        "SELECT word, wrte, sense, exam FROM $_senseTable WHERE word LIKE ? ORDER BY wrte, wseq;",
-        [keyword],
-      ),
+    await db;
+    return client.rawQuery(
+      "SELECT word, wrte, sense, exam FROM $_senseTable WHERE word LIKE ? ORDER BY wrte, wseq;",
+      [keyword],
     );
   }
 
   /// get root
   /// [d.word, c.wrte, c.dete, c.wirg, w.word AS derived]
   Future<List<Map<String, Object?>>> rootWord(String keyword) async {
-    var client = await db;
+    await db;
     return client.rawQuery(
       """SELECT
         d.word, c.wrte, c.dete, c.wirg, w.word AS derived
@@ -146,7 +159,7 @@ class SQLite extends UnitSQLite {
   /// get base
   /// [w.word, c.wrte, c.dete, c.wirg, d.word AS derived]
   Future<List<Map<String, Object?>>> baseWord(String keyword) async {
-    var client = await db;
+    await db;
     return client.rawQuery(
       """SELECT
         w.word, c.wrte, c.dete, c.wirg, d.word AS derived
@@ -162,7 +175,7 @@ class SQLite extends UnitSQLite {
   /// get thesaurus
   /// [w.id AS root, c.wlid AS wrid, d.word, d.derived]
   Future<List<Map<String, Object?>>> thesaurus(String keyword) async {
-    var client = await db;
+    await db;
     return client.rawQuery(
       """SELECT
         d.word, d.derived

@@ -2,9 +2,7 @@
 import 'package:flutter/material.dart';
 // NOTE: SystemUiOverlayStyle
 import 'package:flutter/services.dart';
-// NOTE: Locale delegation
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 // NOTE: Privider: state management
 import 'package:lidea/provider.dart';
 // NOTE: Scroll
@@ -12,10 +10,10 @@ import 'package:lidea/view/main.dart';
 
 import '/core/main.dart';
 import '/coloration.dart';
-
 import '/view/routes.dart';
 
 // const bool isProduction = bool.fromEnvironment('dart.vm.product');
+final core = Core();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,17 +23,14 @@ void main() async {
   //   InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
   // }
 
-  final core = Core();
   await core.ensureInitialized();
   // authentication.stateObserver(core.userObserver);
 
-  runApp(MyOrdbok(core: core));
+  runApp(const MyOrdbok());
 }
 
 class MyOrdbok extends StatelessWidget {
-  final Core core;
-
-  const MyOrdbok({Key? key, required this.core}) : super(key: key);
+  const MyOrdbok({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,22 +68,10 @@ class MyOrdbok extends StatelessWidget {
           showSemanticsDebugger: false,
           debugShowCheckedModeBanner: false,
           restorationScopeId: 'lidea',
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: core.preference.locale,
           // locale: Localizations.localeOf(context),
-          supportedLocales: const [
-            // English
-            Locale('en', 'GB'),
-            // Norwegian
-            Locale('no', 'NO'),
-            // Myanmar
-            Locale('my', ''),
-          ],
+          locale: core.preference.locale,
+          localizationsDelegates: core.preference.localeDelegates,
+          supportedLocales: core.preference.localeSupports,
           darkTheme: Coloration.dark(context),
           theme: Coloration.light(context),
           themeMode: core.preference.themeMode,
@@ -96,21 +79,25 @@ class MyOrdbok extends StatelessWidget {
           initialRoute: AppRoutes.rootInitial,
           routes: AppRoutes.rootMap,
           navigatorObservers: [
+            // NavigationObserver(
+            //   Provider.of<NavigationNotify>(
+            //     context,
+            //     listen: false,
+            //   ),
+            // ),
             NavigationObserver(
-                // Provider.of<NavigationNotify>(
-                //   context,
-                //   listen: false,
-                // ),
-                core.navigation),
+              core.navigation,
+            ),
           ],
+
           builder: (BuildContext context, Widget? view) {
             return AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle(
                 systemNavigationBarColor: Theme.of(context).primaryColor,
                 // systemNavigationBarDividerColor: Colors.transparent,
+                // systemNavigationBarDividerColor: Colors.red,
                 systemNavigationBarIconBrightness: core.preference.resolvedSystemBrightness,
                 systemNavigationBarContrastEnforced: false,
-
                 statusBarColor: Colors.transparent,
                 statusBarBrightness: core.preference.systemBrightness,
                 statusBarIconBrightness: core.preference.resolvedSystemBrightness,

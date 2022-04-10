@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of data.core;
 
 /// check
 mixin _Mock on _Abstract {
@@ -6,11 +6,12 @@ mixin _Mock on _Abstract {
 
   /// ```dart
   /// [query: String, raw: List<Map<String, Object?>>]
+  /// OfRawType
   /// ```
   /// typeof [SuggestionType]
   Future<void> suggestionGenerate() async {
-    collection.cacheSuggestion = SuggestionType(
-      query: collection.suggestQuery,
+    collection.cacheSuggestion = SuggestionType<OfRawType>(
+      query: suggestQuery,
       raw: await sql.suggestion(),
     );
     notify();
@@ -24,19 +25,19 @@ mixin _Mock on _Abstract {
   /// ```
   /// typeof [ConclusionType]
   Future<void> conclusionGenerate({bool init = false}) async {
-    if (collection.cacheConclusion.query != collection.searchQuery) {
+    if (collection.cacheConclusion.query != searchQuery) {
       collection.cacheConclusion = ConclusionType(
-        query: collection.searchQuery,
+        query: searchQuery,
         raw: await _definitionGenerator(),
       );
-      collection.recentSearchUpdate(collection.searchQuery);
+      collection.boxOfRecentSearch.update(searchQuery);
       if (!init) {
         notify();
       }
     }
     // collection.recentSearchUpdate(word);
     // collection.searchQuery = word;
-    analytics.search(collection.searchQuery);
+    analytics.search(searchQuery);
   }
 
   Future<List<Map<String, dynamic>>> _definitionGenerator() async {
@@ -44,9 +45,9 @@ mixin _Mock on _Abstract {
     List<Map<String, Object?>> root;
     List<Map<String, Object?>> rawSense;
 
-    rawSense = await sql.search(collection.searchQuery);
+    rawSense = await sql.search(searchQuery);
     if (rawSense.isEmpty) {
-      root = await sql.rootWord(collection.searchQuery);
+      root = await sql.rootWord(searchQuery);
       if (root.isNotEmpty) {
         final i = root.map((e) => e['word'].toString()).toSet().toList();
         for (String e in i) {
@@ -57,7 +58,7 @@ mixin _Mock on _Abstract {
         }
       }
     } else {
-      root = await sql.baseWord(collection.searchQuery);
+      root = await sql.baseWord(searchQuery);
       raw.addAll(rawSense);
     }
     if (root.isNotEmpty) {

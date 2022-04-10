@@ -1,4 +1,4 @@
-part of "main.dart";
+part of data.type;
 
 // NOTE: only type, EnvironmentType child
 class SynsetType {

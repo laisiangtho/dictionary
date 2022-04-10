@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of data.core;
 
 class Store extends UnitStore {
   late Collection collection;
@@ -11,14 +11,14 @@ class Store extends UnitStore {
     super.init();
   }
 
-  Iterable<PurchaseType> get data => collection.boxOfPurchase.values;
+  Iterable<PurchasesType> get data => collection.boxOfPurchases.values;
 
   @override
-  MapEntry<dynamic, PurchaseType> purchaseDataExist(String? purchaseId) {
-    return collection.boxOfPurchase.toMap().entries.firstWhere(
-          (e) => e.value.purchaseId == purchaseId,
-          orElse: () => MapEntry(null, PurchaseType()),
-        );
+  MapEntry<dynamic, PurchasesType> purchaseDataExist(String? purchaseId) {
+    return collection.boxOfPurchases.entries.firstWhere(
+      (e) => e.value.purchaseId == purchaseId,
+      orElse: () => MapEntry(null, PurchasesType()),
+    );
   }
 
   @override
@@ -27,7 +27,7 @@ class Store extends UnitStore {
     if (notEmpty) {
       final purchase = purchaseDataExist(purchaseId);
       if (purchase.key != null) {
-        collection.boxOfPurchase.delete(purchase.key);
+        collection.boxOfPurchases.box.delete(purchase.key);
         return true;
       }
     }
@@ -36,12 +36,12 @@ class Store extends UnitStore {
 
   @override
   Future<int> purchaseDataClear() {
-    return collection.boxOfPurchase.clear();
+    return collection.boxOfPurchases.box.clear();
   }
 
   @override
-  void purchaseDataInsert(PurchaseType value) {
-    collection.boxOfPurchase.add(value);
+  void purchaseDataInsert(PurchasesType value) {
+    collection.boxOfPurchases.box.add(value);
   }
 
   @override

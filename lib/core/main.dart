@@ -1,12 +1,11 @@
+library data.core;
+
 import 'dart:async';
 import 'package:flutter/material.dart';
-// import 'package:flutter/foundation.dart';
 
 // NOTE: Preference
-// import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lidea/intl.dart';
-import 'package:lidea/unit/controller.dart';
 
 // NOTE: Authentication
 // import 'package:lidea/firebase_auth.dart';
@@ -28,8 +27,6 @@ import 'package:lidea/unit/sqlite.dart';
 
 // NOTE: Core notify and Initializing properties
 import 'package:lidea/unit/engine.dart';
-// NOTE: Core API manager
-import 'package:lidea/util/main.dart';
 
 import '/type/main.dart';
 
@@ -49,8 +46,7 @@ part 'mock.dart';
 class Core extends _Abstract with _Mock {
   Future<void> init(BuildContext context) async {
     Stopwatch initWatch = Stopwatch()..start();
-    collection.locale = Localizations.localeOf(context).languageCode;
-    preference.context = context;
+    preference.setContext(context);
 
     // await Future.microtask(() => null);
 

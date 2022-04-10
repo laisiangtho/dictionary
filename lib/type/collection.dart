@@ -1,14 +1,17 @@
-part of "main.dart";
+part of data.type;
 
 class Collection extends ClusterDocket {
-  late Box<FavoriteType> boxOfFavorite;
+  late final boxOfFavoriteWord = BoxOfFavoriteWord<FavoriteWordType>();
+
   late List<SynsetType> synset;
   late List<SynmapType> synmap;
 
   // retrieve the instance through the app
   Collection.internal();
+  // Collection.internal() : super.internal();
 
-  SuggestionType<Map<String, Object?>> cacheSuggestion = const SuggestionType();
+  // SuggestionType<Map<String, Object?>> cacheSuggestion = const SuggestionType();
+  SuggestionType<OfRawType> cacheSuggestion = const SuggestionType();
   ConclusionType<Map<String, dynamic>> cacheConclusion = const ConclusionType();
 
   // late Iterable<APIType> listOfDatabase;
@@ -20,16 +23,13 @@ class Collection extends ClusterDocket {
   @override
   Future<void> ensureInitialized() async {
     await super.ensureInitialized();
-    Hive.registerAdapter(FavoriteAdapter());
+    boxOfFavoriteWord.registerAdapter(FavoriteWordAdapter());
   }
 
   @override
   Future<void> prepareInitialized() async {
     await super.prepareInitialized();
-    boxOfFavorite = await Hive.openBox<FavoriteType>('favorite');
-
-    // final abc = Hive.box<FavoriteType>('favorite');
-    // final axf = abc.listenable();
+    await boxOfFavoriteWord.open('favorite');
 
     synset = env.attach["synset"].map<SynsetType>((o) => SynsetType.fromJSON(o)).toList();
     synmap = env.attach["synmap"].map<SynmapType>((o) => SynmapType.fromJSON(o)).toList();
@@ -73,15 +73,15 @@ class Collection extends ClusterDocket {
 
   // NOTE: Favorite
   /// get all favorite favoriteEntries
-  Iterable<MapEntry<dynamic, FavoriteType>> get favorites {
-    return boxOfFavorite.toMap().entries;
+  Iterable<MapEntry<dynamic, FavoriteWordType>> get favorites {
+    return boxOfFavoriteWord.entries;
   }
 
   /// favorite is EXIST by word
-  MapEntry<dynamic, FavoriteType> favoriteExist(String ord) {
+  MapEntry<dynamic, FavoriteWordType> favoriteExist(String ord) {
     return favorites.firstWhere(
-      (e) => stringCompare(e.value.word, ord),
-      orElse: () => MapEntry(null, FavoriteType(word: ord)),
+      (e) => UtilString.stringCompare(e.value.word, ord),
+      orElse: () => MapEntry(null, FavoriteWordType(word: ord)),
     );
   }
 
@@ -91,9 +91,9 @@ class Collection extends ClusterDocket {
       final ob = favoriteExist(ord);
       ob.value.date = DateTime.now();
       if (ob.key == null) {
-        boxOfFavorite.add(ob.value);
+        boxOfFavoriteWord.box.add(ob.value);
       } else {
-        boxOfFavorite.put(ob.key, ob.value);
+        boxOfFavoriteWord.box.put(ob.key, ob.value);
       }
       // print('recentSearchUpdate ${ob.value.hit}');
       return true;
@@ -106,7 +106,7 @@ class Collection extends ClusterDocket {
     if (ord.isNotEmpty) {
       final ob = favoriteExist(ord);
       if (ob.key != null) {
-        boxOfFavorite.delete(ob.key);
+        boxOfFavoriteWord.deleteAtKey(ob.key);
         return true;
       }
     }

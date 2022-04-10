@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-// import 'package:flutter/cupertino.dart';
 
 import 'package:lidea/provider.dart';
 import 'package:lidea/connectivity.dart';
+import 'package:lidea/cluster/main.dart';
 import 'package:lidea/view/main.dart';
-// import 'package:lidea/icon.dart';
-// import 'package:lidea/extension.dart';
 
 import '/core/main.dart';
 // import '/type/main.dart';
@@ -28,7 +26,7 @@ class Main extends StatefulWidget {
   _State createState() => AppView();
 }
 
-abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
+abstract class _State extends State<Main> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _pageController = PageController(keepPage: true);
   final _controller = ScrollController();
@@ -78,9 +76,8 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
       (e) => e.key == index,
       orElse: () => _pageButton.first,
     );
-    final screenName = core.collection.screenName(page.name);
-    // final screenClass = core.collection.screenClass(page.name);
-    final screenClass = core.collection.screenClass(core.navigation.name);
+    final screenName = UtilString.screenName(page.name);
+    final screenClass = UtilString.screenClass(core.navigation.name);
 
     core.analytics.screen(screenName, screenClass);
 
@@ -98,24 +95,20 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
       _navPageViewAction(at);
     }
     final _vi = AppRoutes.homeNavigator;
-    final state = _vi.currentState;
-    if (to != null && state != null) {
-      final canPop = state.canPop();
-      // final canPop = Navigator.canPop(context);
-      final arguments = ViewNavigationArguments(
-        navigator: _vi,
-        args: args,
-        canPop: canPop,
-      );
+    final _state = _vi.currentState;
+    if (to != null && _state != null) {
+      final _arg = ViewNavigationArguments(key: _vi, args: args);
       if (routePush) {
-        state.pushNamed(to, arguments: arguments);
-        // Navigator.of(context).pushNamed(to, arguments: arguments);
+        _state.pushNamed(to, arguments: _arg);
+        // Navigator.of(context).pushNamed(to, arguments: _arg);
       } else {
-        state.pushReplacementNamed(to, arguments: arguments);
-        // Navigator.of(context).pushReplacementNamed(to, arguments: arguments);
+        // _state.pushReplacementNamed(to, arguments: _arg);
+        _state.pushNamedAndRemoveUntil(to, ModalRoute.withName('/'), arguments: _arg);
+        // Navigator.of(context).pushReplacementNamed(to, arguments: _arg);
       }
-      final screenName = core.collection.screenName(to);
-      final screenClass = core.collection.screenClass(core.navigation.name);
+
+      final screenName = UtilString.screenName(to);
+      final screenClass = UtilString.screenClass(core.navigation.name);
       core.analytics.screen(screenName, screenClass);
     }
   }

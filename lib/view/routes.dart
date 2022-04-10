@@ -8,7 +8,7 @@ import 'main.dart' as root;
 import 'launch/main.dart' as launch;
 import 'launch/home/main.dart' as home;
 import 'launch/recent_search/main.dart' as recent_search;
-import 'launch/favorite/main.dart' as favorite;
+import 'launch/favorite_word/main.dart' as favorite_word;
 import 'launch/store/main.dart' as store;
 
 import 'search/main.dart' as search_page;
@@ -61,8 +61,8 @@ class AppRoutes {
       case user.Main.route:
         return user.Main(arguments: route.arguments);
 
-      case favorite.Main.route:
-        return favorite.Main(arguments: route.arguments);
+      case favorite_word.Main.route:
+        return favorite_word.Main(arguments: route.arguments);
       case store.Main.route:
         return store.Main(arguments: route.arguments);
       case recent_search.Main.route:
@@ -75,18 +75,55 @@ class AppRoutes {
     }
   }
 
+  // static Route<void> homeBuilder(RouteSettings route) {
+  //   return MaterialPageRoute<void>(
+  //     settings: route,
+  //     fullscreenDialog: true,
+  //     builder: (BuildContext context) {
+  //       return _homePage(route);
+  //     },
+  //   );
+  // }
+
   static Route<dynamic>? homeBuilder(RouteSettings route) {
     return PageRouteBuilder(
       settings: route,
       pageBuilder: (BuildContext _, Animation<double> _a, Animation<double> _b) {
         return _homePage(route);
       },
-      transitionDuration: const Duration(milliseconds: 400),
-      reverseTransitionDuration: const Duration(milliseconds: 400),
-      transitionsBuilder: (_, animation, _b, child) => FadeTransition(
-        opacity: animation,
-        child: child,
-      ),
+      transitionDuration: const Duration(milliseconds: 250),
+      reverseTransitionDuration: const Duration(milliseconds: 450),
+      transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+      ) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+      // transitionsBuilder: (
+      //   BuildContext context,
+      //   Animation<double> animation,
+      //   Animation<double> secondaryAnimation,
+      //   Widget child,
+      // ) {
+      //   // return Align(
+      //   //   child: SizeTransition(
+      //   //     sizeFactor: animation,
+      //   //     child: child,
+      //   //   ),
+      //   // );
+      //   return SlideTransition(
+      //     position: Tween<Offset>(
+      //       begin: const Offset(0.0, 1.0),
+      //       end: Offset.zero,
+      //     ).animate(animation),
+      //     child: child, // child is the value returned by pageBuilder
+      //   );
+      // },
       fullscreenDialog: true,
     );
   }
@@ -105,12 +142,19 @@ class AppRoutes {
             return search_result.Main(arguments: args);
         }
       },
-      transitionDuration: const Duration(milliseconds: 400),
-      reverseTransitionDuration: const Duration(milliseconds: 400),
-      transitionsBuilder: (_, animation, __, child) => FadeTransition(
-        opacity: animation,
-        child: child,
-      ),
+      transitionDuration: const Duration(milliseconds: 250),
+      reverseTransitionDuration: const Duration(milliseconds: 450),
+      transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+      ) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
       fullscreenDialog: true,
     );
   }
@@ -134,8 +178,8 @@ class AppPageNavigation {
       ),
       ViewNavigationModel(
         key: 2,
-        icon: favorite.Main.icon,
-        name: favorite.Main.name,
+        icon: favorite_word.Main.icon,
+        name: favorite_word.Main.name,
         description: preference.text.favorite(false),
       ),
       ViewNavigationModel(
@@ -157,8 +201,8 @@ class AppPageNavigation {
       child: const recent_search.Main(),
     ),
     ViewKeepAlive(
-      key: favorite.Main.uniqueKey,
-      child: const favorite.Main(),
+      key: favorite_word.Main.uniqueKey,
+      child: const favorite_word.Main(),
     ),
     // WidgetKeepAlive(
     //   key: setting.Main.uniqueKey,

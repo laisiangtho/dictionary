@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of data.core;
 
 abstract class _Abstract extends UnitEngine with _Utility {
   final Collection collection = Collection.internal();
@@ -28,12 +28,23 @@ abstract class _Abstract extends UnitEngine with _Utility {
     debugPrint('ensureInitialized in ${initWatch.elapsedMilliseconds} ms');
   }
 
-  String get searchQuery => collection.searchQuery;
+  // String get searchQuery => collection.searchQuery.asString;
+  // set searchQuery(String ord) {
+  //   notifyIf<String>(searchQuery, collection.searchQuery = ord);
+  // }
+
+  // String get suggestQuery => collection.suggestQuery;
+  // set suggestQuery(String ord) {
+  //   final word = ord.replaceAll(RegExp(' +'), ' ').trim();
+  //   notifyIf<String>(suggestQuery, collection.suggestQuery = word);
+  // }
+
+  String get searchQuery => collection.searchQuery.asString;
   set searchQuery(String ord) {
     notifyIf<String>(searchQuery, collection.searchQuery = ord);
   }
 
-  String get suggestQuery => collection.suggestQuery;
+  String get suggestQuery => collection.suggestQuery.asString;
   set suggestQuery(String ord) {
     final word = ord.replaceAll(RegExp(' +'), ' ').trim();
     notifyIf<String>(suggestQuery, collection.suggestQuery = word);
