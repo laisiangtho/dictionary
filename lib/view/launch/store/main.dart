@@ -169,6 +169,11 @@ class _View extends _State with _Bar {
     if (store.listOfPurchaseDetail.isEmpty && !store.isAvailable) {
       itemsWidget.add(
         Card(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(7.0)),
+          ),
+          elevation: 2,
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
             child: Text('Unable to connect with $storeName!'),
