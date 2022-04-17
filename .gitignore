@@ -9,9 +9,11 @@ pubspec.lock
 
 # Android
 */key.properties
+**/Podfile.lock
 **/google-services.json
 
 # iOS
+**/Info.plist
 **/GoogleService-Info.plist
 
 # Miscellaneous
