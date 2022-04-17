@@ -1,5 +1,12 @@
 # Change log
 
+## 1.0.2+34
+
+Improve
+
+- Result format
+- Performance
+
 ## 1.0.1+19-21
 
 Improve
