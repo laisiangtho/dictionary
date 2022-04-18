@@ -1,11 +1,15 @@
 # Change log
 
-## 1.0.2+34
+## 1.0.2+34-35-36
 
 Improve
 
 - User-interface
 - Performance
+
+Add
+
+- Sign in with Apple
 
 ## 1.0.1+19-21
 
