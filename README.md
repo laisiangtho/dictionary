@@ -4,6 +4,10 @@
 
 MyOrdbok is 'A comprehensive Myanmar online dictionary', and providing parts of speech, thesaurus and synonyms. It is aimed to help learning english, as well as burmese vocabularies and expressions. We have 57223 primary words with over 103787 definitions which can be used to lookup with over 200000 words. Our web app supports 24 languages.
 
+...at [App Store][appstore],
+[Google play][playStore],
+or [clone](#how-would-i-clone-correctly), [privacy][privacy].
+
 Feature:
 
 - Definition
@@ -22,117 +26,24 @@ Feature:
 
 As it is active in develpment, please feel free to rate/write yours review, so that we can bring a better Dictionary app.
 
-... on [App Store][appStore] / [Google play][playStore]
-or [readme][Home]!
+Any concerning data [Privacy & Security][privacy].
 
-## Todo
+![alt text][license]
+![alt text][flutterversion]
 
-- [ ] Home view
-- [x] Definition makeup
-- [ ] none result lookup
-- [x] Store
-  - [x] Restore purchase
-- [ ] analytics
-- [x] History (Recent searches)
-  - [ ] list is current limited 30 word statically
-  - [x] History navigator
-  - [ ] History view sort
-- [ ] Like
-- [x] Improve scroll for NestedScrollView
-- [ ] gist backup
-- [ ] Dark mode color
+## analytics (debug on windows)
 
-> Flutter SDK command line tools
-
-```shell
-flutter channel stable
-flutter upgrade
-flutter config --enable-web
-cd into project directory
-flutter create .
-flutter run -d chrome
-
-# Update dependencies
-flutter pub upgrade
-```
-
-## Android
-
- ... minSdkVersion=16
-
-```shell
-flutter build appbundle --release
-
-flutter build appbundle --target-platform android-arm,android-arm64
-flutter build apk --release --target-platform=android-arm
-flutter build appbundle --release --target-platform=android-arm
-flutter run --release --target-platform=android-arm
-```
-
-... minSdkVersion=21
-
-```shell
-flutter build appbundle --release --target-platform=android-arm64
-flutter build apk --release --target-platform=android-arm64
-flutter run --target-platform=android-arm64
-flutter run --enable-software-rendering --target-platform=android-arm64
-flutter build appbundle --release --target-platform=android-arm64
-flutter build apk --split-per-abi --release
-```
-
-### analytics (debug on windows)
-
-```Shell
-cd \dev\android-sdk\platform-tools
+```sh
+# cd \dev\android-sdk\platform-tools
 cd /dev/android-sdk/platform-tools
 adb shell setprop debug.firebase.analytics.app "com.myordbok.app"
 ```
-
-### Directory
-
-- (production) android/key.properties
-- (development) android/local.properties
-- build/app/outputs/apk/release/app-release.apk
-- android\gradle.properties
-- android\app\build.gradle
-
-### Android->release
-
-  versionCode android-arm
-  versionCode++ android-arm64
-
-```Shell
-git commit -m "Update docs to wiki"
-git push origin master
-
-git add .
-git commit -a -m "commit" (do not need commit message either)
-git push
-```
-
-## Re-Useable
-
-- [`idea`](#idea)
-- [`scroll`](#scroll)
-- [`util`](#util)
-
-### idea
-
-... Top layer responsible for theme color and font-size
-
-### scroll
-
-... Primary view scroll gesture for bar, body bottom
-
-### util
-
-... reading and writing file
 
 ## How would I clone correctly
 
 All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.myordbok.app` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
 
-Rename `assets/env-mock.json` to **assets/env.json** and `assets/word-mock.db` to **assets/word.db**.
+Rename `assets/mock-env.json` to **assets/env.json** and `assets/mock-word.db` to **assets/word.db**.
 
 There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to [lidea repo][lidea] as a seperated package. But they will work the same as bundle scripts.
 
@@ -154,67 +65,45 @@ dependencies:
   ...
 ```
 
-...you will need your own configuration in the following files
+...you will need your own configuration in the following files, for more info please run `flutter doctor` and see if you get it right.
 
 - `android/local.properties`
 
-  ```Shell
-  sdk.dir=pathOf-android-sdk
-  flutter.sdk=pathOf-flutter-sdk
-  ```
+```sh
+sdk.dir       = <android-sdk-path>
+flutter.sdk   = <flutter-sdk-path>
+```
 
 - `android/key.properties`
 
-  ```Shell
-  storePassword = STORE-FIILE-PASSWORD
-  keyPassword = KEY-FIILE-PASSWORD
-  keyAlias = KEY-ALIAS-NAME
-  storeFile = PATH-OF-JKS
-  ```
+```sh
+storePassword = <store-file-password>
+keyPassword   = <key-file-password>
+keyAlias      = <key-alias-name>
+storeFile     = <path-of-jks>
+```
 
 - `android/app/google-services.json`
 
-  This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN -> Service Accounts`
+This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN -> Service Accounts` or Firebase.
 
-### for iOS
+## Build and config
 
-- ?
-
-```bash
-# flutter path
-nano .bash_profile
-export PATH="$PATH:/Users/Shared/Developer/flutter/bin"
-export GEM_HOME=$HOME/.gem
-export PATH=$GEM_HOME/bin:$PATH
-
-nano .$HOME/.zshrc
-export PATH="$PATH:/Users/Shared/Developer/flutter/bin"
-
-# Update
-
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# rm '/usr/local/bin/pod'
-brew reinstall cocoapods
-brew link --overwrite cocoapods
-# install pod
-
-# sudo gem update --system
-# sudo gem install cocoapods
-# pod setup
-
-cd ios
-pod init
-pod install
-pod update
-# if packages were not updated
-rm Podfile.lock && pod install
-```
+[Android][tool-android], [iOS][tool-ios]
 
 [appStore]: https://apps.apple.com/us/app/myordbok/id1570959654
 [playStore]: https://play.google.com/store/apps/details?id=com.myordbok.app
 [playStore Join]: https://play.google.com/apps/testing/com.myordbok.app/join
+
+[webapp]: https://www.myordbok.com/
 [Home]: https://github.com/laisiangtho/dictionary
+
 [lidea]: https://github.com/laisiangtho/lidea
+[tool-android]: https://github.com/laisiangtho/lidea/blob/main/TOOL.md#android
+[tool-ios]: https://github.com/laisiangtho/lidea/blob/main/TOOL.md#ios
+
+[privacy]: /PRIVACY.md
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/dictionary/master/myordbok.png "MyOrdbok"
+[license]: https://img.shields.io/badge/License-MIT-yellow.svg "License"
+[flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.12.0%20%3C3.0.0-green.svg "Flutter version"
