@@ -13,4 +13,18 @@
 
 - primaryTextTheme vs textTheme
 - RichText vs Text.rich
-  
+
+- [ ] Home view
+- [x] Definition makeup
+- [ ] none result lookup
+- [x] Store
+  - [x] Restore purchase
+- [ ] analytics
+- [x] History (Recent searches)
+  - [ ] list is current limited 30 word statically
+  - [x] History navigator
+  - [ ] History view sort
+- [ ] Like
+- [x] Improve scroll for NestedScrollView
+- [ ] gist backup
+- [ ] Dark mode color
