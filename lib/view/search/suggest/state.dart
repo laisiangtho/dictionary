@@ -27,16 +27,16 @@ abstract class _State extends WidgetState<Main> with TickerProviderStateMixin {
     arguments ??= widget.arguments;
     super.initState();
     onQuery();
-    // focusNode.addListener(() {
-    //   core.nodeFocus = focusNode.hasFocus;
-    // });
+
+    focusNode.addListener(() {
+      Future.microtask(() {
+        toggleClear(focusNode.hasFocus && textController.text.isNotEmpty);
+      });
+    });
 
     scrollController.addListener(() {
       if (focusNode.hasFocus) {
         focusNode.unfocus();
-        Future.microtask(() {
-          clearToggle(false);
-        });
       }
     });
 
@@ -44,7 +44,7 @@ abstract class _State extends WidgetState<Main> with TickerProviderStateMixin {
     // FocusScope.of(context).unfocus();
 
     textController.addListener(() {
-      clearToggle(textController.text.isNotEmpty);
+      toggleClear(textController.text.isNotEmpty);
     });
 
     Future.delayed(const Duration(milliseconds: 400), () {
@@ -60,7 +60,6 @@ abstract class _State extends WidgetState<Main> with TickerProviderStateMixin {
 
   void onQuery() async {
     Future.microtask(() {
-      // textController.text = core.suggestQuery;
       textController.text = searchQuery;
     });
   }
@@ -71,7 +70,7 @@ abstract class _State extends WidgetState<Main> with TickerProviderStateMixin {
     core.suggestionGenerate();
   }
 
-  void clearToggle(bool show) {
+  void toggleClear(bool show) {
     if (show) {
       clearController.forward();
     } else {
