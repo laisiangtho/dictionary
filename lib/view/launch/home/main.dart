@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:lidea/provider.dart';
 import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
-import 'package:lidea/cached_network_image.dart';
 
 import '/core/main.dart';
 import '/type/main.dart';
