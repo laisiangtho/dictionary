@@ -71,7 +71,7 @@ class MyOrdbok extends StatelessWidget {
           // locale: Localizations.localeOf(context),
           locale: core.preference.locale,
           localizationsDelegates: core.preference.localeDelegates,
-          supportedLocales: core.preference.localeSupports,
+          supportedLocales: core.preference.listOfLocale,
           darkTheme: Coloration.dark(context),
           theme: Coloration.light(context),
           themeMode: core.preference.themeMode,
