@@ -1,15 +1,28 @@
 # Change log
 
-## 1.0.2+34-35-36
+## 1.0.2+34-35-36-37
 
 Improve
 
-- User-interface
-- Performance
+- UI (Theme, Font) Light theme is fully improved
 
+Update
+
+- Core, Lidea and dependencies
+  
 Add
 
 - Sign in with Apple
+- Sign in with Facebook
+- Sign in with Google
+
+### Note
+
+This release improved theme and functionality. Integrated with "Sign in with Apple, Facebook, Google" through Firebase Authentication, and can be signed in by tapping icon on top-left on home.
+
+App privacy is also updated, due to Firebase analytics & authentication.
+
+Flutter and it dependencies are also updated to the latest compatible version.
 
 ## 1.0.1+19-21
 
