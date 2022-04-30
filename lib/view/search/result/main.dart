@@ -347,8 +347,15 @@ class _View extends _State with _Bar {
                       borderRadius: const BorderRadius.all(Radius.circular(100.0)),
                       // constraints: const BoxConstraints(maxHeight: 43),
                       child: WidgetLabel(
-                        labelPadding: const EdgeInsets.symmetric(horizontal: 15),
+                        labelPadding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 3,
+                        ),
                         label: e['word'].toString(),
+                        labelStyle: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                       onPressed: () => onSearch(e['word'].toString()),
                     );
