@@ -59,13 +59,13 @@ class _View extends _State with _Bar {
           label: preference.text.recentSearch(true),
         ),
         headerTrailing: WidgetButton(
-          child: const WidgetLabel(
-            icon: Icons.more_horiz,
-          ),
           message: preference.text.addTo(preference.text.recentSearch(true)),
           onPressed: () {
             core.navigate(to: '/recent-search');
           },
+          child: const WidgetLabel(
+            icon: Icons.more_horiz,
+          ),
         ),
         child: Card(
           child: Padding(
@@ -80,13 +80,13 @@ class _View extends _State with _Bar {
           label: preference.text.favorite(true),
         ),
         headerTrailing: WidgetButton(
-          child: const WidgetLabel(
-            icon: Icons.more_horiz,
-          ),
           message: preference.text.addTo(preference.text.favorite(true)),
           onPressed: () {
             core.navigate(to: '/favorite-word');
           },
+          child: const WidgetLabel(
+            icon: Icons.more_horiz,
+          ),
         ),
         child: Card(
           child: Padding(

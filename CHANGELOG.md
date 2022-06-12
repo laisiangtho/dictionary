@@ -1,6 +1,21 @@
 # Change log
 
-## 1.0.2+34-35-36-37
+## 1.0.3+39
+
+Improve
+
+- Performance
+
+Update
+
+- Flutter 3, Lidea and dependencies
+
+Add
+
+- Account delete
+- Text-to-Speech (Platforms native)
+
+## 1.0.2+34-35-36-37-38
 
 Improve
 
@@ -23,6 +38,9 @@ This release improved theme and functionality. Integrated with "Sign in with App
 App privacy is also updated, due to Firebase analytics & authentication.
 
 Flutter and it dependencies are also updated to the latest compatible version.
+
+- iOS: v1.0.2+38
+- Android: v1.0.2+30
 
 ## 1.0.1+19-21
 

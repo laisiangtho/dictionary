@@ -151,9 +151,9 @@ mixin _Mock on _Abstract {
               'word': e.first['word'],
               'wrte': e.first['wrte'],
               'sense': e.map<String>((o) {
-                final _derived = o['derived'];
-                final _pos = collection.partOfSpeech(o['dete']).name;
-                return '[~:$_derived] ($_pos)';
+                final der = o['derived'];
+                final pos = collection.partOfSpeech(o['dete']).name;
+                return '[~:$der] ($pos)';
               }).join('; '),
               'exam': null
             })

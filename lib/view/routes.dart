@@ -88,7 +88,7 @@ class AppRoutes {
   static Route<dynamic>? homeBuilder(RouteSettings route) {
     return PageRouteBuilder(
       settings: route,
-      pageBuilder: (BuildContext _, Animation<double> _a, Animation<double> _b) {
+      pageBuilder: (BuildContext _, Animation<double> __, Animation<double> ___) {
         return _homePage(route);
       },
       transitionDuration: const Duration(milliseconds: 250),
@@ -133,7 +133,7 @@ class AppRoutes {
   static Route<dynamic>? searchBuilder(RouteSettings route, Object? args) {
     return PageRouteBuilder(
       settings: route,
-      pageBuilder: (BuildContext _, Animation<double> _a, Animation<double> _b) {
+      pageBuilder: (BuildContext _, Animation<double> __, Animation<double> ___) {
         switch (route.name) {
           case search_suggest.Main.route:
             return search_suggest.Main(arguments: args);

@@ -15,6 +15,8 @@ mixin _Bar on _State {
       ),
       rightAction: [
         WidgetButton(
+          message: preference.text.option(true),
+          onPressed: () => core.navigate(to: '/user'),
           child: WidgetMark(
             child: Selector<Authentication, bool>(
               selector: (_, e) => e.hasUser,
@@ -23,8 +25,6 @@ mixin _Bar on _State {
               },
             ),
           ),
-          message: preference.text.option(true),
-          onPressed: () => core.navigate(to: '/user'),
         ),
       ],
       secondary: Positioned(

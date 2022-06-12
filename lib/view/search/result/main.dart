@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'package:flutter/material.dart';
 
 import 'package:lidea/provider.dart';
@@ -147,9 +149,15 @@ class _View extends _State with _Bar {
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: Icon(
-                  Icons.favorite,
-                  color: isFavorited ? Theme.of(context).highlightColor : null,
+                // child: Icon(
+                //   Icons.campaign_rounded,
+                //   color: isFavorited ? Theme.of(context).highlightColor : null,
+                // ),
+                child: WidgetButton(
+                  child: const WidgetLabel(icon: Icons.campaign_rounded),
+                  onPressed: () {
+                    core.speech.speak(word);
+                  },
                 ),
               ),
               Expanded(
@@ -168,6 +176,13 @@ class _View extends _State with _Bar {
                       ),
                     ],
                   ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Icon(
+                  Icons.favorite,
+                  color: isFavorited ? Theme.of(context).highlightColor : null,
                 ),
               ),
             ],

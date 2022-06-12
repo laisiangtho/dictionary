@@ -1,10 +1,10 @@
 part of ui.widget;
 
-class PullToRefresh extends PullToAny {
+class PullToRefresh extends PullToActivate {
   const PullToRefresh({Key? key}) : super(key: key);
 
   @override
-  State<PullToAny> createState() => _PullToRefreshState();
+  State<PullToActivate> createState() => _PullToRefreshState();
 }
 
 class _PullToRefreshState extends PullOfState {

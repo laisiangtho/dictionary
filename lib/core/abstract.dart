@@ -10,6 +10,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
 
   late final store = Store(collection: collection, notify: notify);
   late final sql = SQLite(collection: collection);
+  late final speech = Speech();
 
   /// Initiate collection, preference, authentication
   Future<void> ensureInitialized() async {
@@ -51,13 +52,21 @@ abstract class _Abstract extends UnitEngine with _Utility {
   }
 
   Future<void> dataInitialized() async {
+    // if (collection.requireInitialized) {
+    //   APIType api = collection.env.api.firstWhere(
+    //     (e) => e.asset.isNotEmpty,
+    //   );
+    //   await UtilArchive.extractBundle(api.asset);
+    // }
     if (collection.requireInitialized) {
-      APIType api = collection.env.api.firstWhere(
-        (e) => e.asset.isNotEmpty,
+      Iterable<APIType> api = collection.env.api.where(
+        (e) => e.local.isNotEmpty,
       );
-      await UtilArchive.extractBundle(api.asset);
+
+      for (var e in api) {
+        await UtilArchive.extractBundle(e.local, noneArchive: true);
+      }
     }
-    // debugPrint('initDictionary->done');
   }
 
   bool get searchQueryFavorited {

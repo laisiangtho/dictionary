@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-mixin _BottomNavigator on _State {
+mixin _BottomNavigator on MainState {
   Widget bottomNavigator() {
     return Consumer<ViewScrollNotify>(
       builder: (context, scrollNavigation, child) {
@@ -71,6 +71,9 @@ mixin _BottomNavigator on _State {
           // decoration: const BoxDecoration(color: Colors.amber),
           // w: double.maxFinite,
           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+          // disabledColor: route ? CupertinoColors.quaternarySystemFill : Theme.of(context).hintColor,
+          // onPressed: current?null:()=>route?_navView(index):item.action(context)
+          onPressed: _navButtonAction(item, disabled),
           child: ExcludeSemantics(
             excluding: true,
             child: AnimatedContainer(
@@ -84,9 +87,6 @@ mixin _BottomNavigator on _State {
               ),
             ),
           ),
-          // disabledColor: route ? CupertinoColors.quaternarySystemFill : Theme.of(context).hintColor,
-          // onPressed: current?null:()=>route?_navView(index):item.action(context)
-          onPressed: _navButtonAction(item, disabled),
         ),
       ),
     );

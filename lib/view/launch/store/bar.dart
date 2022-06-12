@@ -5,12 +5,12 @@ mixin _Bar on _State {
     return ViewHeaderLayoutStack(
       leftAction: [
         WidgetButton(
+          show: hasArguments,
+          onPressed: args?.currentState!.maybePop,
           child: WidgetMark(
             icon: Icons.arrow_back_ios_new_rounded,
             label: preference.text.back,
           ),
-          show: hasArguments,
-          onPressed: args?.currentState!.maybePop,
         ),
       ],
       primary: WidgetAppbarTitle(
@@ -24,11 +24,11 @@ mixin _Bar on _State {
       ),
       rightAction: [
         WidgetButton(
+          message: preference.text.restorePurchase(true),
+          onPressed: onRestore,
           child: const WidgetMark(
             icon: Icons.restore,
           ),
-          message: preference.text.restorePurchase(true),
-          onPressed: onRestore,
         )
       ],
     );

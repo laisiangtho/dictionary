@@ -23,7 +23,7 @@ import 'package:lidea/unit/store.dart';
 import 'package:lidea/unit/sqlite.dart';
 // NOTE: Audio
 // import 'package:audio_session/audio_session.dart';
-// import 'package:just_audio/just_audio.dart';
+import 'package:lidea/unit/speech.dart';
 
 // NOTE: Core notify and Initializing properties
 import 'package:lidea/unit/engine.dart';
@@ -33,6 +33,7 @@ import '/type/main.dart';
 part 'store.dart';
 part 'sqlite.dart';
 part 'audio.dart';
+part 'speech.dart';
 
 part 'preference.dart';
 part 'authentication.dart';
@@ -47,15 +48,12 @@ class Core extends _Abstract with _Mock {
   Future<void> init(BuildContext context) async {
     Stopwatch initWatch = Stopwatch()..start();
     preference.setContext(context);
-
     // await Future.microtask(() => null);
 
     await dataInitialized();
-
     await store.init();
-
-    await sql.init();
-
+    await speech.init();
+    // await sql.init();
     // await mockTest();
 
     debugPrint('Initiated in ${initWatch.elapsedMilliseconds} ms');

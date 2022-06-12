@@ -43,34 +43,11 @@ class SQLite extends UnitSQLite {
   Future<int> get version async => 1;
 
   @override
-  FutureOr<void> onCreate(e, int v) async {
+  FutureOr<void> doIndex(e) async {
     await e.transaction((txn) async {
       final batch = txn.batch();
       batch.execute(_wordContext.createIndex!);
       batch.execute(_deriveContext.createIndex!);
-      debugPrint('db.onCreate');
-      await batch.commit(noResult: true);
-    });
-  }
-
-  @override
-  FutureOr<void> onUpgrade(e, int ov, int nv) async {
-    await e.transaction((txn) async {
-      final batch = txn.batch();
-      batch.execute(_wordContext.createIndex!);
-      batch.execute(_deriveContext.createIndex!);
-      debugPrint('db.onUpgrade');
-      await batch.commit(noResult: true);
-    });
-  }
-
-  @override
-  FutureOr<void> onDowngrade(e, int ov, int nv) async {
-    await e.transaction((txn) async {
-      final batch = txn.batch();
-      batch.execute(_wordContext.createIndex!);
-      batch.execute(_deriveContext.createIndex!);
-      debugPrint('db.onDowngrade');
       await batch.commit(noResult: true);
     });
   }
@@ -86,23 +63,27 @@ class SQLite extends UnitSQLite {
         orElse: () => <String, dynamic>{},
       );
       if (notAttached.isEmpty) {
-        String _filePath = await UtilDocument.fileName(item.local);
+        String filePath = await UtilDocument.fileName(item.local);
         // await db.rawQuery("DETACH DATABASE ${item.uid};");
-        await e.rawQuery("ATTACH DATABASE '$_filePath' AS ${item.uid};").then((_) {
+        await e.rawQuery("ATTACH DATABASE '$filePath' AS ${item.uid};").then((_) {
           if (item.createIndex != null && item.createIndex!.isNotEmpty) {
             // PRAGMA INDEX_LIST('table_name');
             // final ath = await db.rawQuery("PRAGMA INDEX_LIST('${item.uid}');");
-            // debugPrint('createIndex $ath');
+            debugPrint('ATTACH DATABASE createIndex $ath');
             batch.execute(item.createIndex!);
           }
         }).catchError((e) {
-          debugPrint(e.toString());
+          debugPrint('??1 $e');
         });
       } else {
         // debugPrint('attached ${item.local}');
       }
     }
-    await batch.commit(noResult: true);
+    try {
+      await batch.commit(noResult: true);
+    } catch (e) {
+      debugPrint('??2 $e');
+    }
   }
 
   /// get suggestion

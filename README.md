@@ -16,6 +16,7 @@ Feature:
 - Thesaurus and synonyms
 - Bookmark
 - Search (instant suggestion and result)
+- Text-to-Speech
 - Open Source
 - Offline
 - Customizable
@@ -43,7 +44,12 @@ adb shell setprop debug.firebase.analytics.app "com.myordbok.app"
 
 All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.myordbok.app` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
 
-Rename `assets/mock-env.json` to **assets/env.json** and `assets/mock-word.db` to **assets/word.db**.
+Rename the following in assets
+
+- `assets/mock-env.json` to **assets/env.json**
+- `assets/mock-word.db` to **assets/word.db**
+- `assets/mock-sense.db` to **assets/sense.db**
+- `assets/mock-thesaurus.db` to **assets/thesaurus.db**
 
 There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to [lidea repo][lidea] as a seperated package. But they will work the same as bundle scripts.
 

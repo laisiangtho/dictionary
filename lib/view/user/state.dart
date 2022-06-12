@@ -6,7 +6,15 @@ abstract class _State extends WidgetState {
   @override
   void initState() {
     super.initState();
+  }
 
-    debugPrint(authenticate.user.toString());
+  Future<void> whenCompleteSignIn() async {
+    if (authenticate.message.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(authenticate.message),
+        ),
+      );
+    }
   }
 }
