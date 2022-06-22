@@ -1,20 +1,21 @@
-// NOTE: Flutter: material
+// NOTE: Material
 import 'package:flutter/material.dart';
 // NOTE: SystemUiOverlayStyle
 import 'package:flutter/services.dart';
-
 // NOTE: Privider: state management
 import 'package:lidea/provider.dart';
 // NOTE: Scroll
 import 'package:lidea/view/main.dart';
-
+// NOTE: Core
 import '/core/main.dart';
+// import '/type/main.dart';
+// NOTE: Theme
 import '/coloration.dart';
+// NOTE: Route
 import '/view/routes.dart';
 
 // const bool isProduction = bool.fromEnvironment('dart.vm.product');
-final core = Core();
-
+final Core core = Core();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
@@ -23,8 +24,8 @@ void main() async {
   //   InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
   // }
 
+  await Core.ensureFirebase();
   await core.ensureInitialized();
-  // authentication.stateObserver(core.userObserver);
 
   runApp(const MyOrdbok());
 }
