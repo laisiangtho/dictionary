@@ -3,11 +3,10 @@ description: A comprehensive Myanmar online dictionary
 
 # Remove this line to publish to pub.dev
 publish_to: 'none'
-
-version: 1.0.3+39
+version: 1.0.4+40
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.18.2 <3.0.0'
 
 dependencies:
   flutter:
@@ -37,8 +36,8 @@ flutter:
   assets:
     - assets/env.json
     - assets/word.db
-    - assets/sense.db
-    - assets/thesaurus.db
+    # - assets/sense.db
+    # - assets/thesaurus.db
 
   # fonts from lidea
   fonts:

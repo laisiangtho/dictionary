@@ -2,12 +2,12 @@
   "name":"MyOrdbok",
   "description":"A comprehensive Myanmar online dictionary",
   "package":"",
-  "version": "1.0.2",
-  "buildNumber": "30",
+  "version": "1.0.4",
+  "buildNumber": "40",
   "settingName": "",
   "settingKey": "",
   "settings":{
-    "version": 0,
+    "version": 104,
     "mode": 0,
     "locale": "",
     "fontSize": 24.0,
@@ -39,6 +39,7 @@
   ],
   "language":{
     "en":{
+      "MyOrdbok":"Dictionary",
       "ready-to-contribute":"Ready to contribute!",
       "any-contribute-make":"Any contribution makes a huge difference for the future of MyOrdbok.",
       "consumable-title":"Charity",
@@ -48,9 +49,14 @@
       "upgrade-title":"Thesaurus",
       "upgrade-description":"Thesaurus, synonyms and related words",
       "subscription_silver-title":"Parts of speech",
-      "subscription_silver-description":"Parts of speech in definition result."
+      "subscription_silver-description":"Parts of speech in definition result.",
+
+      "GithubRepository":"Github repository",
+      "ofAppSourcecode":"App source code",
+      "issue-pull-feature":"About issue and pull request that needed attention, features that you would like to have, or your point of view to be customized on upcoming updates can be provided at"
     },
     "no":{
+      "MyOrdbok":"Ordbok",
       "ready-to-contribute":"Klar til å bidra!",
       "any-contribute-make":"Ethvert bidrag utgjør en stor forskjell for fremtiden til MyOrdbok.",
       "consumable-title":"Veldedighet",
@@ -63,6 +69,7 @@
       "subscription_silver-description":"Orddeler i definisjon resultat."
     },
     "my":{
+      "MyOrdbok":"အဘိဓာန်",
       "ready-to-contribute":"ပါဝင်ကူညီရန် အဆင်သင့်ဖြစ်ပြီလား",
       "any-contribute-make":"မည်သည့်ပံ့ပိုးကူညီမှုသည် MyOrdbok ၏အနာဂတ်အတွက် ကြီးမားသောခြားနားချက်ဖြစ်စေသည်။",
       "consumable-title":"ပရဟိတ",
@@ -80,8 +87,8 @@
       "id": "configure",
       "type": "gist",
       "tag": "0",
-      "owns": "<?>",
-      "name": "<?>"
+      "owns": "<nomolosnehk>",
+      "name": "<7fb13a916523e226bd97d19cea62a~9d>"
     },
     {
       "id": "repo",
@@ -89,13 +96,6 @@
       "tag": "0",
       "owns": "<ohtgnaisial>",
       "name": "<elbib>"
-    },
-    {
-      "id": "com",
-      "type": "url",
-      "tag": "0",
-      "owns": "<moc.hiediaz.www>",
-      "name": "</ipa>"
     }
   ],
   "api": [
@@ -107,8 +107,28 @@
       "name":"list",
       "query":{
         "primary":"ALTER TABLE ?? ADD PRIMARY KEY ('id')",
-        "createIndex":"CREATE UNIQUE INDEX IF NOT EXISTS wordIdIndex ON ?? (id, word)"
-      }
+        "createIndex":"CREATE UNIQUE INDEX IF NOT EXISTS wordIdIndex ON ?? (id, word)",
+        "primary-tmp":{
+          "name":"",
+          "query":"ALTER TABLE ? ADD PRIMARY KEY ('id')"
+        },
+        "index-tmp":{
+          "name":"wordIdIndex",
+          "query":"CREATE UNIQUE INDEX IF NOT EXISTS ? ON ? (id, word)"
+        }
+      },
+      "query-tmp":[
+        {
+          "name":"",
+          "type":"alter",
+          "query":"ALTER TABLE ? ADD PRIMARY KEY ('id')"
+        },
+        {
+          "name":"wordIdIndex",
+          "type":"index",
+          "query":"CREATE UNIQUE INDEX IF NOT EXISTS ? ON ? (id, word)"
+        }
+      ]
     },
     {
       "uid": "derive",

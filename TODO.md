@@ -38,3 +38,14 @@
 - [x] Improve scroll for NestedScrollView
 - [ ] gist backup
 - [ ] Dark mode color
+
+## Test
+
+- Keep-Asset
+- [x] each(word, sense, thesaurus)
+- [x] archive each(word, sense, thesaurus)
+- [x] archive single(all in one)
+- [ ] word single(all in one)
+- Cloud-Asset
+- [ ] each(word, sense, thesaurus)
+- [ ] Single(all in one)

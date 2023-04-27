@@ -5,6 +5,7 @@
 Improve
 
 - Performance
+- UI elegant and responsive
 
 Update
 

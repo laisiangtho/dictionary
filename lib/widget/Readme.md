@@ -1,3 +1,0 @@
-# Widgets
-
-Custom widgets

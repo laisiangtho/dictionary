@@ -99,10 +99,10 @@ This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN
 
 [appStore]: https://apps.apple.com/us/app/myordbok/id1570959654
 [playStore]: https://play.google.com/store/apps/details?id=com.myordbok.app
-[playStore Join]: https://play.google.com/apps/testing/com.myordbok.app/join
+<!-- [playStore Join]: https://play.google.com/apps/testing/com.myordbok.app/join -->
 
-[webapp]: https://www.myordbok.com/
-[Home]: https://github.com/laisiangtho/dictionary
+<!-- [webapp]: https://www.myordbok.com/ -->
+<!-- [Home]: https://github.com/laisiangtho/dictionary -->
 
 [lidea]: https://github.com/laisiangtho/lidea
 [tool-android]: https://github.com/laisiangtho/lidea/blob/main/TOOL.md#android
@@ -112,4 +112,4 @@ This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/dictionary/master/myordbok.png "MyOrdbok"
 [license]: https://img.shields.io/badge/License-MIT-yellow.svg "License"
-[flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.12.0%20%3C3.0.0-green.svg "Flutter version"
+[flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.18.2%20%3C3.0.0-green.svg "Flutter version"

@@ -1,62 +1,112 @@
 import 'package:flutter/material.dart';
 
-import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
+import 'package:lidea/provider.dart';
+// import 'package:lidea/view/user/main.dart';
 
-import '../routes.dart';
+import '../../app.dart';
+
+part 'state.dart';
+part 'header.dart';
+
+part 'result.dart';
+part 'suggest.dart';
+part 'recent.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key, this.arguments, this.defaultRouteName}) : super(key: key);
+  const Main({Key? key}) : super(key: key);
 
-  final Object? arguments;
-  final String? defaultRouteName;
-
-  static const route = '/search';
-  static const icon = LideaIcon.search;
-  static const name = 'Search';
-  static const description = 'Search';
-  static final uniqueKey = UniqueKey();
+  static String route = 'search'; // ./result ./suggestion
+  static String label = 'Search';
+  static IconData icon = LideaIcon.search;
 
   @override
-  State<StatefulWidget> createState() => _State();
+  State<Main> createState() => _View();
 }
 
-class _State extends State<Main> {
-  final _key = GlobalKey<NavigatorState>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) super.setState(fn);
-  }
-
+class _View extends _State with _Header, _Suggest, _Result, _Recents {
   @override
   Widget build(BuildContext context) {
+    debugPrint('search->build');
+
+    // updateQuery(args!['keyword']);
+
     return Scaffold(
-      body: Navigator(
-        key: _key,
-        // observers: [obs],
-        restorationScopeId: 'search',
-        initialRoute: AppRoutes.searchInitial(name: widget.defaultRouteName),
-        onGenerateRoute: (RouteSettings routeSettings) {
-          return AppRoutes.searchBuilder(
-            routeSettings,
-            ViewNavigationArguments(
-              key: _key,
-              args: widget.arguments,
-              canPop: routeSettings.arguments == null,
+      body: Views(
+        scrollBottom: ScrollBottomNavigation(
+          listener: _controller.bottom,
+          notifier: App.viewData.bottom,
+        ),
+        // child: NestedScrollView(
+        //   controller: _controller,
+        //   headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        //     return <Widget>[
+        //       ViewHeaderSliver(
+        //         pinned: true,
+        //         floating: false,
+        //         padding: state.fromContext.viewPadding,
+        //         heights: const [kToolbarHeight],
+        //         // overlapsBackgroundColor: state.theme.primaryColor,
+        //         overlapsBorderColor: state.theme.dividerColor,
+        //         overlapsForce: innerBoxIsScrolled,
+        //         builder: _header,
+        //       ),
+        //     ];
+        //   },
+        //   body: ValueListenableBuilder<bool>(
+        //     valueListenable: _suggestNotifier,
+        //     builder: (context, toggle, child) {
+        //       if (toggle) {
+        //         return suggestView();
+        //       }
+        //       return child!;
+        //     },
+        //     child: resultView(),
+        //   ),
+        // ),
+        child: CustomScrollView(
+          controller: _controller,
+          slivers: [
+            ViewHeaderSliver(
+              pinned: true,
+              floating: false,
+              padding: state.fromContext.viewPadding,
+              heights: const [kToolbarHeight],
+              // overlapsBackgroundColor: state.theme.primaryColor,
+              overlapsBorderColor: state.theme.dividerColor,
+              // overlapsForce: innerBoxIsScrolled,
+              builder: _header,
             ),
-          );
-        },
+            ValueListenableBuilder<bool>(
+              valueListenable: _suggestNotifier,
+              builder: (context, toggle, child) {
+                if (toggle) {
+                  return _suggestView();
+                }
+                return child!;
+              },
+              child: resultView(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _suggestView() {
+    return Selector<Core, SuggestionType<OfRawType>>(
+      selector: (_, e) => e.data.cacheSuggestion,
+      builder: (BuildContext context, SuggestionType<OfRawType> o, Widget? child) {
+        if (o.emptyQuery) {
+          return _recentView();
+        } else if (o.emptyResult) {
+          return child!;
+        } else {
+          return _suggestBlock(o);
+        }
+      },
+      child: ViewFeedback.message(
+        label: App.preference.text.searchNoMatch,
       ),
     );
   }

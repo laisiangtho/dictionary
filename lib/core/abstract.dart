@@ -1,76 +1,46 @@
 part of data.core;
 
-abstract class _Abstract extends UnitEngine with _Utility {
-  final Collection collection = Collection.internal();
+abstract class _Abstract extends UnitCore {
+  /// API
+  // final Data data = Data.internal();
+  late final Data data = Data(notify: notify);
 
-  late final Preference preference = Preference(collection);
-  late final Authentication authentication = Authentication();
-  late final NavigationNotify navigation = NavigationNotify();
+  /// Scroll notifier
+  late final ViewData viewData = ViewData();
+  // late ScrollNotifier scrollNotifier;
+
+  /// Route delegate
+  late final RouteDelegate routeDelegate = RouteDelegate();
+
+  /// Theme and locales
+  late final Preference preference = Preference(data);
+
+  /// Firebase Authentication
+  late final Authenticate authenticate = Authenticate(data: data);
+
+  /// Analytics
   late final Analytics analytics = Analytics();
 
-  late final store = Store(collection: collection, notify: notify);
-  late final sql = SQLite(collection: collection);
+  /// Individule
+  late final store = Store(data: data);
+  late final sql = SQLite(data: data);
   late final speech = Speech();
+  // late final audio = Audio(data: data);
 
-  /// Initiate collection, preference, authentication
+  /// ensure and prepare initialization
   Future<void> ensureInitialized() async {
     Stopwatch initWatch = Stopwatch()..start();
 
-    await collection.ensureInitialized();
-    await collection.prepareInitialized();
+    await data.ensureInitialized();
+    await data.prepareInitialized();
     await preference.ensureInitialized();
-    await authentication.ensureInitialized();
+    await authenticate.ensureInitialized();
 
-    // if (authentication.id.isNotEmpty && authentication.id != collection.setting.userId) {
-    //   final ou = collection.setting.copyWith(userId: authentication.id);
-    //   await collection.settingUpdate(ou);
+    // if (authentication.id.isNotEmpty && authentication.id != data.setting.userId) {
+    //   final ou = data.setting.copyWith(userId: authentication.id);
+    //   await data.settingUpdate(ou);
     // }
 
     debugPrint('ensureInitialized in ${initWatch.elapsedMilliseconds} ms');
-  }
-
-  // String get searchQuery => collection.searchQuery.asString;
-  // set searchQuery(String ord) {
-  //   notifyIf<String>(searchQuery, collection.searchQuery = ord);
-  // }
-
-  // String get suggestQuery => collection.suggestQuery;
-  // set suggestQuery(String ord) {
-  //   final word = ord.replaceAll(RegExp(' +'), ' ').trim();
-  //   notifyIf<String>(suggestQuery, collection.suggestQuery = word);
-  // }
-
-  String get searchQuery => collection.searchQuery.asString;
-  set searchQuery(String ord) {
-    notifyIf<String>(searchQuery, collection.searchQuery = ord);
-  }
-
-  String get suggestQuery => collection.suggestQuery.asString;
-  set suggestQuery(String ord) {
-    final word = ord.replaceAll(RegExp(' +'), ' ').trim();
-    notifyIf<String>(suggestQuery, collection.suggestQuery = word);
-  }
-
-  Future<void> dataInitialized() async {
-    // if (collection.requireInitialized) {
-    //   APIType api = collection.env.api.firstWhere(
-    //     (e) => e.asset.isNotEmpty,
-    //   );
-    //   await UtilArchive.extractBundle(api.asset);
-    // }
-    if (collection.requireInitialized) {
-      Iterable<APIType> api = collection.env.api.where(
-        (e) => e.local.isNotEmpty,
-      );
-
-      for (var e in api) {
-        await UtilArchive.extractBundle(e.local, noneArchive: true);
-      }
-    }
-  }
-
-  bool get searchQueryFavorited {
-    // return collection.favoriteIndex(searchQuery) >= 0;
-    return collection.favoriteExist(searchQuery).key != null;
   }
 }

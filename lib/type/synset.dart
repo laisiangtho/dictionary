@@ -9,10 +9,10 @@ class SynsetType {
 
   factory SynsetType.fromJSON(Map<String, dynamic> o) {
     return SynsetType(
-        id: o["id"] as int, name: o["name"] as String, shortname: (o["shortname"] ?? '') as String);
+        id: o['id'] as int, name: o['name'] as String, shortname: (o['shortname'] ?? '') as String);
   }
 
   Map<String, dynamic> toJSON() {
-    return {"id": id, "name": name, "shortname": shortname};
+    return {'id': id, 'name': name, 'shortname': shortname};
   }
 }

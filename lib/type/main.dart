@@ -1,17 +1,29 @@
 library data.type;
 
 // NOTE: Core API manager
-export "package:lidea/main.dart";
-import "package:lidea/main.dart";
+export 'package:lidea/main.dart';
+import 'package:lidea/main.dart';
 
-import "package:lidea/hive.dart";
+// import 'package:flutter/material.dart';
+// import 'package:lidea/firebase/core.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
-part "collection.dart";
-part 'box/favorite_word.dart';
+// import 'package:lidea/hive.dart';
 
-part "audio.dart";
-part "synset.dart";
-part "synmap.dart";
+// NOTE: Core API manager
+// import 'package:lidea/cluster/main.dart';
+part 'audio.dart';
+part 'data.dart';
+
+// NOTE: Individule
+part 'synmap.dart';
+part 'synset.dart';
+
+// NOTE: typeId: 10 (scripture)
+// part 'box/book.dart';
+// NOTE: typeId: 11 (scripture)
+// part 'box/bookmark.dart';
 
 /// tmp
 class UserDataType {
@@ -29,8 +41,8 @@ class UserDataType {
 
   factory UserDataType.fromJSON(Map<String, dynamic> o) {
     return UserDataType(
-      version: int.parse((o["version"] ?? 0)),
-      size: int.parse((o["size"] ?? 0)),
+      version: int.parse((o['version'] ?? 0)),
+      size: int.parse((o['size'] ?? 0)),
       playlist: List.from(o['playlist'] ?? []).map<int>((e) => int.parse(e)).toList(),
       keywords: List.from(o['keywords'] ?? []).map<String>((e) => e.toString()).toList(),
     );
@@ -38,10 +50,10 @@ class UserDataType {
 
   Map<String, dynamic> toJSON() {
     return {
-      "version": version,
-      "size": size,
-      "playlist": playlist,
-      "keywords": keywords,
+      'version': version,
+      'size': size,
+      'playlist': playlist,
+      'keywords': keywords,
     };
   }
 }

@@ -31,7 +31,7 @@ linter:
     - one_member_abstracts
     - only_throw_errors
     - package_api_docs
-    # - prefer_single_quotes
-    # - sort_child_properties_last
+    - prefer_single_quotes
+    - sort_child_properties_last
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

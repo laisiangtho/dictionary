@@ -8,10 +8,10 @@ class SynmapType {
   SynmapType({required this.id, required this.type, required this.name});
 
   factory SynmapType.fromJSON(Map<String, dynamic> o) {
-    return SynmapType(id: o["id"] as int, type: o["type"] as int, name: o["name"] as String);
+    return SynmapType(id: o['id'] as int, type: o['type'] as int, name: o['name'] as String);
   }
 
   Map<String, dynamic> toJSON() {
-    return {"id": id, "type": type, "name": name};
+    return {'id': id, 'type': type, 'name': name};
   }
 }
