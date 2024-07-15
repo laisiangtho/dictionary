@@ -2,7 +2,7 @@ part of 'main.dart';
 
 mixin _Header on _State {
   Widget _header(BuildContext context, ViewHeaderData data) {
-    return ViewHeaderLayoutStack(
+    return ViewHeaderLayouts(
       data: data,
       left: [
         BackButtonWidget(
@@ -20,7 +20,7 @@ mixin _Header on _State {
       ),
       right: [
         ViewButton(
-          message: App.preference.text.restorePurchase(true),
+          message: App.preference.text.restorePurchase('true'),
           onPressed: onRestore,
           child: const ViewMark(
             icon: Icons.restore_rounded,

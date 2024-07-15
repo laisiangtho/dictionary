@@ -3,7 +3,9 @@ part of 'main.dart';
 mixin _Header on _State {
   Widget _header(BuildContext context, ViewHeaderData data) {
     _searchController.animateTo(data.shrinkOffsetDouble(30));
-    return ViewHeaderLayoutStack(
+
+    /// ??? ViewHeaderLayoutStack
+    return ViewHeaderLayouts(
       data: data,
       left: [
         BackButtonWidget(

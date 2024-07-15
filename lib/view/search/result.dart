@@ -46,7 +46,7 @@ mixin _Result on _State {
         switch (snap.connectionState) {
           case ConnectionState.waiting:
           case ConnectionState.none:
-            return ViewFeedback.message(
+            return ViewFeedbacks.message(
               label: App.preference.text.aMoment,
             );
           default:
@@ -74,7 +74,7 @@ mixin _Result on _State {
                   return _resultBlock(o);
                 }
               },
-              child: ViewFeedback.message(
+              child: ViewFeedbacks.message(
                 label: App.preference.text.searchNoQuery,
               ),
             );
@@ -105,7 +105,7 @@ mixin _Result on _State {
     //     ),
     //   ),
     // );
-    return ViewFeedback.message(
+    return ViewFeedbacks.message(
       label: App.preference.text.searchNoMatch,
     );
   }
@@ -135,7 +135,7 @@ mixin _Result on _State {
   // }
 
   Widget _resultBlock(ConclusionType o) {
-    return ViewListBuilder(
+    return ViewLists.separator(
       // primary: false,
       // physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
@@ -147,14 +147,12 @@ mixin _Result on _State {
         // );
         return _resultContainer(snap);
       },
-      itemSnap: (BuildContext context, int index) {
-        return const ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-          leading: Icon(Icons.north_east_rounded),
-        );
-      },
-      itemSeparator: (BuildContext context, int index) {
-        return const ViewSectionDivider(primary: false);
+      itemSnap: const ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        leading: Icon(Icons.north_east_rounded),
+      ),
+      separator: (BuildContext context, int index) {
+        return const ViewDividers();
       },
       itemCount: o.raw.length,
     );
@@ -303,14 +301,15 @@ mixin _Result on _State {
     return Container(
       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 25, right: 35),
       decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor.withOpacity(0.4),
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.4),
+        // color: Theme.of(context).backgroundColor.withOpacity(0.4),
         borderRadius: const BorderRadius.only(
           bottomRight: Radius.circular(100),
         ),
         boxShadow: [
           BoxShadow(
             blurRadius: 0.0,
-            color: Theme.of(context).backgroundColor.withOpacity(0.7),
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
             spreadRadius: 0.7,
             offset: const Offset(0.2, .2),
           ),
@@ -412,7 +411,7 @@ mixin _Result on _State {
                   child: Icon(
                     Icons.circle,
                     size: 7,
-                    color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).colorScheme.surface,
                   ),
                 ),
               ),
@@ -452,7 +451,7 @@ mixin _Result on _State {
                 children: snapshot.data!.map(
                   (e) {
                     return ViewButton(
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: const BorderRadius.all(Radius.circular(100.0)),
                       // constraints: const BoxConstraints(maxHeight: 43),
                       child: ViewLabel(

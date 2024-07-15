@@ -34,7 +34,7 @@ void main() async {
 }
 
 class MyOrdbok extends StatelessWidget {
-  const MyOrdbok({Key? key}) : super(key: key);
+  const MyOrdbok({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -109,5 +109,4 @@ class MyOrdbok extends StatelessWidget {
   //   // );
   //   return child!;
   // }
-
 }

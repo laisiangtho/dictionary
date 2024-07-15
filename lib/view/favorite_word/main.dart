@@ -11,7 +11,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'favorite-word';
   static String label = 'Favorite';
@@ -57,11 +57,11 @@ class _View extends _State with _Header {
         builder: _header,
       ),
       // listContainer(),
-      ViewSection(
+      ViewSections(
         show: boxOfFavoriteWord.isNotEmpty,
-        onAwait: const ViewFeedback.await(),
-        onEmpty: const ViewFeedback.empty(),
-        child: ViewBlockCard.fill(
+        onAwait: const ViewFeedbacks.await(),
+        onEmpty: const ViewFeedbacks.empty(),
+        child: ViewCards.fill(
           child: listContainer(),
         ),
         // child: ViewBlockCard(
@@ -79,20 +79,16 @@ class _View extends _State with _Header {
     // final items = boxOfFavoriteWord.values.toList();
     // items.sort((a, b) => b.date!.compareTo(a.date!));
 
-    return ViewListBuilder(
-      primary: false,
+    return ViewLists.separator(
+      // primary: false,
       itemBuilder: (BuildContext context, int index) {
         return itemContainer(index, items.elementAt(index));
       },
-      itemSnap: (BuildContext context, int index) {
-        return const ListTile(
-          leading: Icon(Icons.north_east_rounded),
-        );
-      },
-      itemSeparator: (BuildContext context, int index) {
-        return const ViewSectionDivider(
-          primary: false,
-        );
+      itemSnap: const ListTile(
+        leading: Icon(Icons.north_east_rounded),
+      ),
+      separator: (BuildContext context, int index) {
+        return const ViewDividers();
       },
       itemCount: items.length,
       duration: kThemeChangeDuration,

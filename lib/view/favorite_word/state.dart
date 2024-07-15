@@ -8,11 +8,11 @@ abstract class _State extends StateAbstract<Main> {
 
   late final ValueNotifier<double> _itemFavoriteBackgroundNotifier = ValueNotifier(0.0);
 
-  @override
-  void initState() {
-    super.initState();
-    // setIfFavoriteWordEmpty();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // setIfFavoriteWordEmpty();
+  // }
 
   // void setIfFavoriteWordEmpty() {
   //   if (boxOfFavoriteWord.isEmpty) {

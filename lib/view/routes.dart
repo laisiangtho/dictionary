@@ -225,7 +225,8 @@ class RouteNotifier extends RouteChangeNotifier {
 
 class NestDelegate extends RouteNestDelegate {
   /// RouteNestDelegate
-  NestDelegate({required super.notifier, required super.routes, super.root});
+  /// ??? NestDelegate({required super.notifier, required super.routes, super.root});
+  NestDelegate({required super.notifier, required super.route, super.name});
 }
 
 class NestedView extends RouteNestedWidget {

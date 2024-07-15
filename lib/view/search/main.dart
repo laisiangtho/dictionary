@@ -14,7 +14,7 @@ part 'suggest.dart';
 part 'recent.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'search'; // ./result ./suggestion
   static String label = 'Search';
@@ -105,7 +105,7 @@ class _View extends _State with _Header, _Suggest, _Result, _Recents {
           return _suggestBlock(o);
         }
       },
-      child: ViewFeedback.message(
+      child: ViewFeedbacks.message(
         label: App.preference.text.searchNoMatch,
       ),
     );

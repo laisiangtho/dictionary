@@ -42,18 +42,18 @@ mixin _Suggest on _State {
   // }
 
   Widget _suggestBlock(SuggestionType<OfRawType> o) {
-    return ViewSection(
+    return ViewSections(
       // primary: false,
       headerTitle: ViewLabel(
         alignment: Alignment.centerLeft,
-        label: preference.text.suggestion(o.raw.length > 1),
+        label: preference.text.suggestion((o.raw.length > 1).toString()),
       ),
       // headerTrailing: ViewButton(
       //   onPressed: () {},
       //   child: const Icon(Icons.more_horiz),
       // ),
       footerTitle: Text('hasFocus ${_focusNode.hasFocus}'),
-      child: ViewBlockCard.fill(
+      child: ViewCards.fill(
         // child: ListBody(
         //   children: [
         //     ViewButton(
@@ -65,8 +65,8 @@ mixin _Suggest on _State {
         //     ),
         //   ],
         // ),
-        child: ViewListBuilder(
-          primary: false,
+        child: ViewLists.separator(
+          // primary: false,
           // physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
             final snap = o.raw.elementAt(index);
@@ -76,14 +76,12 @@ mixin _Suggest on _State {
             int wl = word.length;
             return _suggestItem(word, ql < wl ? ql : wl);
           },
-          itemSnap: (BuildContext context, int index) {
-            return const ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-              leading: Icon(Icons.north_east_rounded),
-            );
-          },
-          itemSeparator: (BuildContext context, int index) {
-            return const ViewSectionDivider(primary: false);
+          itemSnap: const ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+            leading: Icon(Icons.north_east_rounded),
+          ),
+          separator: (BuildContext context, int index) {
+            return const ViewDividers();
           },
           itemCount: o.raw.length,
         ),

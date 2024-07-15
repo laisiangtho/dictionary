@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../app.dart';
 
 class Main extends SheetsDraggable {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'sheet-parallel';
   static String label = 'Parallel';
@@ -48,7 +48,7 @@ class _State extends SheetsDraggableState<Main> {
   // }
 
   @override
-  Widget decoration({Widget? child}) {
+  Widget draggableDecoration({Widget? child}) {
     return Container(
       // margin: const EdgeInsets.symmetric(horizontal: 30),
       // margin: const EdgeInsets.only(top: kToolbarHeight),

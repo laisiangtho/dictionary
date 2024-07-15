@@ -14,7 +14,7 @@ part 'bottom_navigation.dart';
 
 class ScreenLauncher extends StatefulWidget {
   final RouteDelegate delegate;
-  const ScreenLauncher({Key? key, required this.delegate}) : super(key: key);
+  const ScreenLauncher({super.key, required this.delegate});
 
   @override
   State<ScreenLauncher> createState() => _ScreenLauncherState();
@@ -214,8 +214,8 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
         child: NestedView(
           delegate: NestDelegate(
             notifier: _session,
-            root: route.name,
-            routes: route.route,
+            name: route.name,
+            route: route.route,
           ),
         ),
         // child: RouteNestedWidget(

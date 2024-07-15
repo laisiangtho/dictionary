@@ -1,4 +1,4 @@
-part of data.core;
+part of 'main.dart';
 
 class SQLite extends UnitSQLite {
   final Data data;
@@ -30,7 +30,9 @@ class SQLite extends UnitSQLite {
   String get searchQuery => data.searchQuery;
 
   @override
-  Future<String> get file async => await UtilDocument.fileName(_wordContext.local);
+
+  /// ??? UtilDocument.fileName
+  Future<String> get file async => await Docs.app.fileName(_wordContext.local);
 
   @override
   Future<int> get version async => 3;
@@ -43,6 +45,7 @@ class SQLite extends UnitSQLite {
       batch.execute(_deriveContext.createIndex!);
       await batch.commit(noResult: true).catchError((e) {
         debugPrint('db-error-doIndex-Commit $e');
+        return [];
       });
     }).catchError((e) {
       debugPrint('db-error-doIndex-Transaction $e');
@@ -83,7 +86,8 @@ class SQLite extends UnitSQLite {
           debugPrint('db-attaching ${item.local}');
 
           // debugPrint('db-onOpen secondary ${item.local}');
-          String filePath = await UtilDocument.fileName(item.local);
+          /// ??? UtilDocument
+          String filePath = await Docs.app.fileName(item.local);
           // await db.rawQuery('DETACH DATABASE ?;',[filePath,item.uid]);
           // await txn.rawQuery('ATTACH DATABASE ? AS ?;', [filePath, item.uid]);
           batch.execute('ATTACH DATABASE ? AS ?;', [filePath, item.uid]);
@@ -93,6 +97,7 @@ class SQLite extends UnitSQLite {
 
       await batch.commit(noResult: true).catchError((e) {
         debugPrint('db-error-onOpen-Commit $e');
+        return [];
       });
       // await batch.commit();
     }).catchError((e) {

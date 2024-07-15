@@ -1,4 +1,4 @@
-part of data.type;
+part of 'main.dart';
 
 // NOTE: only type, EnvironmentType child
 class SynmapType {

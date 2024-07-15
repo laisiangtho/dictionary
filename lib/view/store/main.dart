@@ -11,7 +11,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'store';
   static String label = 'Store';
@@ -63,7 +63,7 @@ class _View extends _State with _Header {
 
   Widget buildContainer() {
     if (!store.isSupported) {
-      return ViewFeedback.message(
+      return ViewFeedbacks.message(
         label: 'Platform not supported! ${App.core.data.platform}',
       );
     }
@@ -196,7 +196,7 @@ class _View extends _State with _Header {
                 children: store.listOfNotFoundId
                     .map(
                       (String e) => TextSpan(
-                          style: TextStyle(color: Theme.of(context).errorColor), text: '$e, '),
+                          style: TextStyle(color: state.theme.colorScheme.error), text: '$e, '),
                     )
                     .toList(),
               ),
@@ -400,5 +400,4 @@ class _View extends _State with _Header {
   //     },
   //   );
   // }
-
 }

@@ -1,4 +1,4 @@
-part of data.core;
+part of 'main.dart';
 
 class Store extends UnitStore {
   Store({required super.data});
@@ -55,5 +55,4 @@ class Store extends UnitStore {
   //   }
   //   return false;
   // }
-
 }

@@ -50,18 +50,18 @@ mixin _Recents on _State {
     return Selector<Core, Iterable<MapEntry<dynamic, RecentSearchType>>>(
       selector: (_, e) => e.data.boxOfRecentSearch.entries,
       builder: (BuildContext _, Iterable<MapEntry<dynamic, RecentSearchType>> items, Widget? __) {
-        return ViewSection(
+        return ViewSections(
           show: items.isNotEmpty,
           // duration: const Duration(milliseconds: 270),
           headerTitle: ViewLabel(
             alignment: Alignment.centerLeft,
-            label: preference.text.recentSearch(items.length > 1),
+            label: preference.text.recentSearch((items.length > 1).toString()),
           ),
 
-          onAwait: ViewFeedback.message(
+          onAwait: ViewFeedbacks.message(
             label: App.preference.text.aWordOrTwo,
           ),
-          child: ViewBlockCard.fill(
+          child: ViewCards.fill(
             child: _recentBlock(items),
           ),
         );
@@ -70,20 +70,18 @@ mixin _Recents on _State {
   }
 
   Widget _recentBlock(Iterable<MapEntry<dynamic, RecentSearchType>> items) {
-    return ViewListBuilder(
-      primary: false,
+    return ViewLists.separator(
+      // primary: false,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
         return _recentContainer(index, items.elementAt(index));
       },
-      itemSnap: (BuildContext context, int index) {
-        return const ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-          leading: Icon(Icons.north_east_rounded),
-        );
-      },
-      itemSeparator: (BuildContext context, int index) {
-        return const ViewSectionDivider(primary: false);
+      itemSnap: const ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        leading: Icon(Icons.north_east_rounded),
+      ),
+      separator: (BuildContext context, int index) {
+        return const ViewDividers();
       },
       itemCount: items.length,
     );

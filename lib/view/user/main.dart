@@ -16,7 +16,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key, this.arguments}) : super(key: key);
+  const Main({super.key, this.arguments});
   final Object? arguments;
 
   static String route = '/user';
@@ -174,7 +174,8 @@ class _View extends _State with _Header {
 
                       TextSpan(
                         text: App.preference.language('GithubRepository'),
-                        style: TextStyle(color: Theme.of(context).errorColor),
+                        // style: TextStyle(color: Theme.of(context).errorColor),
+                        style: TextStyle(color: state.theme.colorScheme.error),
                         recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
                       ),
                       const TextSpan(text: '...'),
@@ -204,7 +205,7 @@ class _View extends _State with _Header {
   }
 
   Widget signInContainer() {
-    return ViewSection(
+    return ViewSections(
       headerTitle: ViewSectionTitle(
         title: ViewLabel(
           // alignment: Alignment.centerLeft,
@@ -267,7 +268,7 @@ class _View extends _State with _Header {
   }
 
   Widget profileContainer() {
-    return ViewSection(
+    return ViewSections(
       headerTitle: ViewSectionTitle(
         title: ViewLabel(
           // label: App.authenticate.user!.displayName,

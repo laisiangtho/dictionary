@@ -11,7 +11,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'recent-search';
   static String label = 'Recent search';
@@ -58,17 +58,17 @@ class _View extends _State with _Header {
         overlapsBorderColor: state.theme.dividerColor,
         builder: _header,
       ),
-      ViewSection(
+      ViewSections(
         show: boxOfRecentSearch.isNotEmpty,
 
-        onAwait: const ViewFeedback.await(),
+        onAwait: const ViewFeedbacks.await(),
         // onAwait: ViewFeedback.message(
         //   label: App.preference.text.aMoment,
         // ),
-        onEmpty: ViewFeedback.message(
+        onEmpty: ViewFeedbacks.message(
           label: App.preference.text.recentSearchCount(0),
         ),
-        child: ViewBlockCard.fill(
+        child: ViewFeedbacks.empty(
           child: listContainer(),
         ),
         // child: ViewBlockCard(
@@ -83,20 +83,16 @@ class _View extends _State with _Header {
     final items = boxOfRecentSearch.values.toList();
     items.sort((a, b) => b.date!.compareTo(a.date!));
 
-    return ViewListBuilder(
-      primary: false,
+    return ViewLists.separator(
+      // primary: false,
       itemBuilder: (BuildContext context, int index) {
         return itemContainer(index, items.elementAt(index));
       },
-      itemSnap: (BuildContext context, int index) {
-        return const ListTile(
-          leading: Icon(Icons.north_east_rounded),
-        );
-      },
-      itemSeparator: (BuildContext context, int index) {
-        return const ViewSectionDivider(
-          primary: false,
-        );
+      itemSnap: const ListTile(
+        leading: Icon(Icons.north_east_rounded),
+      ),
+      separator: (BuildContext context, int index) {
+        return const ViewDividers();
       },
       itemCount: items.length,
       duration: kThemeChangeDuration,

@@ -1,4 +1,4 @@
-part of data.core;
+part of 'main.dart';
 
 abstract class _Search extends _Mock {
   String get searchQuery => data.searchQuery;

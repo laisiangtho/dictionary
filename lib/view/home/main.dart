@@ -12,7 +12,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'home';
   static String label = 'Home';
@@ -91,14 +91,14 @@ class _View extends _State with _Header {
         builder: recentSearch,
       ),
 
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('View section'),
         headerTrailing: ViewButton(
           onPressed: () {},
           child: const Icon(Icons.more_horiz),
         ),
         // footerTitle: const Text('View note'),
-        child: ViewBlockCard(
+        child: ViewCards(
           child: ListBody(
             children: [
               ViewButton(
@@ -149,9 +149,9 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('View section with fill'),
-        child: ViewBlockCard.fill(
+        child: ViewCards.fill(
           child: ListBody(
             children: [
               ViewButton(
@@ -167,9 +167,9 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('Search: home/search'),
-        child: ViewBlockCard(
+        child: ViewCards(
           child: ListBody(
             children: [
               ListTile(
@@ -197,9 +197,9 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('Swipe: home/bible'),
-        child: ViewBlockCard(
+        child: ViewCards(
           child: ListBody(
             children: [
               ListTile(
@@ -220,9 +220,9 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('???'),
-        child: ViewBlockCard.fill(
+        child: ViewCards.fill(
           child: ListBody(
             children: [
               ViewButton(
@@ -265,7 +265,7 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('Sign in buttons'),
         child: Card(
           child: ListBody(
@@ -289,7 +289,7 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('ViewButton'),
         child: Card(
           child: ListBody(
@@ -309,7 +309,7 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('route.showSheetModal'),
         child: Card(
           child: ListBody(
@@ -323,15 +323,16 @@ class _View extends _State with _Header {
               ListTile(
                 title: const Text('route.showSheetStack sheet-stack'),
                 onTap: () {
-                  App.route.showSheetStack(context: context, name: 'sheet-stack');
+                  /// ??? App.route.showSheetStack(context: context, name: 'sheet-stack');
+                  App.route.showSheetModal(context: context, name: 'sheet-stack');
                 },
               ),
             ],
           ),
         ),
       ),
-      const ViewSectionDivider(),
-      ViewSection(
+      const ViewDividers(),
+      ViewSections(
         headerTitle: const Text('Go to'),
         child: Card(
           child: ListBody(
@@ -389,7 +390,7 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('Navigator.of(context)'),
         child: Card(
           child: ListBody(
@@ -441,7 +442,7 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('Routes mapping check'),
         child: Card(
           child: ListBody(
@@ -492,7 +493,7 @@ class _View extends _State with _Header {
           ),
         ),
       ),
-      ViewSection(
+      ViewSections(
         headerTitle: const Text('Routes mapping test'),
         child: Card(
           child: ListBody(
@@ -638,13 +639,13 @@ class _View extends _State with _Header {
 
     items.sort((a, b) => b.date!.compareTo(a.date!));
 
-    return ViewSection(
+    return ViewSections(
       show: items.isNotEmpty,
       headerTitle: Text(
-        App.preference.text.recentSearch(true),
+        App.preference.text.recentSearch('true'),
       ),
       headerTrailing: ViewButton(
-        message: App.preference.text.addTo(App.preference.text.recentSearch(true)),
+        message: App.preference.text.addTo(App.preference.text.recentSearch('true')),
         onPressed: () {
           App.route.pushNamed('home/recent-search');
         },
@@ -652,7 +653,7 @@ class _View extends _State with _Header {
           icon: Icons.more_horiz,
         ),
       ),
-      child: ViewBlockCard(
+      child: ViewCards(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Wrap(
@@ -685,7 +686,7 @@ class _View extends _State with _Header {
 }
 
 class PullToRefresh extends PullToActivate {
-  const PullToRefresh({Key? key}) : super(key: key);
+  const PullToRefresh({super.key});
 
   @override
   State<PullToActivate> createState() => _PullToRefreshState();

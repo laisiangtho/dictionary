@@ -7,10 +7,10 @@ abstract class _State extends StateAbstract<Main> {
 
   late final ValueNotifier<double> _itemRecentBackgroundNotifier = ValueNotifier(0.0);
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   void onSearch(String ord) {
     debugPrint('recent-search new: $ord old: ${data.searchQuery}');
