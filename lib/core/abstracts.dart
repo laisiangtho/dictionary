@@ -1,35 +1,35 @@
 part of 'main.dart';
 
-abstract class _Abstract extends UnitCore {
+abstract class _Abstracts extends UnitCore {
   /// API
-  // final Data data = Data.internal();
-  late final Data data = Data(notify: notify);
+  /// ```dart
+  /// final Data data = Data.internal();
+  /// late final Data data = Data(state: state);
+  /// ```
+  late final Data data = Data(state: state);
 
-  /// Scroll notifier
+  /// Scroll notifier, ScrollNotifier
   late final ViewData viewData = ViewData();
-  // late ScrollNotifier scrollNotifier;
-
-  /// Route delegate
-  late final RouteDelegate routeDelegate = RouteDelegate();
 
   /// Theme and locales
   late final Preference preference = Preference(data);
 
   /// Firebase Authentication
-  late final Authenticate authenticate = Authenticate(data: data);
+  late final Authenticate authenticate = Authenticate(data);
 
   /// Analytics
   late final Analytics analytics = Analytics();
 
-  /// Individule
-  late final store = Store(data: data);
-  late final sql = SQLite(data: data);
+  /// Individual: Store, SQLite, Speech, Audio
+  late final store = Store(data);
+  late final sql = SQLite(data);
   late final speech = Speech();
-  // late final audio = Audio(data: data);
+  late final audio = Audio(data);
 
-  /// ensure and prepare initialization
+  @override
   Future<void> ensureInitialized() async {
     Stopwatch initWatch = Stopwatch()..start();
+    await super.ensureInitialized();
 
     await data.ensureInitialized();
     await data.prepareInitialized();

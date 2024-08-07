@@ -27,11 +27,8 @@ import 'pop/bookmarks/main.dart' as pop_bookmarks;
 // import 'pop/books/main.dart' as pop_books;
 // import 'pop/chapters/main.dart' as pop_chapters;
 
-/// RouteMainDelegate
-class RouteDelegate extends RouteMainDelegate {
-  @override
-  final RouteNotifier notifier = RouteNotifier();
-
+/// MainRouteDelegates
+class RouteDelegates extends RouteMixinDelegate<RouteNotifier> {
   @override
   List<RouteType> get routes {
     return [
@@ -41,172 +38,125 @@ class RouteDelegate extends RouteMainDelegate {
       ),
     ];
   }
-}
 
-class InnerDelegate extends RouteInnerDelegate {
-  /// RouteInnerDelegate
-  InnerDelegate(super.state);
+  @override
+  RouteNotifier get notifier {
+    return RouteNotifier(
+      route: [
+        RouteType(
+          name: home.Main.route,
+          primaryNavigation: true,
+          icon: home.Main.icon,
+          label: home.Main.label,
+          nest: [
+            RouteType(
+              page: const home.Main(),
+              nest: [
+                RouteType(
+                  name: user.Main.route,
+                  icon: user.Main.icon,
+                  label: user.Main.label,
+                  page: const user.Main(),
+                ),
+                RouteType(
+                  name: search.Main.route,
+                  icon: search.Main.icon,
+                  label: search.Main.label,
+                  page: const search.Main(),
+                ),
+                RouteType(
+                  name: recent_search.Main.route,
+                  icon: recent_search.Main.icon,
+                  label: recent_search.Main.label,
+                  page: const recent_search.Main(),
+                ),
+                RouteType(
+                  name: store.Main.route,
+                  icon: store.Main.icon,
+                  label: store.Main.label,
+                  page: const store.Main(),
+                ),
+              ],
+            ),
+          ],
+        ),
+        RouteType(
+          name: recent_search.Main.route,
+          primaryNavigation: true,
+          icon: recent_search.Main.icon,
+          label: recent_search.Main.label,
+          nest: [
+            RouteType(
+              page: const recent_search.Main(),
+            ),
+          ],
+        ),
+        RouteType(
+          name: favorite_word.Main.route,
+          primaryNavigation: true,
+          icon: favorite_word.Main.icon,
+          label: favorite_word.Main.label,
+          nest: [
+            RouteType(
+              page: const favorite_word.Main(),
+            ),
+          ],
+        ),
+        RouteType(
+          name: store.Main.route,
+          primaryNavigation: true,
+          icon: store.Main.icon,
+          label: store.Main.label,
+          nest: [
+            RouteType(
+              page: const store.Main(),
+            ),
+          ],
+        ),
+        RouteType(
+          name: sheet_parallel.Main.route,
+          icon: sheet_parallel.Main.icon,
+          label: sheet_parallel.Main.label,
+          page: const sheet_parallel.Main(),
+        ),
+        RouteType(
+          name: sheets_modal.Main.route,
+          icon: sheets_modal.Main.icon,
+          label: sheets_modal.Main.label,
+          page: const sheets_modal.Main(),
+        ),
+        RouteType(
+          name: sheets_stack.Main.route,
+          icon: sheets_stack.Main.icon,
+          label: sheets_stack.Main.label,
+          page: const sheets_stack.Main(),
+        ),
+        RouteType(
+          name: sheet_filter.Main.route,
+          icon: sheet_filter.Main.icon,
+          label: sheet_filter.Main.label,
+          page: const sheet_filter.Main(),
+        ),
+        RouteType(
+          name: pop_options.Main.route,
+          icon: pop_options.Main.icon,
+          label: pop_options.Main.label,
+          page: const pop_options.Main(),
+        ),
+        RouteType(
+          name: pop_bookmarks.Main.route,
+          icon: pop_bookmarks.Main.icon,
+          label: pop_bookmarks.Main.label,
+          page: const pop_bookmarks.Main(),
+        ),
+      ],
+    );
+  }
 }
 
 /// RouteChangeNotifier
 class RouteNotifier extends RouteChangeNotifier {
-  @override
-  List<RouteType> get routes {
-    return [
-      RouteType(
-        name: home.Main.route,
-        primaryNavigation: true,
-        icon: home.Main.icon,
-        label: home.Main.label,
-        route: [
-          RouteType(
-            page: const home.Main(),
-            route: [
-              RouteType(
-                name: user.Main.route,
-                icon: user.Main.icon,
-                label: user.Main.label,
-                page: const user.Main(),
-              ),
-              RouteType(
-                name: search.Main.route,
-                icon: search.Main.icon,
-                label: search.Main.label,
-                page: const search.Main(),
-              ),
-              RouteType(
-                name: recent_search.Main.route,
-                icon: recent_search.Main.icon,
-                label: recent_search.Main.label,
-                page: const recent_search.Main(),
-              ),
-              RouteType(
-                name: store.Main.route,
-                icon: store.Main.icon,
-                label: store.Main.label,
-                page: const store.Main(),
-              ),
-            ],
-          ),
-        ],
-      ),
-      RouteType(
-        name: recent_search.Main.route,
-        primaryNavigation: true,
-        icon: recent_search.Main.icon,
-        label: recent_search.Main.label,
-        route: [
-          RouteType(
-            page: const recent_search.Main(),
-          ),
-        ],
-      ),
-      RouteType(
-        name: favorite_word.Main.route,
-        primaryNavigation: true,
-        icon: favorite_word.Main.icon,
-        label: favorite_word.Main.label,
-        route: [
-          RouteType(
-            page: const favorite_word.Main(),
-          ),
-        ],
-      ),
-      RouteType(
-        name: store.Main.route,
-        primaryNavigation: true,
-        icon: store.Main.icon,
-        label: store.Main.label,
-        route: [
-          RouteType(
-            page: const store.Main(),
-          ),
-        ],
-      ),
-      RouteType(
-        name: sheet_parallel.Main.route,
-        icon: sheet_parallel.Main.icon,
-        label: sheet_parallel.Main.label,
-        page: const sheet_parallel.Main(),
-      ),
-      RouteType(
-        name: sheets_modal.Main.route,
-        icon: sheets_modal.Main.icon,
-        label: sheets_modal.Main.label,
-        page: const sheets_modal.Main(),
-      ),
-      RouteType(
-        name: sheets_stack.Main.route,
-        icon: sheets_stack.Main.icon,
-        label: sheets_stack.Main.label,
-        page: const sheets_stack.Main(),
-      ),
-      RouteType(
-        name: sheet_filter.Main.route,
-        icon: sheet_filter.Main.icon,
-        label: sheet_filter.Main.label,
-        page: const sheet_filter.Main(),
-      ),
-      RouteType(
-        name: pop_options.Main.route,
-        icon: pop_options.Main.icon,
-        label: pop_options.Main.label,
-        page: const pop_options.Main(),
-      ),
-      RouteType(
-        name: pop_bookmarks.Main.route,
-        icon: pop_bookmarks.Main.icon,
-        label: pop_bookmarks.Main.label,
-        page: const pop_bookmarks.Main(),
-      ),
-    ];
-  }
-
-  List<RouteType> get routeListInnerWorking {
-    return [
-      RouteType(
-        name: '',
-      ),
-      RouteType(
-        name: 'book',
-        route: [
-          RouteType(
-            name: '',
-          ),
-          RouteType(
-            name: ':int',
-          ),
-          RouteType(
-            name: 'sub',
-          ),
-        ],
-      ),
-      RouteType(
-        name: 'name',
-        route: [
-          RouteType(
-            name: ':string',
-          ),
-        ],
-      ),
-      RouteType(
-        name: 'blog',
-        route: [
-          RouteType(
-            name: ':any',
-          ),
-        ],
-      ),
-      RouteType(
-        name: 'settings',
-        route: [
-          RouteType(
-            name: 'color',
-          ),
-        ],
-      ),
-    ];
-  }
+  RouteNotifier({super.route});
 
   void routeTest(String name) {
     // final lst = routeListInnerWorking();
@@ -223,14 +173,13 @@ class RouteNotifier extends RouteChangeNotifier {
   }
 }
 
-class NestDelegate extends RouteNestDelegate {
-  /// RouteNestDelegate
+class NestedDelegates extends RouteMixinDelegate<RouteNotifier> {
+  /// NestRouteDelegates
   /// ??? NestDelegate({required super.notifier, required super.routes, super.root});
-  NestDelegate({required super.notifier, required super.route, super.name});
+  NestedDelegates({required super.bridge, super.routeType = 1, super.route, super.name});
 }
 
-class NestedView extends RouteNestedWidget {
-  /// RouteNestedWidget
+class NestedView extends NestedRoutes {
   const NestedView({super.key, required super.delegate});
 }
 

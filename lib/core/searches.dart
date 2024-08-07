@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-abstract class _Search extends _Mock {
+abstract class _Searches extends _Engines {
   String get searchQuery => data.searchQuery;
   // set searchQuery(String ord) {
   //   data.searchQuery = ord;
@@ -31,7 +31,7 @@ abstract class _Search extends _Mock {
       query: suggestQuery,
       raw: await sql.suggestion(),
     );
-    data.notify();
+    state.notify();
   }
 
   // get suggestion
@@ -65,7 +65,7 @@ abstract class _Search extends _Mock {
       data.boxOfRecentSearch.update(searchQuery);
       if (!init) {
         // notify();
-        data.notify();
+        state.notify();
       }
       debugPrint('conclusionGenerate $searchQuery');
     }

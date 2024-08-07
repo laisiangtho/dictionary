@@ -86,7 +86,7 @@ mixin _Result on _State {
   Widget _resultNoQuery() {
     // return ViewSection(
     //   headerTitle: const Text('Result no query'),
-    //   headerTrailing: ViewButton(
+    //   headerTrailing: ViewButtons(
     //     onPressed: () {},
     //     child: const Icon(Icons.more_horiz),
     //   ),
@@ -94,11 +94,11 @@ mixin _Result on _State {
     //   child: ViewBlockCard(
     //     child: ListBody(
     //       children: [
-    //         ViewButton(
+    //         ViewButtons(
     //           onPressed: () {},
-    //           child: const Text('ViewButton'),
+    //           child: const Text('ViewButtons'),
     //         ),
-    //         ViewButton(
+    //         ViewButtons(
     //           child: Text(suggestQuery),
     //         ),
     //       ],
@@ -113,7 +113,7 @@ mixin _Result on _State {
   // Widget _resultBlock(ConclusionType o) {
   //   return ViewSection(
   //     headerTitle: const Text('Result ???'),
-  //     headerTrailing: ViewButton(
+  //     headerTrailing: ViewButtons(
   //       onPressed: () {},
   //       child: const Icon(Icons.more_horiz),
   //     ),
@@ -121,11 +121,11 @@ mixin _Result on _State {
   //     child: ViewBlockCard(
   //       child: ListBody(
   //         children: [
-  //           ViewButton(
+  //           ViewButtons(
   //             onPressed: () {},
-  //             child: const Text('ViewButton'),
+  //             child: const Text('ViewButtons'),
   //           ),
-  //           ViewButton(
+  //           ViewButtons(
   //             child: Text(suggestQuery),
   //           ),
   //         ],
@@ -180,7 +180,7 @@ mixin _Result on _State {
 
   Widget _wordContainer(String word) {
     /*
-    return ViewButton(
+    return ViewButtons(
       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
       onPressed: onSwitchFavorite,
       child: Selector<Core, bool>(
@@ -196,8 +196,8 @@ mixin _Result on _State {
                 //   Icons.campaign_rounded,
                 //   color: isFavorited ? Theme.of(context).highlightColor : null,
                 // ),
-                child: ViewButton(
-                  child: ViewLabel(
+                child: ViewButtons(
+                  child: ViewLabels(
                     icon: Icons.campaign_rounded,
                     iconColor: state.theme.shadowColor,
                   ),
@@ -240,7 +240,7 @@ mixin _Result on _State {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       horizontalTitleGap: 0,
-      leading: ViewLabel(
+      leading: ViewLabels(
         icon: Icons.campaign_rounded,
         iconColor: state.theme.shadowColor,
         iconSize: 30,
@@ -267,7 +267,7 @@ mixin _Result on _State {
         //   ],
         // ),
       ),
-      trailing: ViewButton(
+      trailing: ViewButtons(
         onPressed: onSwitchFavorite,
         child: Selector<Core, bool>(
           selector: (_, e) => e.searchQueryFavorited,
@@ -450,11 +450,11 @@ mixin _Result on _State {
                 runSpacing: 10,
                 children: snapshot.data!.map(
                   (e) {
-                    return ViewButton(
+                    return ViewButtons(
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: const BorderRadius.all(Radius.circular(100.0)),
                       // constraints: const BoxConstraints(maxHeight: 43),
-                      child: ViewLabel(
+                      child: ViewLabels(
                         labelPadding: const EdgeInsets.symmetric(
                           horizontal: 15,
                           vertical: 3,

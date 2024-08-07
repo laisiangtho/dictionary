@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 
-import '../../app.dart';
-import '/widget/button.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -29,14 +28,14 @@ class _View extends _State with _Header {
     return Scaffold(
       body: Views(
         scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
+          listener: scrollController.bottom,
           notifier: App.viewData.bottom,
         ),
         child: ValueListenableBuilder(
           valueListenable: boxOfFavoriteWord.listen(),
           builder: (BuildContext _, Box<FavoriteWordType> __, Widget? ___) {
             return CustomScrollView(
-              controller: _controller,
+              controller: scrollController,
               slivers: _slivers,
             );
           },

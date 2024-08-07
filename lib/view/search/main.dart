@@ -4,7 +4,7 @@ import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
 // import 'package:lidea/view/user/main.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -34,11 +34,11 @@ class _View extends _State with _Header, _Suggest, _Result, _Recents {
     return Scaffold(
       body: Views(
         scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
+          listener: scrollController.bottom,
           notifier: App.viewData.bottom,
         ),
         // child: NestedScrollView(
-        //   controller: _controller,
+        //   controller: scrollController,
         //   headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         //     return <Widget>[
         //       ViewHeaderSliver(
@@ -65,7 +65,7 @@ class _View extends _State with _Header, _Suggest, _Result, _Recents {
         //   ),
         // ),
         child: CustomScrollView(
-          controller: _controller,
+          controller: scrollController,
           slivers: [
             ViewHeaderSliver(
               pinned: true,

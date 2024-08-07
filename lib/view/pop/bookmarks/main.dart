@@ -92,12 +92,12 @@ class _MainState extends StateAbstract<Main> {
         ),
         shrinkWrap: true,
         children: <Widget>[
-          ViewButton(
+          ViewButtons(
             style: Theme.of(context).textTheme.labelSmall,
             onPressed: () => setFontSize(false),
             child: const Align(alignment: Alignment.center, child: Text('A')),
           ),
-          ViewMark(
+          ViewMarks(
             decoration: BoxDecoration(
               border: Border.symmetric(
                 vertical: BorderSide(
@@ -108,7 +108,7 @@ class _MainState extends StateAbstract<Main> {
             ),
             label: App.core.data.boxOfSettings.fontSize().asDouble.toStringAsFixed(0),
           ),
-          ViewButton(
+          ViewButtons(
             onPressed: () => setFontSize(true),
             style: Theme.of(context).textTheme.labelLarge,
             child: const Align(alignment: Alignment.center, child: Text('A')),

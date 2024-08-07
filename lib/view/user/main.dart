@@ -9,8 +9,7 @@ import 'package:lidea/launcher.dart';
 import 'package:lidea/view/user/main.dart';
 // import 'package:lidea/view/demo/translate.dart';
 
-import '../../app.dart';
-import '/widget/button.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -33,7 +32,7 @@ class _View extends _State with _Header {
     return Scaffold(
       body: Views(
         scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
+          listener: scrollController.bottom,
           notifier: App.viewData.bottom,
         ),
         child: Consumer<Authenticate>(
@@ -45,7 +44,7 @@ class _View extends _State with _Header {
 
   Widget middleware(BuildContext context, Authenticate aut, Widget? child) {
     return CustomScrollView(
-      controller: _controller,
+      controller: scrollController,
       slivers: sliverWidgets(),
     );
   }
@@ -110,7 +109,7 @@ class _View extends _State with _Header {
       UserAccountWidget(
         preference: App.preference,
         authenticate: App.authenticate,
-        children: pollList(),
+        children: userDesk(),
       ),
 
       SliverPadding(
@@ -207,7 +206,7 @@ class _View extends _State with _Header {
   Widget signInContainer() {
     return ViewSections(
       headerTitle: ViewSectionTitle(
-        title: ViewLabel(
+        title: ViewLabels(
           // alignment: Alignment.centerLeft,
           label: App.preference.text.wouldYouLiketoSignIn,
         ),
@@ -216,19 +215,19 @@ class _View extends _State with _Header {
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 25),
         child: ListBody(
           children: [
-            SignInButton(
+            ViewSignIns(
               icon: LideaIcon.google,
               label: 'Sign in with Google',
               onPressed: () {
                 App.authenticate.signInWithGoogle().whenComplete(whenCompleteSignIn);
               },
             ),
-            const SignInButton(
+            const ViewSignIns(
               icon: LideaIcon.google,
               label: 'Sign in with Google',
             ),
             if (App.authenticate.showApple)
-              SignInButton(
+              ViewSignIns(
                 icon: LideaIcon.apple,
                 label: 'Sign in with Apple',
                 onPressed: () {
@@ -236,7 +235,7 @@ class _View extends _State with _Header {
                 },
               ),
             if (App.authenticate.showFacebook)
-              SignInButton(
+              ViewSignIns(
                 // icon: LideaIcon.facebook,
                 // label: 'Login with Facebook',
                 label: 'Continue with Facebook',
@@ -270,7 +269,7 @@ class _View extends _State with _Header {
   Widget profileContainer() {
     return ViewSections(
       headerTitle: ViewSectionTitle(
-        title: ViewLabel(
+        title: ViewLabels(
           // label: App.authenticate.user!.displayName,
           label: App.authenticate.userDisplayname,
           labelStyle: Theme.of(context).textTheme.titleLarge,
@@ -286,7 +285,7 @@ class _View extends _State with _Header {
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 25),
         child: ListBody(
           children: [
-            ViewLabel(
+            ViewLabels(
               // label: App.authenticate.user!.email!,
               label: App.authenticate.userEmail,
               // label: 'khensolomon@gmail.com',
@@ -303,29 +302,7 @@ class _View extends _State with _Header {
     );
   }
 
-  List<ViewButton> pollList() {
+  List<ViewButtons> userDesk() {
     return [];
-    // return List.generate(
-    //   poll.userPollBoard.length,
-    //   (index) {
-    //     final element = poll.userPollBoard.elementAt(index);
-    //     return ViewButton(
-    //       child: ViewLabel(
-    //         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-    //         alignment: Alignment.centerLeft,
-    //         icon: Icons.how_to_vote_outlined,
-    //         label: element.info.title,
-    //         labelPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-    //         labelStyle: Theme.of(context).textTheme.bodyLarge,
-    //         softWrap: true,
-    //         maxLines: 3,
-    //       ),
-    //       onPressed: () {
-    //         poll.tokenId = element.gist.token.id;
-    //         core.navigate(to: '/launch/poll');
-    //       },
-    //     );
-    //   },
-    // );
   }
 }

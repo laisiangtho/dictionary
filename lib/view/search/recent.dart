@@ -3,7 +3,7 @@ part of 'main.dart';
 // mixin _Recents on _State {
 // class _Recents extends StatefulWidget {
 //   const _Recents({Key? key, required this.textController}) : super(key: key);
-//   // _textController = TextEditingController
+//   // textController = TextEditingController
 //   final TextEditingController textController;
 
 //   @override
@@ -53,7 +53,7 @@ mixin _Recents on _State {
         return ViewSections(
           show: items.isNotEmpty,
           // duration: const Duration(milliseconds: 270),
-          headerTitle: ViewLabel(
+          headerTitle: ViewLabels(
             alignment: Alignment.centerLeft,
             label: preference.text.recentSearch((items.length > 1).toString()),
           ),

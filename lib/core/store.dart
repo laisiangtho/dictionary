@@ -1,12 +1,12 @@
 part of 'main.dart';
 
-class Store extends UnitStore {
-  Store({required super.data});
+class Store extends UnitStore<Data> {
+  Store(super.data);
 
   @override
   Future<void> init() async {
     kProducts = data.env.products;
-    super.init();
+    await super.init();
   }
 
   Iterable<PurchasesType> get list => data.boxOfPurchases.values;

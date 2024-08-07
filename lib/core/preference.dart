@@ -1,7 +1,6 @@
 part of 'main.dart';
 
 class Preference extends PreferenceNest {
-  // Preference(Collection docket) : super(docket);
   Preference(super.data);
 
   @override
@@ -22,7 +21,7 @@ class Preference extends PreferenceNest {
   // Iterable<Locale> get listOfLocale => const [
   //       Locale('en', 'GB'),
   //       Locale('no', 'NO'),
-  //       Locale('my', ''),
+  //       Locale('my', 'MM'),
   //     ];
 
   @override

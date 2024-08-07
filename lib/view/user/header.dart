@@ -5,8 +5,9 @@ mixin _Header<T> on _State {
     return ViewHeaderLayouts(
       data: data,
       left: [
-        BackButtonWidget(
+        OptionButtons.back(
           navigator: state.navigator,
+          label: App.preference.text.back,
         ),
       ],
       primary: Align(
@@ -17,7 +18,7 @@ mixin _Header<T> on _State {
         ),
       ),
       right: [
-        ViewButton(
+        ViewButtons(
           message: App.preference.text.signOut,
           enable: App.authenticate.hasUser,
           onPressed: App.authenticate.signOut,

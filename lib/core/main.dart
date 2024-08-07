@@ -8,7 +8,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // NOTE: Authentication
-// import 'package:lidea/firebase/auth.dart';
 import 'package:lidea/unit/authenticate.dart';
 
 // NOTE: Core notify and Initializing properties
@@ -21,27 +20,20 @@ import 'package:lidea/unit/analytics.dart';
 import 'package:lidea/unit/store.dart';
 import 'package:lidea/unit/sqlite.dart';
 import 'package:lidea/unit/speech.dart';
+import 'package:lidea/unit/audio.dart';
 
-// NOTE: view ???
-import 'package:lidea/view/main.dart' show ViewScroll, ViewData;
+// NOTE: View
+import 'package:lidea/view/main.dart' show ViewScrolls, ViewData;
 export 'package:lidea/view/main.dart';
-
-// NOTE: route
-import '/view/routes.dart' show RouteDelegate;
-// show MainDelegate, NestDelegate, NestedView, RouteNotifier, RouteParser
-export '/view/routes.dart';
-
-// NOTE: scroll ???
-// import '../unit/view.md' show ScrollNotifier;
-// export '../unit/view.md' show ScrollNotifier;
 
 // NOTE: Nest and Type
 import '/type/main.dart';
 export '/type/main.dart';
 
-part 'abstract.dart';
-part 'mock.dart';
-part 'search.dart';
+part 'abstracts.dart';
+part 'mocks.dart';
+part 'searches.dart';
+part 'engines.dart';
 part 'view.dart';
 
 part 'preference.dart';
@@ -51,19 +43,23 @@ part 'analytics.dart';
 part 'store.dart';
 part 'sqlite.dart';
 part 'speech.dart';
+part 'audio.dart';
 
-class Core extends _Search {
+class Core extends _Searches {
+  @override
   Future<void> initialized(BuildContext context) async {
     Stopwatch initWatch = Stopwatch()..start();
-    preference.setContext(context);
 
-    await prepareInitialized();
+    preference.setContext(context);
+    await super.initialized(context);
+
+    await mockTest();
+    await engineInitialized();
 
     await store.init();
     // await sql.init();
     // await speech.init();
     // await poll.init();
-    // await mockTest();
 
     data.suggestQuery = data.searchQuery;
 

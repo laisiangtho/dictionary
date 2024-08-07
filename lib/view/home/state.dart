@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
   late final AnimationController _searchController = AnimationController(
@@ -24,14 +24,14 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
       // });
       // _scrollController.position.isScrollingNotifier.dispose();
 
-      _controller.position.isScrollingNotifier.addListener(() {
-        if (!_controller.position.isScrollingNotifier.value) {
+      scrollController.position.isScrollingNotifier.addListener(() {
+        if (!scrollController.position.isScrollingNotifier.value) {
           // if (_searchController.isDismissed && snap.shrink == 1.0) {
           //   _searchController.forward();
           // } else if (_searchController.isCompleted && snap.shrink < 1.0) {
           //   _searchController.reverse(from: snap.shrink);
           // }
-          final userScrollIndex = _controller.position.userScrollDirection.index;
+          final userScrollIndex = scrollController.position.userScrollDirection.index;
           // final userScrollName = _scrollController.position.userScrollDirection.name;
           if (userScrollIndex == 1 && _searchController.value < 1.0) {
             _searchController.forward(from: _searchController.value);
@@ -46,6 +46,6 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    scrollController.dispose();
   }
 }

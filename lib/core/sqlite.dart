@@ -1,8 +1,7 @@
 part of 'main.dart';
 
-class SQLite extends UnitSQLite {
-  final Data data;
-  SQLite({required this.data});
+class SQLite extends UnitSQLite<Data> {
+  SQLite(super.data);
 
   // String get _primaryDatabase => data.env.primary.db;
   // List<String> get _secondaryDatabase => data.env.secondary.map((e) => e.db);

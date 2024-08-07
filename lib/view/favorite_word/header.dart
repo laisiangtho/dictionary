@@ -5,8 +5,9 @@ mixin _Header on _State {
     return ViewHeaderLayouts(
       data: data,
       left: [
-        BackButtonWidget(
+        OptionButtons.back(
           navigator: state.navigator,
+          label: App.preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -24,19 +25,19 @@ mixin _Header on _State {
         //   valueListenable: App.core.data.boxOfFavoriteWord.listen(),
         //   // valueListenable: App.core.data.boxOfBooks.listen(),
         //   builder: (BuildContext context, Box<FavoriteWordType> box, Widget? child) {
-        //     return ViewButton(
+        //     return ViewButtons(
         //       enable: box.isNotEmpty,
         //       onPressed: onDeleteAllConfirmWithDialog,
-        //       child: const ViewMark(
+        //       child: const ViewMarks(
         //         icon: Icons.clear_all_rounded,
         //       ),
         //     );
         //   },
         // ),
-        ViewButton(
+        ViewButtons(
           enable: boxOfFavoriteWord.isNotEmpty,
           onPressed: onDeleteAllConfirmWithDialog,
-          child: const ViewMark(
+          child: const ViewMarks(
             icon: Icons.clear_all_rounded,
           ),
         ),

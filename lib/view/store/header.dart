@@ -5,8 +5,9 @@ mixin _Header on _State {
     return ViewHeaderLayouts(
       data: data,
       left: [
-        BackButtonWidget(
+        OptionButtons.back(
           navigator: state.navigator,
+          label: App.preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -19,10 +20,10 @@ mixin _Header on _State {
         data: data,
       ),
       right: [
-        ViewButton(
+        ViewButtons(
           message: App.preference.text.restorePurchase('true'),
           onPressed: onRestore,
-          child: const ViewMark(
+          child: const ViewMarks(
             icon: Icons.restore_rounded,
           ),
         ),

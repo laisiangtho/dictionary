@@ -8,8 +8,9 @@ mixin _Header on _State {
     return ViewHeaderLayouts(
       data: data,
       left: [
-        BackButtonWidget(
+        OptionButtons.back(
           navigator: state.navigator,
+          label: App.preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(

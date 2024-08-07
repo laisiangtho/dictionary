@@ -4,12 +4,12 @@ import 'package:lidea/icon.dart';
 // import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 
-import '../../app.dart';
-import '/widget/profile_icon.dart';
-import '/widget/button.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
+part 'inspect_process.dart';
+part 'inspect_route.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -53,13 +53,13 @@ class _View extends _State with _Header {
     return Scaffold(
       body: Views(
         scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
+          listener: scrollController.bottom,
           notifier: App.viewData.bottom,
         ),
 
         // snap: _viewSnap,
         child: CustomScrollView(
-          controller: _controller,
+          controller: scrollController,
           slivers: _slivers,
         ),
       ),
@@ -78,6 +78,8 @@ class _View extends _State with _Header {
         builder: _header,
       ),
       const PullToRefresh(),
+      // const InspectProcess(),
+      // const InspectRoute(),
 
       /// Favorite book
       // ValueListenableBuilder(
@@ -93,7 +95,7 @@ class _View extends _State with _Header {
 
       ViewSections(
         headerTitle: const Text('View section'),
-        headerTrailing: ViewButton(
+        headerTrailing: ViewButtons(
           onPressed: () {},
           child: const Icon(Icons.more_horiz),
         ),
@@ -101,11 +103,11 @@ class _View extends _State with _Header {
         child: ViewCards(
           child: ListBody(
             children: [
-              ViewButton(
+              ViewButtons(
                 onPressed: core.sql.init,
                 child: const Text('SQL Init'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   core.sql.checkTypeIndex().then((value) {
                     debugPrint('-- $value');
@@ -115,7 +117,7 @@ class _View extends _State with _Header {
                 },
                 child: const Text('checkTypeIndex .'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   core.sql.checkTypeIndex(table: 'sense').then((value) {
                     debugPrint('-- $value');
@@ -125,7 +127,7 @@ class _View extends _State with _Header {
                 },
                 child: const Text('checkTypeIndex sense'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   core.sql.checkTypeIndex(table: 'thesaurus').then((value) {
                     debugPrint('-- $value');
@@ -135,7 +137,7 @@ class _View extends _State with _Header {
                 },
                 child: const Text('checkTypeIndex thesaurus'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   core.sql.search('love').then((value) {
                     debugPrint('db-query $value');
@@ -154,14 +156,14 @@ class _View extends _State with _Header {
         child: ViewCards.fill(
           child: ListBody(
             children: [
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   doConfirmWithDialog(context: context, message: 'Confirm');
                 },
-                child: const Text('ViewButton'),
+                child: const Text('ViewButtons'),
               ),
-              const ViewButton(
-                child: Text('ViewButton disable'),
+              const ViewButtons(
+                child: Text('ViewButtons disable'),
               ),
             ],
           ),
@@ -225,37 +227,37 @@ class _View extends _State with _Header {
         child: ViewCards.fill(
           child: ListBody(
             children: [
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   App.route.pushNamed('reader/user-profile-test-child');
                 },
                 child: const Text('reader/user-profile-test-child'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   App.route.pushNamed('/user-profile-test-child');
                 },
                 child: const Text('/user-profile-test-child'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   App.route.pushNamed('/reader');
                 },
                 child: const Text('/reader'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   App.route.pushNamed('read/2');
                 },
                 child: const Text('read/2'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   App.route.pushNamed('/read');
                 },
                 child: const Text('/read'),
               ),
-              ViewButton(
+              ViewButtons(
                 onPressed: () {
                   App.route.pushNamed('home/swipe');
                 },
@@ -270,17 +272,17 @@ class _View extends _State with _Header {
         child: Card(
           child: ListBody(
             children: [
-              SignInButton(
+              ViewSignIns(
                 icon: Icons.abc,
                 label: 'Sign in with Google',
                 onPressed: () {},
               ),
-              SignInButton(
+              ViewSignIns(
                 icon: Icons.abc,
                 label: 'Sign in with Apple',
                 onPressed: () {},
               ),
-              SignInButton(
+              ViewSignIns(
                 icon: Icons.abc,
                 label: 'Sign in with Facebook',
                 onPressed: () {},
@@ -290,20 +292,20 @@ class _View extends _State with _Header {
         ),
       ),
       ViewSections(
-        headerTitle: const Text('ViewButton'),
+        headerTitle: const Text('ViewButtons'),
         child: Card(
           child: ListBody(
             children: [
-              ViewButton(
+              ViewButtons(
                 color: Colors.red,
                 onPressed: () {},
-                child: const Text('ViewButton'),
+                child: const Text('ViewButtons'),
               ),
-              const ViewButton.filled(
-                child: Text('ViewButton disable filled'),
+              const ViewButtons.filled(
+                child: Text('ViewButtons disable filled'),
               ),
-              const ViewButton(
-                child: Text('ViewButton disable'),
+              const ViewButtons(
+                child: Text('ViewButtons disable'),
               ),
             ],
           ),
@@ -644,12 +646,12 @@ class _View extends _State with _Header {
       headerTitle: Text(
         App.preference.text.recentSearch('true'),
       ),
-      headerTrailing: ViewButton(
+      headerTrailing: ViewButtons(
         message: App.preference.text.addTo(App.preference.text.recentSearch('true')),
         onPressed: () {
           App.route.pushNamed('home/recent-search');
         },
-        child: const ViewMark(
+        child: const ViewMarks(
           icon: Icons.more_horiz,
         ),
       ),
@@ -662,9 +664,9 @@ class _View extends _State with _Header {
             textDirection: TextDirection.ltr,
             children: items.take(3).map(
               (e) {
-                return ViewButton(
+                return ViewButtons(
                   style: state.theme.textTheme.bodyLarge,
-                  child: ViewMark(
+                  child: ViewMarks(
                     // padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                     label: e.word,
                   ),

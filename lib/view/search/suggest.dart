@@ -44,11 +44,11 @@ mixin _Suggest on _State {
   Widget _suggestBlock(SuggestionType<OfRawType> o) {
     return ViewSections(
       // primary: false,
-      headerTitle: ViewLabel(
+      headerTitle: ViewLabels(
         alignment: Alignment.centerLeft,
         label: preference.text.suggestion((o.raw.length > 1).toString()),
       ),
-      // headerTrailing: ViewButton(
+      // headerTrailing: ViewButtons(
       //   onPressed: () {},
       //   child: const Icon(Icons.more_horiz),
       // ),
@@ -56,11 +56,11 @@ mixin _Suggest on _State {
       child: ViewCards.fill(
         // child: ListBody(
         //   children: [
-        //     ViewButton(
+        //     ViewButtons(
         //       onPressed: () {},
-        //       child: const Text('ViewButton'),
+        //       child: const Text('ViewButtons'),
         //     ),
-        //     ViewButton(
+        //     ViewButtons(
         //       child: Text(o.query),
         //     ),
         //   ],

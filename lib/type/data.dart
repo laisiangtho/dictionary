@@ -1,14 +1,18 @@
 part of 'main.dart';
 
 class Data extends DataNest {
+  /// retrieve the instance through the app
+  /// ```dart
+  /// Data.internal();
+  /// Data.internal() : super.internal();
+  /// Data() : super();
+  /// ```
+  Data({required super.state});
+
   // late final boxOfBooks = BoxOfBooks<BooksType>();
   // late final boxOfBookmarks = BoxOfBookmarks<BookmarksType>();
 
   // List<DefinitionBible> cacheBible = [];
-
-  // retrieve the instance through the app
-  // Collection.internal();
-  // Collection.internal() : super.internal();
 
   late List<SynsetType> synset;
   late List<SynmapType> synmap;
@@ -16,11 +20,10 @@ class Data extends DataNest {
   SuggestionType<OfRawType> cacheSuggestion = const SuggestionType();
   ConclusionType<Map<String, dynamic>> cacheConclusion = const ConclusionType();
 
-  Data({required super.notify});
-
   @override
   Future<void> ensureInitialized() async {
     await super.ensureInitialized();
+
     // boxOfBooks.registerAdapter(BooksAdapter());
     // boxOfBookmarks.registerAdapter(BookmarksAdapter());
   }
@@ -28,6 +31,7 @@ class Data extends DataNest {
   @override
   Future<void> prepareInitialized() async {
     await super.prepareInitialized();
+
     // await boxOfBooks.open('book');
     // await boxOfBookmarks.open('bookmark');
 
@@ -35,11 +39,11 @@ class Data extends DataNest {
     synmap = env.attach['synmap'].map<SynmapType>((o) => SynmapType.fromJSON(o)).toList();
   }
 
-  /// Every database
+  /// List of database
   // Iterable<APIType> get listOfDatabase => env.api.where((e) => e.src.length > 0);
   Iterable<APIType> get listOfDatabase => env.api.where((e) => e.localName.isNotEmpty);
 
-  /// Every table
+  /// List of table
   // Iterable<APIType> get listOfTable => env.api.where((e) => e.table.isNotEmpty);
 
   /// the primary database and table

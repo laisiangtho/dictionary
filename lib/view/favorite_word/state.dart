@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
 
   // late final boxOfBookmarks = App.core.data.boxOfBookmarks;
   late final boxOfFavoriteWord = App.core.data.boxOfFavoriteWord;

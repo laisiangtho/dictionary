@@ -1,20 +1,16 @@
 library data.type;
 
+// import 'package:flutter/material.dart';
+
 // NOTE: Core API manager
 export 'package:lidea/main.dart';
 import 'package:lidea/main.dart';
 
-// import 'package:flutter/material.dart';
-// import 'package:lidea/firebase/core.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-
 // import 'package:lidea/hive.dart';
 
-// NOTE: Core API manager
-// import 'package:lidea/cluster/main.dart';
-part 'audio.dart';
+/// NOTE: Core API manager
 part 'data.dart';
+part 'audio.dart';
 
 // NOTE: Individule
 part 'synmap.dart';

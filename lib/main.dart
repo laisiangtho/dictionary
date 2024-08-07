@@ -12,25 +12,10 @@ import 'initialize.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp,
-  //   DeviceOrientation.portraitDown,
-  //   DeviceOrientation.landscapeLeft,
-  //   DeviceOrientation.landscapeRight,
-  // ]);
-
   await initializeApp();
   await App.core.ensureInitialized();
 
   runApp(const MyOrdbok());
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp,
-  //   DeviceOrientation.portraitDown,
-  //   DeviceOrientation.landscapeLeft,
-  //   DeviceOrientation.landscapeRight,
-  // ]).then((_) {
-  //   runApp(const Example());
-  // });
 }
 
 class MyOrdbok extends StatelessWidget {
@@ -82,31 +67,4 @@ class MyOrdbok extends StatelessWidget {
       },
     );
   }
-  // Widget builder(BuildContext context, Widget? child) {
-  //   return AnimatedBuilder(
-  //     animation: App.preference,
-  //     builder: (BuildContext context, Widget? child) {
-  //       return child!;
-  //     },
-  //     child: child,
-  //   );
-  // }
-
-  // Widget builder(BuildContext context, Widget? child) {
-  //   // return AnnotatedRegion<SystemUiOverlayStyle>(
-  //   //   value: SystemUiOverlayStyle(
-  //   //     systemNavigationBarColor: Theme.of(context).primaryColor,
-  //   //     // systemNavigationBarDividerColor: Colors.transparent,
-  //   //     // systemNavigationBarDividerColor: Colors.red,
-  //   //     systemNavigationBarIconBrightness: App.preference.resolvedSystemBrightness,
-  //   //     systemNavigationBarContrastEnforced: false,
-  //   //     statusBarColor: Colors.transparent,
-  //   //     statusBarBrightness: App.preference.systemBrightness,
-  //   //     statusBarIconBrightness: App.preference.resolvedSystemBrightness,
-  //   //     systemStatusBarContrastEnforced: false,
-  //   //   ),
-  //   //   child: child!,
-  //   // );
-  //   return child!;
-  // }
 }

@@ -6,16 +6,13 @@ class ScreenSplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             MergeSemantics(
               child: RichText(
                 textAlign: TextAlign.center,
-                // strutStyle: StrutStyle(),
                 text: TextSpan(
                   text: '"',
                   semanticsLabel: 'open quotation mark',
@@ -66,14 +63,6 @@ class ScreenSplash extends StatelessWidget {
                 child: Text(App.core.message.value),
               ),
             ),
-            // Semantics(
-            //   label: "Message",
-            //   child: Text(
-            //     App.core.message,
-            //     semanticsLabel: App.core.message,
-            //     style: const TextStyle(fontSize: 30),
-            //   ),
-            // )
           ],
         ),
       ),

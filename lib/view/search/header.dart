@@ -15,7 +15,7 @@ mixin _Header on _State {
         SizeTransition(
           sizeFactor: _backController,
           axis: Axis.horizontal,
-          child: ViewButton(
+          child: ViewButtons(
             onPressed: state.navigator.maybePop,
             constraints: BoxConstraints(minHeight: data.minHeight),
             child: const Icon(
@@ -50,7 +50,7 @@ mixin _Header on _State {
               },
               child: TextFormField(
                 key: _formKey,
-                controller: _textController,
+                controller: textController,
                 focusNode: _focusNode,
                 textInputAction: TextInputAction.search,
                 keyboardType: TextInputType.text,
@@ -58,7 +58,7 @@ mixin _Header on _State {
                 onFieldSubmitted: onSearch,
                 maxLines: 1,
                 decoration: InputDecoration(
-                  prefixIcon: ViewMark(
+                  prefixIcon: ViewMarks(
                     margin: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
@@ -82,7 +82,7 @@ mixin _Header on _State {
                     opacity: _clearAnimation,
                     child: FadeTransition(
                       opacity: _cancelController,
-                      child: ViewButton(
+                      child: ViewButtons(
                         onPressed: onClear,
                         padding: const EdgeInsets.all(0),
                         message: App.preference.text.clear,
@@ -107,13 +107,13 @@ mixin _Header on _State {
         SizeTransition(
           sizeFactor: _cancelController,
           axis: Axis.horizontal,
-          child: ViewButton(
+          child: ViewButtons(
             constraints: BoxConstraints(minHeight: data.minHeight),
             // padding: const EdgeInsets.symmetric(vertical: 5),
             // padding: EdgeInsets.zero,
 
             onPressed: onCancel,
-            // child: ViewLabel(
+            // child: ViewLabels(
             //   // alignment: Alignment.center,
             //   // padding: const EdgeInsets.only(right: 13),
             //   // padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -121,7 +121,7 @@ mixin _Header on _State {
             //   // icon: Icons.cancel,
             // ),
             style: Theme.of(context).textTheme.labelMedium,
-            child: ViewMark(
+            child: ViewMarks(
               // alignment: Alignment.center,
               // padding: const EdgeInsets.only(right: 13),
               // padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -129,7 +129,7 @@ mixin _Header on _State {
               // softWrap: true,
               // icon: Icons.cancel,
             ),
-            // child: ViewLabel(
+            // child: ViewLabels(
             //   // alignment: Alignment.center,
             //   // padding: const EdgeInsets.only(right: 13),
             //   // padding: const EdgeInsets.symmetric(horizontal: 10),

@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lidea/provider.dart';
 // import 'package:lidea/hive.dart';
 
-import '../../app.dart';
-import '/widget/button.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -29,7 +28,7 @@ class _View extends _State with _Header {
     return Scaffold(
       body: Views(
         // scrollBottom: ScrollBottomNavigation(
-        //   listener: _controller.bottom,
+        //   listener: scrollController.bottom,
         //   notifier: App.viewData.bottom,
         // ),
 
@@ -38,7 +37,7 @@ class _View extends _State with _Header {
             return child!;
           },
           child: CustomScrollView(
-            controller: _controller,
+            controller: scrollController,
             slivers: _slivers,
           ),
         ),
@@ -259,7 +258,7 @@ class _View extends _State with _Header {
                 if (hasPurchased) {
                   return const SizedBox();
                 }
-                return ViewButton(
+                return ViewButtons(
                   padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   // minSize: 25,
                   color: Theme.of(context).highlightColor,
