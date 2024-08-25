@@ -3,8 +3,8 @@ part of 'main.dart';
 abstract class _State extends StateAbstract<Main> {
   late final ScrollController scrollController = ScrollController();
 
-  // late final boxOfBookmarks = App.core.data.boxOfBookmarks;
-  late final boxOfFavoriteWord = App.core.data.boxOfFavoriteWord;
+  // late final boxOfBookmarks = data.boxOfBookmarks;
+  late final boxOfFavoriteWord = data.boxOfFavoriteWord;
 
   late final ValueNotifier<double> _itemFavoriteBackgroundNotifier = ValueNotifier(0.0);
 
@@ -29,10 +29,10 @@ abstract class _State extends StateAbstract<Main> {
   void onDeleteAllConfirmWithDialog() {
     doConfirmWithDialog(
       context: context,
-      message: App.preference.text.confirmToDelete('all'),
-      title: App.preference.text.confirmation,
-      cancel: App.preference.text.cancel,
-      confirm: App.preference.text.confirm,
+      message: preference.text.confirmToDelete('all'),
+      title: preference.text.confirmation,
+      cancel: preference.text.cancel,
+      confirm: preference.text.confirm,
     ).then((bool? confirmation) {
       // if (confirmation != null && confirmation) onClearAll();
       if (confirmation != null && confirmation) {
@@ -68,7 +68,7 @@ abstract class _State extends StateAbstract<Main> {
       data.boxOfSettings.suggestQuery(value: ord);
       App.core.conclusionGenerate();
     }
-    App.route.pushNamed(
+    route.pushNamed(
       'home/search',
       arguments: {'keyword': ord},
     );

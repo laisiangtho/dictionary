@@ -3,30 +3,18 @@ library data.core;
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-// NOTE: Preference
+/// NOTE: Locale Preference
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// NOTE: Authentication
-import 'package:lidea/unit/authenticate.dart';
-
-// NOTE: Core notify and Initializing properties
-import 'package:lidea/unit/core.dart';
-
-// NOTE: Analytics
-import 'package:lidea/unit/analytics.dart';
-
-// NOTE: Individual
-import 'package:lidea/unit/store.dart';
-import 'package:lidea/unit/sqlite.dart';
-import 'package:lidea/unit/speech.dart';
-import 'package:lidea/unit/audio.dart';
-
-// NOTE: View
-import 'package:lidea/view/main.dart' show ViewScrolls, ViewData;
+/// NOTE: Lidea view ???
+import 'package:lidea/view/main.dart' show ViewScrolls;
 export 'package:lidea/view/main.dart';
 
-// NOTE: Nest and Type
+/// NOTE: Route
+import '/view/routes.dart';
+
+/// NOTE: Nest and Type
 import '/type/main.dart';
 export '/type/main.dart';
 
@@ -50,7 +38,6 @@ class Core extends _Searches {
   Future<void> initialized(BuildContext context) async {
     Stopwatch initWatch = Stopwatch()..start();
 
-    preference.setContext(context);
     await super.initialized(context);
 
     await mockTest();

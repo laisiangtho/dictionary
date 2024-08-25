@@ -9,31 +9,23 @@ class Data extends DataNest {
   /// ```
   Data({required super.state});
 
-  // late final boxOfBooks = BoxOfBooks<BooksType>();
-  // late final boxOfBookmarks = BoxOfBookmarks<BookmarksType>();
+  @override
+  SuggestionType<OfRawType> cacheSuggestion = const SuggestionType();
 
-  // List<DefinitionBible> cacheBible = [];
+  @override
+  ConclusionType cacheConclusion = const ConclusionType();
 
   late List<SynsetType> synset;
   late List<SynmapType> synmap;
 
-  SuggestionType<OfRawType> cacheSuggestion = const SuggestionType();
-  ConclusionType<Map<String, dynamic>> cacheConclusion = const ConclusionType();
-
   @override
   Future<void> ensureInitialized() async {
     await super.ensureInitialized();
-
-    // boxOfBooks.registerAdapter(BooksAdapter());
-    // boxOfBookmarks.registerAdapter(BookmarksAdapter());
   }
 
   @override
   Future<void> prepareInitialized() async {
     await super.prepareInitialized();
-
-    // await boxOfBooks.open('book');
-    // await boxOfBookmarks.open('bookmark');
 
     synset = env.attach['synset'].map<SynsetType>((o) => SynsetType.fromJSON(o)).toList();
     synmap = env.attach['synmap'].map<SynmapType>((o) => SynmapType.fromJSON(o)).toList();

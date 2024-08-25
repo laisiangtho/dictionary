@@ -26,9 +26,11 @@ abstract class _Searches extends _Engines {
   /// ```
   /// typeof [SuggestionType]
   // Future<void> suggestionGenerate() async {}
-  Future<void> suggestionGenerate() async {
+  @override
+  Future<void> suggestionGenerate({String ord = ''}) async {
+    data.suggestQuery = ord;
     data.cacheSuggestion = SuggestionType<OfRawType>(
-      query: suggestQuery,
+      query: ord,
       raw: await sql.suggestion(),
     );
     state.notify();
@@ -48,32 +50,33 @@ abstract class _Searches extends _Engines {
   //   data.boxOfRecentSearch.update(searchQuery);
   // }
 
-  // ignore: todo
   // TODO: definition on multi words
   // see
   /// ```dart
   /// [query: String, raw: List<Map<String, Object?>>]
   /// ```
   /// typeof [ConclusionType]
-  Future<void> conclusionGenerate({bool init = false}) async {
+  @override
+  Future<void> conclusionGenerate({String ord = '', bool init = false}) async {
     debugPrint('conclusionGenerate new: $searchQuery old: ${data.cacheConclusion.query}');
-    if (data.cacheConclusion.query != searchQuery) {
+    data.searchQuery = ord;
+    if (data.cacheConclusion.query != ord) {
       data.cacheConclusion = ConclusionType(
         query: searchQuery,
         raw: await _definitionGenerator(),
       );
-      data.boxOfRecentSearch.update(searchQuery);
+      data.boxOfRecentSearch.update(ord);
       if (!init) {
         // notify();
         state.notify();
       }
-      debugPrint('conclusionGenerate $searchQuery');
+      debugPrint('conclusionGenerate $ord');
     }
 
     // debugPrint(data.cacheConclusion.raw.toString());
     // collection.recentSearchUpdate(word);
     // collection.searchQuery = word;
-    analytics.search(searchQuery);
+    analytics.search(ord);
   }
 
   // get conclusion

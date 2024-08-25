@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-stack';
@@ -12,7 +12,7 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
+class _State extends DraggableSheets<Main> {
   @override
-  ViewData get viewData => App.viewData;
+  late final Core app = App.core;
 }

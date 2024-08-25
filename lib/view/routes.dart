@@ -3,8 +3,10 @@ import 'package:lidea/route/main.dart';
 
 export 'package:lidea/route/main.dart' show RouteParser;
 
+/// NOTE: Launcher
 import 'screen_launcher.dart';
 
+/// NOTE: Menu
 import 'home/main.dart' as home;
 import 'user/main.dart' as user;
 // import 'bible/main.dart' as bible;
@@ -16,12 +18,20 @@ import 'favorite_word/main.dart' as favorite_word;
 // import 'settings/main.dart' as settings;
 import 'store/main.dart' as store;
 // import 'gallery/main.dart' as gallery;
-// NOTE: sheet
+
+/// NOTE: Test
+// import 'test/tmp.dart' as test_tmp;
+
+/// NOTE: sheet
 import 'sheet/modal/main.dart' as sheets_modal;
 import 'sheet/stack/main.dart' as sheets_stack;
 import 'sheet/parallel/main.dart' as sheet_parallel;
 import 'sheet/filter/main.dart' as sheet_filter;
-// NOTE: pop
+
+/// NOTE: Recto
+// import 'recto/editor.dart' as recto_editor;
+
+/// NOTE: pop
 import 'pop/options/main.dart' as pop_options;
 import 'pop/bookmarks/main.dart' as pop_bookmarks;
 // import 'pop/books/main.dart' as pop_books;
@@ -40,118 +50,116 @@ class RouteDelegates extends RouteMixinDelegate<RouteNotifier> {
   }
 
   @override
-  RouteNotifier get notifier {
-    return RouteNotifier(
-      route: [
-        RouteType(
-          name: home.Main.route,
-          primaryNavigation: true,
-          icon: home.Main.icon,
-          label: home.Main.label,
-          nest: [
-            RouteType(
-              page: const home.Main(),
-              nest: [
-                RouteType(
-                  name: user.Main.route,
-                  icon: user.Main.icon,
-                  label: user.Main.label,
-                  page: const user.Main(),
-                ),
-                RouteType(
-                  name: search.Main.route,
-                  icon: search.Main.icon,
-                  label: search.Main.label,
-                  page: const search.Main(),
-                ),
-                RouteType(
-                  name: recent_search.Main.route,
-                  icon: recent_search.Main.icon,
-                  label: recent_search.Main.label,
-                  page: const recent_search.Main(),
-                ),
-                RouteType(
-                  name: store.Main.route,
-                  icon: store.Main.icon,
-                  label: store.Main.label,
-                  page: const store.Main(),
-                ),
-              ],
-            ),
-          ],
-        ),
-        RouteType(
-          name: recent_search.Main.route,
-          primaryNavigation: true,
-          icon: recent_search.Main.icon,
-          label: recent_search.Main.label,
-          nest: [
-            RouteType(
-              page: const recent_search.Main(),
-            ),
-          ],
-        ),
-        RouteType(
-          name: favorite_word.Main.route,
-          primaryNavigation: true,
-          icon: favorite_word.Main.icon,
-          label: favorite_word.Main.label,
-          nest: [
-            RouteType(
-              page: const favorite_word.Main(),
-            ),
-          ],
-        ),
-        RouteType(
-          name: store.Main.route,
-          primaryNavigation: true,
-          icon: store.Main.icon,
-          label: store.Main.label,
-          nest: [
-            RouteType(
-              page: const store.Main(),
-            ),
-          ],
-        ),
-        RouteType(
-          name: sheet_parallel.Main.route,
-          icon: sheet_parallel.Main.icon,
-          label: sheet_parallel.Main.label,
-          page: const sheet_parallel.Main(),
-        ),
-        RouteType(
-          name: sheets_modal.Main.route,
-          icon: sheets_modal.Main.icon,
-          label: sheets_modal.Main.label,
-          page: const sheets_modal.Main(),
-        ),
-        RouteType(
-          name: sheets_stack.Main.route,
-          icon: sheets_stack.Main.icon,
-          label: sheets_stack.Main.label,
-          page: const sheets_stack.Main(),
-        ),
-        RouteType(
-          name: sheet_filter.Main.route,
-          icon: sheet_filter.Main.icon,
-          label: sheet_filter.Main.label,
-          page: const sheet_filter.Main(),
-        ),
-        RouteType(
-          name: pop_options.Main.route,
-          icon: pop_options.Main.icon,
-          label: pop_options.Main.label,
-          page: const pop_options.Main(),
-        ),
-        RouteType(
-          name: pop_bookmarks.Main.route,
-          icon: pop_bookmarks.Main.icon,
-          label: pop_bookmarks.Main.label,
-          page: const pop_bookmarks.Main(),
-        ),
-      ],
-    );
-  }
+  final RouteNotifier notifier = RouteNotifier(
+    route: [
+      RouteType(
+        name: home.Main.route,
+        primaryNavigation: true,
+        icon: home.Main.icon,
+        label: home.Main.label,
+        nest: [
+          RouteType(
+            page: const home.Main(),
+            nest: [
+              RouteType(
+                name: user.Main.route,
+                icon: user.Main.icon,
+                label: user.Main.label,
+                page: const user.Main(),
+              ),
+              RouteType(
+                name: search.Main.route,
+                icon: search.Main.icon,
+                label: search.Main.label,
+                page: const search.Main(),
+              ),
+              RouteType(
+                name: recent_search.Main.route,
+                icon: recent_search.Main.icon,
+                label: recent_search.Main.label,
+                page: const recent_search.Main(),
+              ),
+              RouteType(
+                name: store.Main.route,
+                icon: store.Main.icon,
+                label: store.Main.label,
+                page: const store.Main(),
+              ),
+            ],
+          ),
+        ],
+      ),
+      RouteType(
+        name: recent_search.Main.route,
+        primaryNavigation: true,
+        icon: recent_search.Main.icon,
+        label: recent_search.Main.label,
+        nest: [
+          RouteType(
+            page: const recent_search.Main(),
+          ),
+        ],
+      ),
+      RouteType(
+        name: favorite_word.Main.route,
+        primaryNavigation: true,
+        icon: favorite_word.Main.icon,
+        label: favorite_word.Main.label,
+        nest: [
+          RouteType(
+            page: const favorite_word.Main(),
+          ),
+        ],
+      ),
+      RouteType(
+        name: store.Main.route,
+        primaryNavigation: true,
+        icon: store.Main.icon,
+        label: store.Main.label,
+        nest: [
+          RouteType(
+            page: const store.Main(),
+          ),
+        ],
+      ),
+      RouteType(
+        name: sheet_parallel.Main.route,
+        icon: sheet_parallel.Main.icon,
+        label: sheet_parallel.Main.label,
+        page: const sheet_parallel.Main(),
+      ),
+      RouteType(
+        name: sheets_modal.Main.route,
+        icon: sheets_modal.Main.icon,
+        label: sheets_modal.Main.label,
+        page: const sheets_modal.Main(),
+      ),
+      RouteType(
+        name: sheets_stack.Main.route,
+        icon: sheets_stack.Main.icon,
+        label: sheets_stack.Main.label,
+        page: const sheets_stack.Main(),
+      ),
+      RouteType(
+        name: sheet_filter.Main.route,
+        icon: sheet_filter.Main.icon,
+        label: sheet_filter.Main.label,
+        page: const sheet_filter.Main(),
+      ),
+      RouteType(
+        name: pop_options.Main.route,
+        icon: pop_options.Main.icon,
+        label: pop_options.Main.label,
+        page: const pop_options.Main(),
+      ),
+      RouteType(
+        name: pop_bookmarks.Main.route,
+        icon: pop_bookmarks.Main.icon,
+        label: pop_bookmarks.Main.label,
+        page: const pop_bookmarks.Main(),
+      ),
+    ],
+  );
 }
 
 /// RouteChangeNotifier

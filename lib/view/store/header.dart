@@ -7,7 +7,7 @@ mixin _Header on _State {
       left: [
         OptionButtons.back(
           navigator: state.navigator,
-          label: App.preference.text.back,
+          label: preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -16,12 +16,12 @@ mixin _Header on _State {
           const Alignment(0, .5),
           data.snapShrink,
         ),
-        label: App.preference.text.store,
+        label: preference.text.store,
         data: data,
       ),
       right: [
         ViewButtons(
-          message: App.preference.text.restorePurchase('true'),
+          message: preference.text.restorePurchase('true'),
           onPressed: onRestore,
           child: const ViewMarks(
             icon: Icons.restore_rounded,

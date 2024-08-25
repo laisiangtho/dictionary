@@ -16,11 +16,15 @@ class _MainState extends StateAbstract<Main> {
     setState(() {
       fontSize.call(increase);
     });
+    state.asMap['setFontSize'] ?? false;
   }
 
-  void Function(bool) get fontSize => args!['setFontSize'];
+  /// args!['setFontSize'];
+  void Function(bool) get fontSize => state.asMap['setFontSize'] ?? false;
 
-  late final RenderBox render = args!['render'];
+  /// args!['render'];
+  late final RenderBox render = state.asMap['render'];
+
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
   late final Size sizeOfContext = MediaQuery.of(context).size;

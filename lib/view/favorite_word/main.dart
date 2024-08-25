@@ -29,7 +29,7 @@ class _View extends _State with _Header {
       body: Views(
         scrollBottom: ScrollBottomNavigation(
           listener: scrollController.bottom,
-          notifier: App.viewData.bottom,
+          notifier: app.bottom,
         ),
         child: ValueListenableBuilder(
           valueListenable: boxOfFavoriteWord.listen(),
@@ -158,7 +158,7 @@ class _View extends _State with _Header {
     //   child: Padding(
     //     padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
     //     child: Text(
-    //       App.preference.text.delete,
+    //       preference.text.delete,
     //       textAlign: TextAlign.right,
     //       style: Theme.of(context).textTheme.bodyLarge,
     //     ),

@@ -1,104 +1,33 @@
 import 'package:flutter/material.dart';
-
 import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
-// import 'package:lidea/view/user/main.dart';
+// import 'package:lidea/hive.dart';
 
-import '/app.dart';
+import '../../app.dart';
 
 part 'state.dart';
-part 'header.dart';
-
-part 'result.dart';
 part 'suggest.dart';
-part 'recent.dart';
+part 'histories.dart';
+part 'result.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'search'; // ./result ./suggestion
+  static String route = 'search';
   static String label = 'Search';
   static IconData icon = LideaIcon.search;
-
   @override
-  State<Main> createState() => _View();
+  State<StatefulWidget> createState() => _View();
 }
 
-class _View extends _State with _Header, _Suggest, _Result, _Recents {
+class _View extends _State<Main> with _Suggest, _Result {
   @override
-  Widget build(BuildContext context) {
-    debugPrint('search->build');
-
-    // updateQuery(args!['keyword']);
-
-    return Scaffold(
-      body: Views(
-        scrollBottom: ScrollBottomNavigation(
-          listener: scrollController.bottom,
-          notifier: App.viewData.bottom,
-        ),
-        // child: NestedScrollView(
-        //   controller: scrollController,
-        //   headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        //     return <Widget>[
-        //       ViewHeaderSliver(
-        //         pinned: true,
-        //         floating: false,
-        //         padding: state.fromContext.viewPadding,
-        //         heights: const [kToolbarHeight],
-        //         // overlapsBackgroundColor: state.theme.primaryColor,
-        //         overlapsBorderColor: state.theme.dividerColor,
-        //         overlapsForce: innerBoxIsScrolled,
-        //         builder: _header,
-        //       ),
-        //     ];
-        //   },
-        //   body: ValueListenableBuilder<bool>(
-        //     valueListenable: _suggestNotifier,
-        //     builder: (context, toggle, child) {
-        //       if (toggle) {
-        //         return suggestView();
-        //       }
-        //       return child!;
-        //     },
-        //     child: resultView(),
-        //   ),
-        // ),
-        child: CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            ViewHeaderSliver(
-              pinned: true,
-              floating: false,
-              padding: state.fromContext.viewPadding,
-              heights: const [kToolbarHeight],
-              // overlapsBackgroundColor: state.theme.primaryColor,
-              overlapsBorderColor: state.theme.dividerColor,
-              // overlapsForce: innerBoxIsScrolled,
-              builder: _header,
-            ),
-            ValueListenableBuilder<bool>(
-              valueListenable: _suggestNotifier,
-              builder: (context, toggle, child) {
-                if (toggle) {
-                  return _suggestView();
-                }
-                return child!;
-              },
-              child: resultView(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _suggestView() {
+  Widget suggestView() {
     return Selector<Core, SuggestionType<OfRawType>>(
       selector: (_, e) => e.data.cacheSuggestion,
       builder: (BuildContext context, SuggestionType<OfRawType> o, Widget? child) {
         if (o.emptyQuery) {
-          return _recentView();
+          return const _Histories();
         } else if (o.emptyResult) {
           return child!;
         } else {
@@ -106,8 +35,51 @@ class _View extends _State with _Header, _Suggest, _Result, _Recents {
         }
       },
       child: ViewFeedbacks.message(
-        label: App.preference.text.searchNoMatch,
+        label: preference.text.searchNoMatch,
       ),
+    );
+  }
+
+  @override
+  Widget resultView() {
+    return FutureBuilder(
+      future: initiator,
+      builder: (BuildContext _, AsyncSnapshot<void> snap) {
+        switch (snap.connectionState) {
+          case ConnectionState.waiting:
+          case ConnectionState.none:
+            return ViewFeedbacks.message(
+              label: preference.text.aMoment,
+            );
+          default:
+            // return Selector<Core, ConclusionType>(
+            //   selector: (_, e) => e.data.cacheConclusion,
+            //   builder: (BuildContext context, ConclusionType o, Widget? child) {
+            //     if (o.query.isEmpty) {
+            //       return _msg(preference.text.aWordOrTwo);
+            //     } else if (o.raw.isNotEmpty) {
+            //       return _resultBlock(o);
+            //     } else {
+            //       return _msg(preference.text.searchNoMatch);
+            //     }
+            //   },
+            // );
+            return Selector<Core, ConclusionType>(
+              selector: (_, e) => e.data.cacheConclusion,
+              builder: (BuildContext context, ConclusionType o, Widget? child) {
+                onResult();
+                if (o.emptyQuery) {
+                  return _resultEmptyQuery();
+                } else if (o.emptyResult) {
+                  return child!;
+                } else {
+                  return _resultBlock(o);
+                }
+              },
+              child: _resultEmpty(),
+            );
+        }
+      },
     );
   }
 }

@@ -32,7 +32,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   // subtitle: const Text('...'),
                   onTap: () {
                     // updateToken
-                    App.data.updateToken().then((e) {
+                    data.updateToken().then((e) {
                       debugPrint('updateToken done');
                     }).catchError((e) {
                       debugPrint('updateToken $e');
@@ -80,7 +80,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Card (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    App.route.pushNamed('home/test-card');
+                    route.pushNamed('home/test-card');
                   },
                 ),
               ),
@@ -104,7 +104,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Sliver (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    App.route.pushNamed('home/test-sliver');
+                    route.pushNamed('home/test-sliver');
                   },
                 ),
               ),
@@ -117,7 +117,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Search (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    App.route.pushNamed('home/test-search');
+                    route.pushNamed('home/test-search');
                   },
                 ),
               ),
@@ -130,7 +130,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Section (test)'),
                   subtitle: const Text('preferred language'),
                   onTap: () {
-                    App.route.pushNamed('home/leaf-section');
+                    route.pushNamed('home/leaf-section');
                   },
                 ),
               ),

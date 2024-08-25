@@ -1,91 +1,49 @@
 part of 'main.dart';
 
-mixin _Suggest on _State {
-  // Widget suggestView() {
-  //   // return CustomScrollView(
-  //   //   primary: true,
-  //   //   slivers: [
-  //   //     Selector<Core, SuggestionType<OfRawType>>(
-  //   //       selector: (_, e) => e.cacheSuggestion,
-  //   //       builder: (BuildContext context, SuggestionType<OfRawType> o, Widget? child) {
-  //   //         if (o.emptyQuery) {
-  //   //           return const _Recents();
-  //   //         } else if (o.emptyResult) {
-  //   //           return child!;
-  //   //         } else {
-  //   //           return _suggestBlock(o);
-  //   //         }
-
-  //   //         // return suggests(o);
-  //   //       },
-  //   //       child: ViewFeedback.message(
-  //   //         label: App.preference.text.searchNoMatch,
-  //   //       ),
-  //   //     ),
-  //   //   ],
-  //   // );
-  //   return Selector<Core, SuggestionType<OfRawType>>(
-  //     selector: (_, e) => e.data.cacheSuggestion,
-  //     builder: (BuildContext context, SuggestionType<OfRawType> o, Widget? child) {
-  //       if (o.emptyQuery) {
-  //         return recentView();
-  //       } else if (o.emptyResult) {
-  //         return child!;
-  //       } else {
-  //         return _suggestBlock(o);
-  //       }
-  //     },
-  //     child: ViewFeedback.message(
-  //       label: App.preference.text.searchNoMatch,
-  //     ),
-  //   );
-  // }
-
+mixin _Suggest on _State<Main> {
   Widget _suggestBlock(SuggestionType<OfRawType> o) {
-    return ViewSections(
-      // primary: false,
-      headerTitle: ViewLabels(
-        alignment: Alignment.centerLeft,
-        label: preference.text.suggestion((o.raw.length > 1).toString()),
-      ),
-      // headerTrailing: ViewButtons(
-      //   onPressed: () {},
-      //   child: const Icon(Icons.more_horiz),
-      // ),
-      footerTitle: Text('hasFocus ${_focusNode.hasFocus}'),
-      child: ViewCards.fill(
-        // child: ListBody(
-        //   children: [
-        //     ViewButtons(
-        //       onPressed: () {},
-        //       child: const Text('ViewButtons'),
-        //     ),
-        //     ViewButtons(
-        //       child: Text(o.query),
-        //     ),
-        //   ],
-        // ),
-        child: ViewLists.separator(
-          // primary: false,
-          // physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            final snap = o.raw.elementAt(index);
-
-            int ql = suggestQuery.length;
-            String word = snap.term;
-            int wl = word.length;
-            return _suggestItem(word, ql < wl ? ql : wl);
-          },
-          itemSnap: const ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-            leading: Icon(Icons.north_east_rounded),
+    return CustomScrollView(
+      key: PageStorageKey('search-suggest-${o.query}'),
+      // controller: scrollController,
+      slivers: [
+        ViewSections(
+          headerLeading: const ViewLabels(
+            icon: LideaIcon.dotHoriz,
+            // iconSize: 22,
           ),
-          separator: (BuildContext context, int index) {
-            return const ViewDividers();
-          },
-          itemCount: o.raw.length,
+          headerTitle: ViewLabels(
+            alignment: Alignment.centerLeft,
+            label: preference.text.suggestion((o.raw.length > 1).toString()),
+          ),
+          // headerTrailing: ViewButtons(
+          //   onPressed: () {},
+          //   child: const Icon(Icons.more_horiz),
+          // ),
+          footerTitle: const Text('...'),
+          child: ViewCards.fill(
+            child: ViewLists.separator(
+              // primary: false,
+              // physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                final snap = o.raw.elementAt(index);
+
+                int ql = lengthOfSuggestQuery;
+                String word = snap.term;
+                int wl = word.length;
+                return _suggestItem(word, ql < wl ? ql : wl);
+              },
+              itemSnap: const ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                leading: Icon(Icons.north_east_rounded),
+              ),
+              separator: (BuildContext context, int index) {
+                return const ViewDividers();
+              },
+              itemCount: o.raw.length,
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 

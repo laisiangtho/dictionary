@@ -9,14 +9,15 @@ class BottomNavigationWidget extends StatelessWidget {
     // App.scroll.bottomNavigation
     return ValueListenableBuilder<double>(
       // valueListenable: App.scroll.bottomFactor,
-      valueListenable: App.viewData.bottom.factor,
+      valueListenable: App.core.bottom.factor,
       builder: (_, factor, child) {
         // scrollNavigation.bottomPadding = MediaQuery.of(context).viewPadding.bottom;
         return Align(
           alignment: const Alignment(0, -1),
           heightFactor: factor,
           child: Padding(
-            padding: EdgeInsets.only(bottom: App.viewData.fromContext.viewPadding.bottom),
+            // padding: EdgeInsets.only(bottom: App.viewData.fromContext.viewPadding.bottom),
+            padding: const EdgeInsets.only(bottom: 0),
             child: bottomNavigationToggle(),
           ),
         );
@@ -26,7 +27,7 @@ class BottomNavigationWidget extends StatelessWidget {
 
   Widget bottomNavigationToggle() {
     return ValueListenableBuilder<double>(
-      valueListenable: App.viewData.bottom.toggle,
+      valueListenable: App.core.bottom.toggle,
       builder: (context, toggle, child) {
         return Align(
           alignment: const Alignment(0, -1),
@@ -57,7 +58,7 @@ class BottomNavigationWidget extends StatelessWidget {
 
   // AppRouteNotifier get state => widget.delegate.state;
   // List<RouteType> get route => state.routesPrimary;
-  // AppRouteNotifier get state => App.routeDelegate.state;
+  // AppRouteNotifier get state => App.core.routeDelegate.state;
   // List<RouteType> get route => state.routesPrimary;
 
   // late final bottomNavigation = route.map((e) {
@@ -125,20 +126,20 @@ class BottomNavigationWidget extends StatelessWidget {
 
   // Widget bottomNavigationBar() {
   //   return AnimatedBuilder(
-  //     animation: App.routeDelegate.state,
+  //     animation: App.core.routeDelegate.state,
   //     builder: (_, child) {
   //       return BottomNavigationBar(
   //         backgroundColor: Colors.transparent,
-  //         items: App.routeDelegate.state.routesPrimary.map((e) {
+  //         items: App.core.routeDelegate.state.routesPrimary.map((e) {
   //           return BottomNavigationBarItem(
   //             icon: Icon(e.icon),
   //             label: e.label,
   //           );
   //         }).toList(),
-  //         currentIndex: App.routeDelegate.state.viewIndex,
+  //         currentIndex: App.core.routeDelegate.state.viewIndex,
   //         elevation: 0,
   //         onTap: (index) {
-  //           App.routeDelegate.state.viewIndex = index;
+  //           App.core.routeDelegate.state.viewIndex = index;
   //         },
   //       );
   //     },
@@ -146,7 +147,7 @@ class BottomNavigationWidget extends StatelessWidget {
   // }
   Widget bottomNavigationBar() {
     return AnimatedBuilder(
-      animation: App.routeDelegate.notifier,
+      animation: App.core.routeDelegate.notifier,
       builder: (context, child) {
         return BottomNavigationBar(
           // backgroundColor: Colors.transparent,
@@ -156,7 +157,7 @@ class BottomNavigationWidget extends StatelessWidget {
           selectedIconTheme: Theme.of(context).iconTheme.copyWith(
                 size: 25,
               ),
-          items: App.routeDelegate.notifier.routesPrimary.map((e) {
+          items: App.core.routeDelegate.notifier.routesPrimary.map((e) {
             return BottomNavigationBarItem(
               // icon: AnimatedOpacity(
               //   opacity: App.scroll.bottomFactor.value,
@@ -167,10 +168,10 @@ class BottomNavigationWidget extends StatelessWidget {
               label: e.label,
             );
           }).toList(),
-          currentIndex: App.routeDelegate.notifier.viewIndex,
+          currentIndex: App.core.routeDelegate.notifier.viewIndex,
           elevation: 3,
           onTap: (index) {
-            App.routeDelegate.notifier.viewIndex = index;
+            App.core.routeDelegate.notifier.viewIndex = index;
           },
         );
       },
