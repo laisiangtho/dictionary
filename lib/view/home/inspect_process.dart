@@ -11,7 +11,7 @@ class InspectProcess extends StatefulWidget {
   State<InspectProcess> createState() => _InspectProcessState();
 }
 
-abstract class _InspectProcessAbstract extends StateAbstract<InspectProcess> {}
+abstract class _InspectProcessAbstract extends CommonStates<InspectProcess> {}
 
 class _InspectProcessState extends _InspectProcessAbstract {
   @override
@@ -80,7 +80,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Card (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    route.pushNamed('home/test-card');
+                    router.push('/test-card');
                   },
                 ),
               ),
@@ -104,7 +104,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Sliver (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    route.pushNamed('home/test-sliver');
+                    router.push('/test-sliver');
                   },
                 ),
               ),
@@ -117,7 +117,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Search (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    route.pushNamed('home/test-search');
+                    router.push('/test-search');
                   },
                 ),
               ),
@@ -130,7 +130,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Section (test)'),
                   subtitle: const Text('preferred language'),
                   onTap: () {
-                    route.pushNamed('home/leaf-section');
+                    router.push('/leaf-section');
                   },
                 ),
               ),

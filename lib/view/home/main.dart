@@ -23,41 +23,17 @@ class Main extends StatefulWidget {
 }
 
 class _View extends _State with _Header {
-  // late final abc = core.sql.testDeleteIt('love');
-  // late final xyz = core.sql.search('love');
-
   @override
   Widget build(BuildContext context) {
-    debugPrint('home->build');
-
-    // core.sql.search('love').then((value) {
-    //   debugPrint('db-query $value');
-    // });
-
-    // xyz.then((value) {
-    //   debugPrint('db-query $value');
-    // });
-    // $uid.$name
-
-    // await txn.rawQuery('SELECT * FROM sqlite_master WHERE type =?;', ['index']).then((tid) {
-    //     debugPrint('db-type-index $tid');
-    //     debugPrint('db-PRAGMA database_list $dl');
-    //     debugPrint('db-??? ${_wordContext.createIndex}');
-    //     debugPrint('db-??? ${_deriveContext.createIndex}');
-    //     if (tid.isEmpty) {
-    //       batch.execute(_wordContext.createIndex!);
-    //       batch.execute(_deriveContext.createIndex!);
-    //     }
-    //   });
-
     return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text('Test'),
+      // ),
       body: Views(
         scrollBottom: ScrollBottomNavigation(
           listener: scrollController.bottom,
           notifier: app.bottom,
         ),
-
-        // snap: _viewSnap,
         child: CustomScrollView(
           controller: scrollController,
           slivers: _slivers,
@@ -71,7 +47,7 @@ class _View extends _State with _Header {
       ViewHeaderSliver(
         pinned: true,
         floating: false,
-        padding: state.fromContext.viewPadding,
+        padding: state.media.viewPadding,
         heights: const [kToolbarHeight, 100],
         // overlapsBackgroundColor: state.theme.primaryColor,
         overlapsBorderColor: state.theme.dividerColor,
@@ -108,12 +84,12 @@ class _View extends _State with _Header {
     return ViewSections(
       show: items.isNotEmpty,
       headerTitle: Text(
-        preference.text.recentSearch('true'),
+        lang.recentSearch('true'),
       ),
       headerTrailing: ViewButtons(
-        message: preference.text.addTo(preference.text.recentSearch('true')),
+        message: lang.addTo(lang.recentSearch('true')),
         onPressed: () {
-          route.pushNamed('home/recent-search');
+          app.route.page.go('/recent-search');
         },
         child: const ViewMarks(
           icon: Icons.more_horiz,
@@ -136,10 +112,8 @@ class _View extends _State with _Header {
                   ),
                   // onPressed: () => onSearch(e.value.word),
                   onPressed: () {
-                    route.pushNamed(
-                      'home/search',
-                      arguments: {'keyword': e.word},
-                    );
+                    app.route.page.push('/search', extra: {'keyword': e.word});
+                    // app.route.page.pushNamed('/search', queryParameters: {'keyword': e.word});
                   },
                 );
               },
@@ -151,15 +125,9 @@ class _View extends _State with _Header {
   }
 }
 
-class PullToRefresh extends PullToActivate {
+class PullToRefresh extends ViewPulls {
   const PullToRefresh({super.key});
 
-  @override
-  State<PullToActivate> createState() => _PullToRefreshState();
-}
-
-class _PullToRefreshState extends PullOfState {
-  // late final Core core = context.read<Core>();
   @override
   Future<void> refreshUpdate() async {
     await Future.delayed(const Duration(milliseconds: 50));

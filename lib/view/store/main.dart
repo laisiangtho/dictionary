@@ -50,7 +50,7 @@ class _View extends _State with _Header {
       ViewHeaderSliver(
         pinned: true,
         floating: false,
-        padding: state.fromContext.viewPadding,
+        padding: state.media.viewPadding,
         heights: const [kToolbarHeight, kToolbarHeight],
         // overlapsBackgroundColor: state.theme.primaryColor,
         overlapsBorderColor: state.theme.dividerColor,

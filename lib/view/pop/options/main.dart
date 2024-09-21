@@ -11,7 +11,7 @@ class Main extends StatefulWidget {
   State<Main> createState() => _MainState();
 }
 
-class _MainState extends StateAbstract<Main> {
+class _MainState extends CommonStates<Main> {
   void setFontSize(bool increase) {
     setState(() {
       fontSize.call(increase);
@@ -19,10 +19,10 @@ class _MainState extends StateAbstract<Main> {
   }
 
   /// args!['setFontSize'];
-  void Function(bool) get fontSize => state.asMap['setFontSize'] ?? false;
+  void Function(bool) get fontSize => state.param.map['setFontSize'] ?? false;
 
   /// args!['render'];
-  late final RenderBox render = state.asMap['render'];
+  late final RenderBox render = state.param.map['render'];
 
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
@@ -95,8 +95,8 @@ class _MainState extends StateAbstract<Main> {
         shrinkWrap: true,
         children: <Widget>[
           ViewButtons(
-            // style: Theme.of(context).textTheme.labelSmall,
-            style: state.textTheme.labelLarge,
+            // style: state.style.labelSmall,
+            style: state.style.labelLarge,
             onPressed: () => setFontSize(false),
             child: const Align(alignment: Alignment.center, child: Text('-')),
           ),
@@ -113,8 +113,8 @@ class _MainState extends StateAbstract<Main> {
           ),
           ViewButtons(
             onPressed: () => setFontSize(true),
-            // style: Theme.of(context).textTheme.labelLarge,
-            style: state.textTheme.labelLarge,
+            // style: state.style.labelLarge,
+            style: state.style.labelLarge,
             child: const Align(alignment: Alignment.center, child: Text('+')),
           ),
         ],

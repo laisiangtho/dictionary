@@ -35,7 +35,7 @@ class _View extends _State<Main> with _Suggest, _Result {
         }
       },
       child: ViewFeedbacks.message(
-        label: preference.text.searchNoMatch,
+        label: lang.searchNoMatch,
       ),
     );
   }
@@ -49,18 +49,18 @@ class _View extends _State<Main> with _Suggest, _Result {
           case ConnectionState.waiting:
           case ConnectionState.none:
             return ViewFeedbacks.message(
-              label: preference.text.aMoment,
+              label: lang.aMoment,
             );
           default:
             // return Selector<Core, ConclusionType>(
             //   selector: (_, e) => e.data.cacheConclusion,
             //   builder: (BuildContext context, ConclusionType o, Widget? child) {
             //     if (o.query.isEmpty) {
-            //       return _msg(preference.text.aWordOrTwo);
+            //       return _msg(lang.aWordOrTwo);
             //     } else if (o.raw.isNotEmpty) {
             //       return _resultBlock(o);
             //     } else {
-            //       return _msg(preference.text.searchNoMatch);
+            //       return _msg(lang.searchNoMatch);
             //     }
             //   },
             // );

@@ -7,23 +7,21 @@ mixin _Suggest on _State<Main> {
       // controller: scrollController,
       slivers: [
         ViewSections(
-          headerLeading: const ViewLabels(
-            icon: LideaIcon.dotHoriz,
-            // iconSize: 22,
+          headerTitle: Text(
+            lang.suggestion((o.raw.length > 1).toString()),
+            style: state.style.titleSmall,
           ),
-          headerTitle: ViewLabels(
-            alignment: Alignment.centerLeft,
-            label: preference.text.suggestion((o.raw.length > 1).toString()),
-          ),
+          // headerTitle: ViewLabels(
+          //   alignment: Alignment.centerLeft,
+          //   label: lang.suggestion((o.raw.length > 1).toString()),
+          // ),
           // headerTrailing: ViewButtons(
           //   onPressed: () {},
           //   child: const Icon(Icons.more_horiz),
           // ),
-          footerTitle: const Text('...'),
+          // footerTitle: const Text('...'),
           child: ViewCards.fill(
             child: ViewLists.separator(
-              // primary: false,
-              // physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 final snap = o.raw.elementAt(index);
 
@@ -49,18 +47,18 @@ mixin _Suggest on _State<Main> {
 
   Widget _suggestItem(String word, int hightlight) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
       leading: const Icon(Icons.north_east_rounded),
       title: Text.rich(
         TextSpan(
           text: word.substring(0, hightlight),
           semanticsLabel: word,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: state.style.bodyLarge,
           children: <TextSpan>[
             TextSpan(
               text: word.substring(hightlight),
               style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
+                color: state.theme.primaryColorDark,
               ),
             )
           ],

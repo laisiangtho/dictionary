@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-abstract class _State extends StateAbstract<Main> {
+abstract class _State extends CommonStates<Main> {
   late final ScrollController scrollController = ScrollController();
 
   late final Store store = app.store;

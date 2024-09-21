@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// NOTE: SystemUiOverlayStyle
-// import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 
 /// NOTE: State management
 import 'package:lidea/provider.dart';
@@ -28,37 +28,47 @@ class MyOrdbok extends StatelessWidget {
         ChangeNotifierProvider<Core>(
           create: (context) => App.core,
         ),
-        // ChangeNotifierProvider<Preference>(
-        //   create: (context) => App.core.preference,
-        // ),
+        ChangeNotifierProvider<Preference>(
+          create: (context) => App.core.preference,
+        ),
         // ChangeNotifierProvider<Authenticate>(
         //   create: (context) => App.core.authenticate,
         // ),
       ],
       builder: (BuildContext context, Widget? child) {
-        final preference = App.core.preference;
-        return AnimatedBuilder(
-          animation: preference,
-          builder: (BuildContext context, Widget? child) {
-            return MaterialApp.router(
-              key: const ValueKey('MyOrdbok'),
-              showSemanticsDebugger: false,
-              debugShowCheckedModeBanner: false,
-              restorationScopeId: 'lidea',
-              locale: preference.locale,
-              localizationsDelegates: preference.localeDelegates,
-              supportedLocales: preference.listOfLocale,
-              theme: preference.light(context),
-              darkTheme: preference.dark(context),
-              themeMode: preference.themeMode,
-              onGenerateTitle: (BuildContext context) => App.core.data.env.name,
-              routeInformationParser: RouteParser(),
-              routerDelegate: App.core.routeDelegate,
-              backButtonDispatcher: RootBackButtonDispatcher(),
+        return Consumer<Preference>(
+          builder: (_, preference, __) {
+            return AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle(
+                systemNavigationBarColor: preference.androidNavigationBarColor(context),
+                systemNavigationBarDividerColor: Colors.transparent,
+                systemNavigationBarIconBrightness: preference.resolvedSystemBrightness,
+                systemNavigationBarContrastEnforced: false,
+                statusBarColor: Colors.transparent,
+                statusBarBrightness: preference.systemBrightness,
+                statusBarIconBrightness: preference.resolvedSystemBrightness,
+                systemStatusBarContrastEnforced: false,
+              ),
+              child: MaterialApp.router(
+                showSemanticsDebugger: false,
+                debugShowCheckedModeBanner: false,
+                locale: preference.locale,
+                localizationsDelegates: preference.localeDelegates,
+                supportedLocales: preference.listOfLocale,
+                theme: preference.light(context),
+                darkTheme: preference.dark(context),
+                themeMode: preference.themeMode,
+                onGenerateTitle: onGenerateTitle,
+                routerConfig: App.core.route.page,
+              ),
             );
           },
         );
       },
     );
+  }
+
+  String onGenerateTitle(BuildContext context) {
+    return App.core.data.env.name;
   }
 }

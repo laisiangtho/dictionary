@@ -49,7 +49,7 @@ class _View extends _State with _Header {
       ViewHeaderSliver(
         pinned: true,
         floating: false,
-        padding: state.fromContext.viewPadding,
+        padding: state.media.viewPadding,
         heights: const [kToolbarHeight, kToolbarHeight],
         // overlapsBackgroundColor: state.theme.primaryColor,
         overlapsBorderColor: state.theme.dividerColor,
@@ -63,10 +63,6 @@ class _View extends _State with _Header {
         child: ViewCards.fill(
           child: listContainer(),
         ),
-        // child: ViewBlockCard(
-        //   clipBehavior: Clip.hardEdge,
-        //   child: _recentBlock(items),
-        // ),
       ),
     ];
   }
@@ -79,7 +75,6 @@ class _View extends _State with _Header {
     // items.sort((a, b) => b.date!.compareTo(a.date!));
 
     return ViewLists.separator(
-      // primary: false,
       itemBuilder: (BuildContext context, int index) {
         return itemContainer(index, items.elementAt(index));
       },
@@ -128,7 +123,7 @@ class _View extends _State with _Header {
       },
 
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
         title: Text(
           // history.value.word,
           item.value.word,
@@ -152,32 +147,22 @@ class _View extends _State with _Header {
   }
 
   Widget _itemDismissibleBackground() {
-    // return Container(
-    //   color: Theme.of(context).disabledColor,
-    //   alignment: Alignment.centerRight,
-    //   child: Padding(
-    //     padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-    //     child: Text(
-    //       preference.text.delete,
-    //       textAlign: TextAlign.right,
-    //       style: Theme.of(context).textTheme.bodyLarge,
-    //     ),
-    //   ),
-    // );
-    return Container(
-      color: Theme.of(context).disabledColor,
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+    return ViewMarks(
+      decoration: BoxDecoration(
+        color: Theme.of(context).dividerColor,
+      ),
+      mainAxisAlignment: MainAxisAlignment.start,
+      badge: '23',
       child: ValueListenableBuilder<double>(
         valueListenable: _itemFavoriteBackgroundNotifier,
         builder: (context, val, child) {
           return Padding(
-            padding: EdgeInsets.only(left: 15 * val),
+            padding: EdgeInsets.only(left: 50 * val),
             child: child,
           );
         },
         child: Text(
-          preference.text.delete,
+          lang.delete,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),

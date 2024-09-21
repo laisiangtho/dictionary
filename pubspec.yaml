@@ -3,7 +3,7 @@ description: A comprehensive Myanmar online dictionary
 
 # Remove this line to publish to pub.dev
 publish_to: 'none'
-version: 1.0.1+42
+version: 1.0.1+43
 
 environment:
   sdk: '>=2.18.2 <3.0.0'

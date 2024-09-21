@@ -20,7 +20,7 @@ mixin _Result on _State<Main> {
 
   Widget _resultEmptyQuery() {
     return ViewFeedbacks.message(
-      label: preference.text.searchNoQuery,
+      label: lang.searchNoQuery,
     );
   }
 
@@ -33,8 +33,8 @@ mixin _Result on _State<Main> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                preference.text.searchNoMatch,
-                style: state.textTheme.headlineMedium,
+                lang.searchNoMatch,
+                style: state.style.labelMedium,
               ),
             ],
           ),
@@ -87,17 +87,17 @@ mixin _Result on _State<Main> {
 
   Widget _wordContainer(String word) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-      horizontalTitleGap: 0,
+      // contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       leading: ViewLabels(
         icon: Icons.campaign_rounded,
         iconColor: state.theme.shadowColor,
+        // alignment: Alignment.center,
         iconSize: 30,
       ),
       title: Text(
         word,
         semanticsLabel: word,
-        style: state.textTheme.headlineSmall,
+        style: state.style.headlineSmall,
       ),
       trailing: ViewButtons(
         onPressed: onSwitchFavorite,

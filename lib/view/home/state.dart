@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 

@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-abstract class _State extends StateAbstract<Main> {
+abstract class _State extends CommonStates<Main> {
   late final ScrollController scrollController = ScrollController();
 
   // late final boxOfBookmarks = data.boxOfBookmarks;
@@ -29,10 +29,10 @@ abstract class _State extends StateAbstract<Main> {
   void onDeleteAllConfirmWithDialog() {
     doConfirmWithDialog(
       context: context,
-      message: preference.text.confirmToDelete('all'),
-      title: preference.text.confirmation,
-      cancel: preference.text.cancel,
-      confirm: preference.text.confirm,
+      message: lang.confirmToDelete('all'),
+      title: lang.confirmation,
+      cancel: lang.cancel,
+      confirm: lang.confirm,
     ).then((bool? confirmation) {
       // if (confirmation != null && confirmation) onClearAll();
       if (confirmation != null && confirmation) {
@@ -53,12 +53,12 @@ abstract class _State extends StateAbstract<Main> {
   //   // data.searchQuery = ord;
   //   // data.suggestQuery = ord;
   //   // core.navigate(to: '/search-result');
-  //   // App.route.pushNamed('home/search', arguments: {'keyword': ord});
+  //   // App.routeOld.pushNamed('home/search', arguments: {'keyword': ord});
   //   // Future.microtask(() {
   //   //   core.conclusionGenerate();
   //   // });
   //   core.conclusionGenerate().whenComplete(() {
-  //     route.pushNamed('home/search', arguments: {'keyword': ord});
+  //     routeOld.pushNamed('home/search', arguments: {'keyword': ord});
   //   });
   // }
 
@@ -68,10 +68,14 @@ abstract class _State extends StateAbstract<Main> {
       data.boxOfSettings.suggestQuery(value: ord);
       App.core.conclusionGenerate();
     }
-    route.pushNamed(
-      'home/search',
-      arguments: {'keyword': ord},
-    );
+    // routeOld.pushNamed(
+    //   'home/search',
+    //   arguments: {'keyword': ord},
+    // );
+    app.route.page.push('/search', extra: {'keyword': ord});
+    // app.route.page.
+    // app.to.push();
+    // app.router.push()
   }
 
   // Future<void> onDelete(int index) {
@@ -91,7 +95,7 @@ abstract class _State extends StateAbstract<Main> {
   //   // Future.delayed(const Duration(milliseconds: 150), () {
   //   //   // core.definitionGenerate(word);
   //   //   // core.navigate(at: 1);
-  //   //   App.route.pushNamed('read');
+  //   //   App.routeOld.pushNamed('read');
   //   // });
   //   // // Future.delayed(Duration.zero, () {
   //   // //   core.historyAdd(word);
@@ -107,10 +111,10 @@ abstract class _State extends StateAbstract<Main> {
   //   return doConfirmWithDialog(
   //     context: context,
   //     // message: 'Do you want to delete this Bookmark?',
-  //     message: preference.text.confirmToDelete(''),
-  //     title: preference.text.confirmation,
-  //     cancel: preference.text.cancel,
-  //     confirm: preference.text.confirm,
+  //     message: lang.confirmToDelete(''),
+  //     title: lang.confirmation,
+  //     cancel: lang.cancel,
+  //     confirm: lang.confirm,
   //   ).then((confirmation) {
   //     if (confirmation != null && confirmation) {
   //       core.deleteBookmarkWithNotify(index);

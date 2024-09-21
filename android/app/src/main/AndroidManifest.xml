@@ -5,6 +5,7 @@
       android:label="MyOrdbok"
       android:icon="@mipmap/icon"
       android:roundIcon="@mipmap/iconrounded"
+      android:enableOnBackInvokedCallback="true"
       android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"

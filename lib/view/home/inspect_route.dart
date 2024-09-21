@@ -11,7 +11,7 @@ class InspectRoute extends StatefulWidget {
   State<InspectRoute> createState() => _InspectRouteState();
 }
 
-abstract class _InspectRouteAbstract extends StateAbstract<InspectRoute> {}
+abstract class _InspectRouteAbstract extends CommonStates<InspectRoute> {}
 
 class _InspectRouteState extends _InspectRouteAbstract {
   @override
@@ -29,19 +29,19 @@ class _InspectRouteState extends _InspectRouteAbstract {
               children: [
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/search');
+                    router.push('/search');
                   },
                   child: const Text('to search'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/search', arguments: {'keyword': 'love', 'focus': true});
+                    router.push('/search', extra: {'keyword': 'love', 'focus': true});
                   },
                   child: const Text('search: love and focus'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/search', arguments: {'keyword': 'kings'});
+                    router.push('/search', extra: {'keyword': 'kings'});
                   },
                   child: const Text('search: kings'),
                 ),
@@ -135,21 +135,21 @@ class _InspectRouteState extends _InspectRouteAbstract {
                   title: const Text('go to search (default)'),
                   subtitle: const Text('same as bottom navigation'),
                   onTap: () {
-                    route.pushNamed('home/search');
+                    router.push('/search');
                   },
                 ),
                 ListTile(
                   title: const Text('go to search and focus'),
                   subtitle: const Text('ready to type'),
                   onTap: () {
-                    route.pushNamed('home/search', arguments: {'focus': true, 'keyword': 'love'});
+                    router.push('/search', extra: {'focus': true, 'keyword': 'love'});
                   },
                 ),
                 ListTile(
                   title: const Text('go to search (instantly)'),
                   subtitle: const Text('get result (working)'),
                   onTap: () {
-                    route.pushNamed('home/search');
+                    router.push('/search');
                   },
                 ),
               ],
@@ -165,14 +165,14 @@ class _InspectRouteState extends _InspectRouteAbstract {
                   title: const Text('go to bible (default)'),
                   subtitle: const Text('same as more from home'),
                   onTap: () {
-                    route.pushNamed('home/bible');
+                    router.push('/bible');
                   },
                 ),
                 ListTile(
                   title: const Text('go to bible as coming from parallel'),
                   subtitle: const Text('ready to select for parallel'),
                   onTap: () {
-                    route.pushNamed('home/bible', arguments: {'parallel': true});
+                    router.push('/bible', extra: {'parallel': true});
                   },
                 ),
               ],
@@ -186,37 +186,37 @@ class _InspectRouteState extends _InspectRouteAbstract {
               children: [
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('reader/user-profile-test-child');
+                    router.push('/reader/user-profile-test-child');
                   },
                   child: const Text('reader/user-profile-test-child'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('/user-profile-test-child');
+                    router.push('//user-profile-test-child');
                   },
                   child: const Text('/user-profile-test-child'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('/reader');
+                    router.push('//reader');
                   },
                   child: const Text('/reader'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('read/2');
+                    router.push('/read/2');
                   },
                   child: const Text('read/2'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('/read');
+                    router.push('//read');
                   },
                   child: const Text('/read'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/swipe');
+                    router.push('/swipe');
                   },
                   child: const Text('home/swipe'),
                 ),
@@ -269,21 +269,21 @@ class _InspectRouteState extends _InspectRouteAbstract {
           ),
         ),
         ViewSections(
-          headerTitle: const Text('route.showSheetModal'),
+          headerTitle: const Text('routeOld.showSheetModal'),
           child: Card(
             child: ListBody(
               children: [
                 ListTile(
-                  title: const Text('route.showSheetModal sheet-modal'),
+                  title: const Text('routeOld.showSheetModal sheet-modal'),
                   onTap: () {
-                    route.showSheetModal(context: context, name: 'sheet-modal');
+                    // routeOld.showSheetModal(context: context, name: 'sheet-modal');
                   },
                 ),
                 ListTile(
-                  title: const Text('route.showSheetStack sheet-stack'),
+                  title: const Text('routeOld.showSheetStack sheet-stack'),
                   onTap: () {
-                    /// ??? route.showSheetStack(context: context, name: 'sheet-stack');
-                    route.showSheetModal(context: context, name: 'sheet-stack');
+                    /// ??? routeOld.showSheetStack(context: context, name: 'sheet-stack');
+                    // routeOld.showSheetModal(context: context, name: 'sheet-stack');
                   },
                 ),
               ],
@@ -298,51 +298,51 @@ class _InspectRouteState extends _InspectRouteAbstract {
               children: [
                 ListTile(
                   title: const Text('Store'),
-                  subtitle: const Text('route.pushNamed(home/store)'),
+                  subtitle: const Text('routeOld.pushNamed(home/store)'),
                   onTap: () {
-                    route.pushNamed('home/store');
+                    router.push('/store');
                   },
                 ),
                 ListTile(
                   title: const Text('Gallery'),
-                  subtitle: const Text('route.pushNamed(home/gallery)'),
+                  subtitle: const Text('routeOld.pushNamed(home/gallery)'),
                   onTap: () {
-                    route.pushNamed('home/gallery');
+                    router.push('/gallery');
                   },
                 ),
                 ListTile(
                   title: const Text('Stage'),
-                  subtitle: const Text('route.pushNamed(stage)'),
+                  subtitle: const Text('routeOld.pushNamed(stage)'),
                   onTap: () {
-                    route.pushNamed('stage');
+                    router.push('/stage');
                   },
                 ),
                 ListTile(
                   title: const Text('Read: 2'),
                   subtitle: const Text('routes.pushNamed(/read/2)'),
                   onTap: () {
-                    route.pushNamed('/read/2');
+                    router.push('//read/2');
                   },
                 ),
                 ListTile(
                   title: const Text('Read: 1'),
                   subtitle: const Text('routes.pushNamed(read/1)'),
                   onTap: () {
-                    route.pushNamed('read/1');
+                    router.push('/read/1');
                   },
                 ),
                 ListTile(
                   title: const Text('Other'),
                   subtitle: const Text('routes.pushNamed(/other)'),
                   onTap: () {
-                    route.pushNamed('/other');
+                    router.push('//other');
                   },
                 ),
                 ListTile(
                   title: const Text('a page thats not on current navigator'),
                   subtitle: const Text('routes.pushNamed(name: /none)'),
                   onTap: () {
-                    route.pushNamed('/none');
+                    router.push('//none');
                   },
                 ),
               ],

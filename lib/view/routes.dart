@@ -1,249 +1,162 @@
 import 'package:flutter/material.dart';
-import 'package:lidea/route/main.dart';
+import 'package:lidea/routes.dart';
 
-export 'package:lidea/route/main.dart' show RouteParser;
+/// NOTE: Bottom navigation
+import 'bottom_navigation.dart';
 
 /// NOTE: Launcher
-import 'screen_launcher.dart';
+import 'screen_launcher.dart' as launcher;
 
 /// NOTE: Menu
 import 'home/main.dart' as home;
 import 'user/main.dart' as user;
-// import 'bible/main.dart' as bible;
 import 'search/main.dart' as search;
-// import 'stage/main.dart' as stage;
-// import 'note/main.dart' as note;
-import 'recent_search/main.dart' as recent_search;
 import 'favorite_word/main.dart' as favorite_word;
-// import 'settings/main.dart' as settings;
+import 'recent_search/main.dart' as recent_search;
 import 'store/main.dart' as store;
-// import 'gallery/main.dart' as gallery;
-
-/// NOTE: Test
-// import 'test/tmp.dart' as test_tmp;
 
 /// NOTE: sheet
-import 'sheet/modal/main.dart' as sheets_modal;
-import 'sheet/stack/main.dart' as sheets_stack;
-import 'sheet/parallel/main.dart' as sheet_parallel;
-import 'sheet/filter/main.dart' as sheet_filter;
+// import 'sheet/modal/main.dart' as sheets_modal;
+// import 'sheet/stack/main.dart' as sheets_stack;
+// import 'sheet/parallel/main.dart' as sheet_parallel;
+// import 'sheet/filter/main.dart' as sheet_filter;
 
 /// NOTE: Recto
 // import 'recto/editor.dart' as recto_editor;
 
 /// NOTE: pop
-import 'pop/options/main.dart' as pop_options;
-import 'pop/bookmarks/main.dart' as pop_bookmarks;
+// import 'pop/options/main.dart' as pop_options;
+// import 'pop/bookmarks/main.dart' as pop_bookmarks;
 // import 'pop/books/main.dart' as pop_books;
 // import 'pop/chapters/main.dart' as pop_chapters;
 
-/// MainRouteDelegates
-class RouteDelegates extends RouteMixinDelegate<RouteNotifier> {
-  @override
-  List<RouteType> get routes {
-    return [
-      RouteType(
-        primaryNavigation: true,
-        page: ScreenLauncher(delegate: this),
-      ),
-    ];
-  }
+class RouteConfig extends RouteNavigations {
+  late final GlobalKey<NavigatorState> _keyHome = GlobalKey<NavigatorState>();
+  late final GlobalKey<NavigatorState> _keyFavoriteWord = GlobalKey<NavigatorState>();
+  late final GlobalKey<NavigatorState> _keyRecentSearch = GlobalKey<NavigatorState>();
+  late final GlobalKey<NavigatorState> _keyStore = GlobalKey<NavigatorState>();
 
   @override
-  final RouteNotifier notifier = RouteNotifier(
-    route: [
-      RouteType(
-        name: home.Main.route,
-        primaryNavigation: true,
-        icon: home.Main.icon,
-        label: home.Main.label,
-        nest: [
-          RouteType(
-            page: const home.Main(),
-            nest: [
-              RouteType(
-                name: user.Main.route,
-                icon: user.Main.icon,
-                label: user.Main.label,
-                page: const user.Main(),
-              ),
-              RouteType(
-                name: search.Main.route,
-                icon: search.Main.icon,
-                label: search.Main.label,
-                page: const search.Main(),
-              ),
-              RouteType(
-                name: recent_search.Main.route,
-                icon: recent_search.Main.icon,
-                label: recent_search.Main.label,
-                page: const recent_search.Main(),
-              ),
-              RouteType(
-                name: store.Main.route,
-                icon: store.Main.icon,
-                label: store.Main.label,
-                page: const store.Main(),
-              ),
-            ],
+  final initialLocation = '/launcher';
+
+  @override
+  late final pageRoutes = [
+    GoRoute(
+      parentNavigatorKey: initialKey,
+      path: initialLocation,
+      pageBuilder: (context, state) {
+        return pages(
+          child: const launcher.Main(),
+          state: state,
+        );
+      },
+    ),
+    StatefulShellRoute.indexedStack(
+      parentNavigatorKey: initialKey,
+      branches: [
+        StatefulShellBranch(
+          navigatorKey: _keyHome,
+          routes: [
+            GoRoute(
+              path: '/',
+              pageBuilder: (context, GoRouterState state) {
+                return pages(child: const home.Main(), state: state);
+              },
+              routes: [
+                // GoRoute(
+                //   path: 'user',
+                //   pageBuilder: (context, state) {
+                //     return pages(child: const user.Main(), state: state);
+                //   },
+                // ),
+                GoRoute(
+                  path: 'search',
+                  pageBuilder: (context, state) {
+                    return pages(child: const search.Main(), state: state);
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _keyFavoriteWord,
+          routes: [
+            GoRoute(
+              path: '/favorite',
+              pageBuilder: (context, state) {
+                return pages(child: const favorite_word.Main(), state: state);
+              },
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _keyRecentSearch,
+          routes: [
+            GoRoute(
+              path: '/recent-search',
+              pageBuilder: (context, state) {
+                return pages(child: const recent_search.Main(), state: state);
+              },
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _keyStore,
+          routes: [
+            GoRoute(
+              path: '/store',
+              pageBuilder: (context, state) {
+                return pages(child: const store.Main(), state: state);
+              },
+            ),
+          ],
+        ),
+      ],
+      pageBuilder: (BuildContext context, GoRouterState state, StatefulNavigationShell shell) {
+        return pages(
+          child: _CustomShell(
+            shell: shell,
           ),
-        ],
-      ),
-      RouteType(
-        name: recent_search.Main.route,
-        primaryNavigation: true,
-        icon: recent_search.Main.icon,
-        label: recent_search.Main.label,
-        nest: [
-          RouteType(
-            page: const recent_search.Main(),
-          ),
-        ],
-      ),
-      RouteType(
-        name: favorite_word.Main.route,
-        primaryNavigation: true,
-        icon: favorite_word.Main.icon,
-        label: favorite_word.Main.label,
-        nest: [
-          RouteType(
-            page: const favorite_word.Main(),
-          ),
-        ],
-      ),
-      RouteType(
-        name: store.Main.route,
-        primaryNavigation: true,
-        icon: store.Main.icon,
-        label: store.Main.label,
-        nest: [
-          RouteType(
-            page: const store.Main(),
-          ),
-        ],
-      ),
-      RouteType(
-        name: sheet_parallel.Main.route,
-        icon: sheet_parallel.Main.icon,
-        label: sheet_parallel.Main.label,
-        page: const sheet_parallel.Main(),
-      ),
-      RouteType(
-        name: sheets_modal.Main.route,
-        icon: sheets_modal.Main.icon,
-        label: sheets_modal.Main.label,
-        page: const sheets_modal.Main(),
-      ),
-      RouteType(
-        name: sheets_stack.Main.route,
-        icon: sheets_stack.Main.icon,
-        label: sheets_stack.Main.label,
-        page: const sheets_stack.Main(),
-      ),
-      RouteType(
-        name: sheet_filter.Main.route,
-        icon: sheet_filter.Main.icon,
-        label: sheet_filter.Main.label,
-        page: const sheet_filter.Main(),
-      ),
-      RouteType(
-        name: pop_options.Main.route,
-        icon: pop_options.Main.icon,
-        label: pop_options.Main.label,
-        page: const pop_options.Main(),
-      ),
-      RouteType(
-        name: pop_bookmarks.Main.route,
-        icon: pop_bookmarks.Main.icon,
-        label: pop_bookmarks.Main.label,
-        page: const pop_bookmarks.Main(),
-      ),
-    ],
-  );
+          state: state,
+        );
+      },
+    ),
+    GoRoute(
+      parentNavigatorKey: initialKey,
+      path: '/user',
+      pageBuilder: (context, state) {
+        return pages(child: const user.Main(), state: state);
+      },
+    ),
+    // GoRoute(
+    //   parentNavigatorKey: initialKey,
+    //   path: SignUpPage.name,
+    //   pageBuilder: (context, state) {
+    //     return pages(
+    //       child: const SignUpPage(),
+    //       state: state,
+    //     );
+    //   },
+    // ),
+  ];
 }
 
-/// RouteChangeNotifier
-class RouteNotifier extends RouteChangeNotifier {
-  RouteNotifier({super.route});
+class _CustomShell extends RouteShellNavigationBottom {
+  /// BottomNavigation, Sheet etc
+  const _CustomShell({required super.shell});
 
-  void routeTest(String name) {
-    // final lst = routeListInnerWorking();
-
-    // final abc = Uri(path: name);
-    // final cols = mapping(uri: abc, routes: lst);
-
-    // final cols = mapping(name: name, routes: routeListInnerWorking);
-    final cols = mapping(name: name);
-    debugPrint(cols.toString());
-    // for (var element in cols) {
-    //   debugPrint('element ${element.name}');
-    // }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text('RouteShells'),
+      // ),
+      // body: SafeArea(
+      //   child: shell,
+      // ),
+      body: shell,
+      bottomNavigationBar: BottomNavigation(shell: shell),
+    );
   }
 }
-
-class NestedDelegates extends RouteMixinDelegate<RouteNotifier> {
-  /// NestRouteDelegates
-  /// ??? NestDelegate({required super.notifier, required super.routes, super.root});
-  NestedDelegates({required super.bridge, super.routeType = 1, super.route, super.name});
-}
-
-class NestedView extends NestedRoutes {
-  const NestedView({super.key, required super.delegate});
-}
-
-
-/*
-class Routes extends InheritedNotifier<AppRouteMainDelegate> {
-  const Routes({
-    Key? key,
-    required AppRouteMainDelegate notifier,
-    required Widget child,
-  }) : super(key: key, notifier: notifier, child: child);
-
-  static Routes get(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<Routes>()!;
-  }
-
-  static AppRouteMainDelegate of(BuildContext context) {
-    return Routes.get(context).notifier!;
-  }
-
-  static AppRouteChangeNotifier state(BuildContext context) {
-    return Routes.of(context).state;
-  }
-  // static AppRouteChangeNotifier delegate(BuildContext context) {
-  //   return Routes.of(context).state;
-  // }
-}
-*/
-
-/// get is good and preferred then making variable
-/// ```dart
-/// // good and preferred
-/// RouteNotifier get routes => RouteManager.of(context)
-/// // this get setState whenever changes are made
-/// late final routes = RouteManager.of(context)
-/// RouteManager(
-///   notifier: App.routeDelegate,
-///   child:?
-/// )
-/// ```
-// class RouteManager extends NavigatorRouteManager<Routes> {
-//   const RouteManager({super.key, required super.notifier, required super.child});
-
-//   static RouteManager inheritedWidget(BuildContext context) {
-//     return context.dependOnInheritedWidgetOfExactType<RouteManager>()!;
-//   }
-
-//   static Routes delegate(BuildContext context) {
-//     return RouteManager.inheritedWidget(context).notifier!;
-//   }
-
-//   // static GlobalKey<NavigatorState> state(BuildContext context) {
-//   //   return RouteManager.delegate(context).navigatorKey;
-//   // }
-
-//   static RouteNotifier of(BuildContext context) {
-//     return RouteManager.delegate(context).state;
-//   }
-// }

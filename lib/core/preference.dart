@@ -3,8 +3,25 @@ part of 'main.dart';
 class Preference extends PreferenceNest {
   Preference(super.data);
 
+  // Future<AppLocalizations> get l10n {
+  //   // final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  //   // List<Locale>
+  //   // final preferred = widgetsBinding.window.locales;
+
+  //   final preferred = listOfLocale;
+  //   const supported = AppLocalizations.supportedLocales;
+  //   final locale = basicLocaleListResolution(preferred, supported);
+  //   return AppLocalizations.delegate.load(locale);
+  // }
+
+  // void tmp(BuildContext context) async {
+  //   // final abc = await l10n;
+  //   // abc.back;
+  //   // textTmp(context).back;
+  // }
+
   @override
-  AppLocalizations get text => AppLocalizations.of(context)!;
+  AppLocalizations lang(BuildContext context) => AppLocalizations.of(context)!;
 
   // @override
   // List<Locale> get supportedLocales => AppLocalizations.supportedLocales;

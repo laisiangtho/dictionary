@@ -12,9 +12,7 @@ class Main extends StatefulWidget {
   State<Main> createState() => _State();
 }
 
-class _State extends DraggableSheets<Main> {
-  @override
-  late final Core app = App.core;
+class _State extends SheetStates<Main> {
   @override
   late final persistent = true;
 

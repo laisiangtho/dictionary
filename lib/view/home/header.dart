@@ -7,11 +7,10 @@ mixin _Header on _State {
     /// ??? ViewHeaderLayoutStack
     return ViewHeaderLayouts(
       data: vhd,
-      left: const [
-        // OptionButtons.back(
-        //   navigator: state.navigator,
-        //   label: preference.text.back,
-        // ),
+      left: [
+        OptionButtons.back(
+          label: lang.back,
+        ),
       ],
       primary: ViewHeaderTitle(
         alignment: Alignment.lerp(
@@ -20,7 +19,7 @@ mixin _Header on _State {
           vhd.snapShrink,
         ),
         // label: 'Back Settings',
-        label: preference.language('MyOrdbok'),
+        label: preference.text('MyOrdbok'),
         data: vhd,
       ),
       right: const [
@@ -45,18 +44,11 @@ mixin _Header on _State {
                 textInputAction: TextInputAction.search,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
-                  hintText: preference.text.aWordOrTwo,
-                  prefixIcon: const Icon(
-                    LideaIcon.find,
-                  ),
+                  hintText: lang.aWordOrTwo,
+                  prefixIcon: const Icon(LideaIcon.find, size: 20),
                 ),
                 onTap: () {
-                  route.pushNamed(
-                    'home/search',
-                    arguments: {'focus': true, 'keyword': data.searchQuery},
-                  );
-                  // core.navigate(to: '/search');
-                  // args?.currentState!.pushNamed('/search');
+                  context.push('/search', extra: {'focus': true, 'keyword': data.searchQuery});
                 },
               ),
             ),

@@ -15,36 +15,31 @@ class Main extends StatefulWidget {
   State<StatefulWidget> createState() => _View();
 }
 
-class _View extends SearchRecents<Main> {
-  @override
-  late final Core app = App.core;
-
+class _View extends SearchRecentsStates<Main> {
   @override
   void onSearch(RecentSearchType item) {
-    route.pushNamed(
-      'home/search',
-      arguments: {'keyword': item.word},
-    );
+    router.go('/');
+    router.push('/search', extra: {'keyword': item.word});
   }
 
   @override
-  String get doConfirmMessage => preference.text.confirmToDelete('all');
+  String get doConfirmMessage => lang.confirmToDelete('all');
   @override
-  String get doConfirmTitle => preference.text.confirmation;
+  String get doConfirmTitle => lang.confirmation;
   @override
-  String get doConfirmCancel => preference.text.cancel;
+  String get doConfirmCancel => lang.cancel;
   @override
-  String get doConfirmSubmit => preference.text.confirm;
+  String get doConfirmSubmit => lang.confirm;
   @override
-  String get labelBack => preference.text.back;
+  String get labelBack => lang.back;
   @override
-  String get labelHeaderTitle => preference.text.keyword(boxOfRecentSearch.plural.toString());
+  String get labelHeaderTitle => lang.keyword(boxOfRecentSearch.plural.toString());
   @override
-  String get labelSectionTitle => preference.text.recentSearch('false');
+  String get labelSectionTitle => lang.recentSearch('false');
   @override
-  String get labelDismissibleBackground => preference.text.delete;
+  String get labelDismissibleBackground => lang.delete;
   @override
-  String messageOnEmpty(int test) => preference.text.recentSearchCount(0);
+  String messageOnEmpty(int test) => lang.recentSearchCount(0);
   @override
-  String labelItemTrailing(RecentSearchType item) => preference.digit(item.hit);
+  String labelItemTrailing(RecentSearchType item) => preference.digit(context, item.hit);
 }
