@@ -62,22 +62,22 @@ class MenuBottom extends StatelessWidget {
         BottomNavigationBarItem(
           icon: const Icon(LideaIcon.flag),
           label: 'Home',
-          tooltip: App.core.preference.lang(context).home,
+          tooltip: context.lang.home,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.loyalty),
           label: 'Favorite',
-          tooltip: App.core.preference.lang(context).favorite(''),
+          tooltip: context.lang.favorite(''),
         ),
         BottomNavigationBarItem(
           icon: const Icon(LideaIcon.listNested),
           label: 'Recent search',
-          tooltip: App.core.preference.lang(context).recentSearch(''),
+          tooltip: context.lang.recentSearch(''),
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.shopping_bag),
           label: 'Store',
-          tooltip: App.core.preference.lang(context).store,
+          tooltip: context.lang.store,
         ),
       ],
       elevation: 0,
