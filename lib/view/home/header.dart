@@ -1,26 +1,26 @@
 part of 'main.dart';
 
 mixin _Header on _State {
-  Widget _header(BuildContext context, ViewHeaderData vhd) {
-    _searchController.animateTo(vhd.shrinkOffsetDouble(30));
+  Widget _headerMobile(BuildContext context, ViewBarData vbd) {
+    _searchController.animateTo(vbd.shrinkOffsetDouble(30));
 
     /// ??? ViewHeaderLayoutStack
-    return ViewHeaderLayouts(
-      data: vhd,
+    return ViewBarLayouts(
+      data: vbd,
       left: [
         OptionButtons.back(
           label: lang.back,
         ),
       ],
-      primary: ViewHeaderTitle(
+      primary: ViewBarTitle(
         alignment: Alignment.lerp(
           const Alignment(0, 0),
           const Alignment(0, -.3),
-          vhd.snapShrink,
+          vbd.snapShrink,
         ),
         // label: 'Back Settings',
         label: preference.text('MyOrdbok'),
-        data: vhd,
+        data: vbd,
       ),
       right: const [
         UserProfileIcon(),
@@ -29,7 +29,7 @@ mixin _Header on _State {
         right: 0,
         left: 0,
         bottom: 20,
-        height: vhd.shrinkWith(40),
+        height: vbd.shrinkWith(40),
         child: Padding(
           // padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           padding: const EdgeInsets.symmetric(horizontal: 15),

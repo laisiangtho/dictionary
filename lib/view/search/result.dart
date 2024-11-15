@@ -197,7 +197,7 @@ mixin _Result on _State<Main> {
           child: Highlight(
             str: mean,
             search: onSearch,
-            style: Theme.of(context).textTheme.bodyLarge!,
+            style: context.style.bodyLarge!,
           ),
         ),
       ],
@@ -246,7 +246,7 @@ mixin _Result on _State<Main> {
                   //   fontWeight: FontWeight.w300,
                   //   fontSize: 17,
                   // ),
-                  style: Theme.of(context).textTheme.bodySmall!,
+                  style: context.style.bodySmall!,
                 ),
               ),
             ],

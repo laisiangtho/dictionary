@@ -46,14 +46,13 @@ class _View extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      ViewHeaderSliver(
-        pinned: true,
-        floating: false,
-        padding: state.media.viewPadding,
-        heights: const [kToolbarHeight, kToolbarHeight],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
-        builder: _header,
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kToolbarHeight, kToolbarHeight],
+            builder: _headerMobile,
+          ),
+        ],
       ),
       // listContainer(),
       ViewSections(
@@ -130,7 +129,7 @@ class _View extends _State with _Header {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
 
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: context.style.bodyMedium,
         ),
         minLeadingWidth: 10,
         leading: const Icon(Icons.bookmark_added),
@@ -163,7 +162,7 @@ class _View extends _State with _Header {
         },
         child: Text(
           lang.delete,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: context.style.bodyMedium,
         ),
       ),
     );

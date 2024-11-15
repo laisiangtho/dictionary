@@ -16,9 +16,9 @@ class ScreenSplash extends StatelessWidget {
                 text: TextSpan(
                   text: '"',
                   semanticsLabel: 'open quotation mark',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w300,
-                      ),
+                  style: context.style.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w300,
+                  ),
                   children: const <TextSpan>[
                     TextSpan(
                       text: 'A',

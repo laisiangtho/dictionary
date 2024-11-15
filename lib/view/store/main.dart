@@ -47,14 +47,13 @@ class _View extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      ViewHeaderSliver(
-        pinned: true,
-        floating: false,
-        padding: state.media.viewPadding,
-        heights: const [kToolbarHeight, kToolbarHeight],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
-        builder: _header,
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kToolbarHeight, kToolbarHeight],
+            builder: _headerMobile,
+          ),
+        ],
       ),
       buildContainer(),
     ];
@@ -250,7 +249,7 @@ class _View extends _State with _Header {
                   : null,
               title: Text(
                 title.replaceAll(RegExp(r'\(.+?\)$'), ''),
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: context.style.headlineMedium,
               ),
             ),
             Builder(

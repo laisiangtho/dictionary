@@ -1,6 +1,23 @@
 # Change log
 
-## 1.0.3+31-41
+## 1.0.2+41
+
+Improve
+
+- Route
+- Labels
+
+Add
+
+- Deep linking
+
+Update
+
+- Search
+- Language
+- Internal API
+
+## 1.0.1+31-40
 
 Improve
 

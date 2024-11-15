@@ -44,14 +44,13 @@ class _View extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      ViewHeaderSliver(
-        pinned: true,
-        floating: false,
-        padding: state.media.viewPadding,
-        heights: const [kToolbarHeight, 100],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
-        builder: _header,
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kToolbarHeight, 100],
+            builder: _headerMobile,
+          ),
+        ],
       ),
       const PullToRefresh(),
       // const InspectProcess(),
