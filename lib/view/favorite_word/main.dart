@@ -104,7 +104,7 @@ class _View extends _State with _Header {
       // },
       direction: DismissDirection.startToEnd,
       // itemDismissibleBackground
-      background: _itemDismissibleBackground(),
+      background: dismissibleBackground(),
       dismissThresholds: const {
         DismissDirection.startToEnd: 0.8,
         DismissDirection.endToStart: 0.1,
@@ -145,26 +145,10 @@ class _View extends _State with _Header {
     );
   }
 
-  Widget _itemDismissibleBackground() {
-    return ViewMarks(
-      decoration: BoxDecoration(
-        color: Theme.of(context).dividerColor,
-      ),
-      mainAxisAlignment: MainAxisAlignment.start,
-      badge: '23',
-      child: ValueListenableBuilder<double>(
-        valueListenable: _itemFavoriteBackgroundNotifier,
-        builder: (context, val, child) {
-          return Padding(
-            padding: EdgeInsets.only(left: 50 * val),
-            child: child,
-          );
-        },
-        child: Text(
-          lang.delete,
-          style: context.style.bodyMedium,
-        ),
-      ),
+  Widget dismissibleBackground() {
+    return DismissibleBackgrounds(
+      valueListenable: _itemFavoriteBackgroundNotifier,
+      label: lang.delete,
     );
   }
 }
